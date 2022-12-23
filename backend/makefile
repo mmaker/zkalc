@@ -1,8 +1,19 @@
-OUTDIR = "../perf/arm64"
+OUTDIR="../perf/"
+
+all: init blstrs arkworks
+
+init:
+	cargo install cargo-criterion
 
 blstrs:
-	mkdir -p ../perf/arm64
-	cd blstrs; cargo bench
-	mv blstrs/target/criterion/ $(OUTDIR)/blstrs/
+	cd blstrs; cargo criterion --message-format=json 1> estimates.json
+	mkdir $(OUTDIR)/blstrs
+	mv estimates.json $(OUTDIR)/blstrs/
 
-.PHONY: blstrs
+arkworks:
+	cd arkworks; cargo criterion --message-format=json 1> estimates.json
+	mkdir $(OUTDIR)/arkworks
+	mv estimates.json $(OUTDIR)/arkworks/
+
+
+.PHONY: init blstrs arkworks

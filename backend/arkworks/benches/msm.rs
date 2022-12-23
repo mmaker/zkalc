@@ -12,8 +12,8 @@ use ark_test_curves::bls12_381;
 fn bench_msm(c: &mut Criterion) {
     let rng = &mut test_rng();
 
-    let mut group = c.benchmark_group("arkworks");
-    for d in 12..17 {
+    let mut group = c.benchmark_group("msm");
+    for d in 4..5 {
         let size = 1 << d;
         let scalars = (0..size)
             .map(|_| bls12_381::Fr::rand(rng))
@@ -21,11 +21,15 @@ fn bench_msm(c: &mut Criterion) {
         let g1s = (0..size)
             .map(|_| bls12_381::G1Projective::rand(rng).into_affine())
             .collect::<Vec<_>>();
+        let g2s = (0..size)
+            .map(|_| bls12_381::G2Projective::rand(rng).into_affine())
+            .collect::<Vec<_>>();
 
-        group
-            .sample_size(10)
-            .bench_with_input(BenchmarkId::new("msm-g1", d), &d, |b, _| {
+        group.bench_with_input(BenchmarkId::new("G1", d), &d, |b, _| {
                 b.iter(|| bls12_381::G1Projective::msm(&g1s, &scalars))
+            });
+        group.bench_with_input(BenchmarkId::new("G2", d), &d, |b, _| {
+                b.iter(|| bls12_381::G2Projective::msm(&g2s, &scalars))
             });
     }
 }
