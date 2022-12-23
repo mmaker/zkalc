@@ -25,10 +25,10 @@ fn bench_msm(c: &mut Criterion) {
             .map(|_| bls12_381::G2Projective::rand(rng).into_affine())
             .collect::<Vec<_>>();
 
-        group.bench_with_input(BenchmarkId::new("G1", d), &d, |b, _| {
+        group.bench_with_input(BenchmarkId::new("G1", size), &d, |b, _| {
                 b.iter(|| bls12_381::G1Projective::msm(&g1s, &scalars))
             });
-        group.bench_with_input(BenchmarkId::new("G2", d), &d, |b, _| {
+        group.bench_with_input(BenchmarkId::new("G2", size), &d, |b, _| {
                 b.iter(|| bls12_381::G2Projective::msm(&g2s, &scalars))
             });
     }
