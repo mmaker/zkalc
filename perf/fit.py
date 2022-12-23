@@ -1,38 +1,75 @@
+import sys
 import math
+import json
+
 import numpy as np
 from numpy.polynomial import Polynomial as P
 import matplotlib.pyplot as plt
 
-# Benchmark data
-# Here are the sizes of MSM we tried
-xs =    [16    , 32    , 64    , 128  , 256    , 512   , 1024  , 2048    , 4096   , 8192   , 16384   , 32768   , 65536   , 131072   , 262144  , 524288]
-# The time it took in milliseconds for the MSM in G1
-ys_G1 = [1.2, 1.3,       2.0,    3.4,   5.7,     9.9,   17.2,   31.1,     56.4,    103.8,  191.17,   351.93,   647.36,   1220.0,    2283.2,   4183.1]
-# The time it took in milliseconds for the MSM in G2
-ys_G2 = [2.4, 3.7,       5.8,    9.7,  16.3,    28.1,    49.3,   99.8,    160.47,  294.33 , 543.27,  1000.4,   1820.7,   3476.1,    6463.4,   11806.0]
+def parse_benchmark_description(description):
+    description = description.split("/")
 
-# Heuristic on how many ms it takes to do a G1 MSM of size `n`
-def msm_G1_ms(n):
-    microseconds = (150*n)/math.log(n,2)
-    return microseconds / 1000
+    match description[0]:
+        case "msm":
+            return description[1], description[2]
 
-# Heuristic on how many ms it takes to do a G2 MSM of size `n`
-def msm_G2_ms(n):
-    microseconds = (420*n)/math.log(n,2)
-    return microseconds / 1000
+def to_nanoseconds(num, unit_str):
+    """Convert `num` in `unit_str` to nanoseconds"""
+    match unit_str:
+        case "ns":
+            return num
+        case "ms":
+            return num * 1e6
+        case "s":
+            return num * 1e9
+        case _:
+            raise
 
-plt.plot(xs, ys_G1, label="G1 bench")
-plt.plot(xs, ys_G2, label="G2 bench")
+def fit_curve_to_data(data):
+    # Get the sizes and times from the data
+    sizes, times = zip(*data.items())
+    # Use NumPy's polyfit function to fit a polynomial curve to the data
+    coefficients = np.polyfit(sizes, times, deg=2)
+    # Return the fitted polynomial as a function
+    return np.poly1d(coefficients)
 
-heuristic_G1_ys = []
-heuristic_G2_ys = []
-for x in xs:
-    heuristic_G1_ys.append(msm_G1_ms(x))
-    heuristic_G2_ys.append(msm_G2_ms(x))
+def extract_measurements(bench_output):
+    # Dictionaries with format { msm_size : time_in_microseconds }
+    measurements_G1 = {}
+    measurements_G2 = {}
 
+    for measurement in bench_output:
+        # Skip useless non-benchmark lines
+        if "id" not in measurement:
+            continue
 
-plt.plot(xs, heuristic_G1_ys, label="G1 heuristic")
-plt.plot(xs, heuristic_G2_ys, label="G2 heuristic")
+        # Extra data from json
+        group, size = parse_benchmark_description(measurement["id"])
+        measurement_in_ns = to_nanoseconds(measurement["mean"]["estimate"], measurement["mean"]["unit"])
 
-plt.legend()
-plt.show()
+        if group == "G1":
+            measurements_G1[int(size)] = measurement_in_ns
+        elif group == "G2":
+            measurements_G2[int(size)] = measurement_in_ns
+        else:
+            raise
+
+    poly = fit_curve_to_data(measurements_G1)
+    print("Fitting with %s measurements!" % (len(measurements_G1)))
+    print("Here is your poly: %s" % (poly))
+    print(poly(2**28))
+
+def main():
+    if len(sys.argv) < 1:
+        print("fit.py estimates.json")
+        sys.exit(1)
+
+    bench_output = []
+    with open(sys.argv[1]) as f:
+        for line in f:
+            bench_output.append(json.loads(line))
+
+    extract_measurements(bench_output)
+
+if __name__ == '__main__':
+    main()
