@@ -9,7 +9,7 @@ authors = [
 ]
 
 [[bench]]
-name = "msm"
+name = "bench_arkworks"
 harness = false
 
 [patch.crates-io]

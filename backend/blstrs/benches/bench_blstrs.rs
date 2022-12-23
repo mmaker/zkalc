@@ -5,7 +5,25 @@ use criterion::*;
 use group::ff::Field;
 use group::Group;
 
-fn benchmark_msm(c: &mut Criterion) {
+fn bench_add(c: &mut Criterion) {
+    let mut rng = rand::thread_rng();
+    c.bench_function("add", |b| {
+        let lhs = Scalar::random(&mut rng);
+        let rhs = Scalar::random(&mut rng);
+        b.iter(|| black_box(lhs) + black_box(rhs))
+    });
+}
+
+fn bench_mul(c: &mut Criterion) {
+    let mut rng = rand::thread_rng();
+    c.bench_function("mul", |b| {
+        let lhs = Scalar::random(&mut rng);
+        let rhs = Scalar::random(&mut rng);
+        b.iter(|| black_box(lhs) * black_box(rhs))
+    });
+}
+
+fn bench_msm(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
 
     let mut powers_of_two = Vec::<usize>::new();
@@ -32,9 +50,9 @@ fn benchmark_msm(c: &mut Criterion) {
     group.finish()
 }
 
-criterion_group! {name = msm;
+criterion_group! {name = blstrs_benchmarks;
                   config = Criterion::default().sample_size(10);
-                  targets = benchmark_msm
+                  targets = bench_mul, bench_add, bench_msm
 }
 
-criterion_main!(msm);
+criterion_main!(blstrs_benchmarks);

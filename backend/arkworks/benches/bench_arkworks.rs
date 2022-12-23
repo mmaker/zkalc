@@ -5,9 +5,27 @@ use ark_ec::CurveGroup;
 use ark_ec::VariableBaseMSM;
 use ark_std::test_rng;
 use ark_std::UniformRand;
-use criterion::{BenchmarkId, Criterion};
+use criterion::{BenchmarkId, Criterion, black_box};
 
 use ark_test_curves::bls12_381;
+
+fn bench_add(c: &mut Criterion) {
+    let mut rng = rand::thread_rng();
+    c.bench_function("add", |b| {
+        let lhs = bls12_381::Fr::rand(&mut rng);
+        let rhs = bls12_381::Fr::rand(&mut rng);
+        b.iter(|| black_box(lhs) + black_box(rhs))
+    });
+}
+
+fn bench_mul(c: &mut Criterion) {
+    let mut rng = rand::thread_rng();
+    c.bench_function("mul", |b| {
+        let lhs = bls12_381::Fr::rand(&mut rng);
+        let rhs = bls12_381::Fr::rand(&mut rng);
+        b.iter(|| black_box(lhs) * black_box(rhs))
+    });
+}
 
 fn bench_msm(c: &mut Criterion) {
     let rng = &mut test_rng();
@@ -35,9 +53,9 @@ fn bench_msm(c: &mut Criterion) {
 }
 
 criterion_group! {
-    name=msm_benchmarks;
+    name=arkworks_benchmarks;
     config=Criterion::default();
-    targets=bench_msm,
+    targets = bench_mul, bench_add, bench_msm
 }
 
-criterion_main! {msm_benchmarks}
+criterion_main! {arkworks_benchmarks}
