@@ -25,12 +25,38 @@ def to_nanoseconds(num, unit_str):
         case _:
             raise
 
+
+def plot_func(data, func):
+  # Get the sizes and times from the data
+  sizes, times = zip(*data.items())
+  # Convert the times from nanoseconds to seconds
+  times = [time / 1e9 for time in times]
+
+
+  # Generate a range of sizes to use for the plot
+  size_range = np.linspace(min(sizes), max(sizes), 100)
+  # Compute the predicted times for the size range
+  predicted_times = func(size_range)
+  # Convert the predicted times from nanoseconds to seconds
+  predicted_times = [time / 1e9 for time in predicted_times]
+
+  # Create a new figure and plot the actual data
+  plt.figure()
+  plt.scatter(sizes, times, label='Actual data')
+  # Plot the fitted linear function
+  plt.plot(size_range, predicted_times, label='Linear fit')
+  plt.xlabel('Size')
+  plt.ylabel('Time (in seconds)')
+  plt.legend()
+  plt.show()
+
+
 def fit_curve_to_data(data):
     # Get the sizes and times from the data
     sizes, times = zip(*data.items())
-    # Use NumPy's polyfit function to fit a polynomial curve to the data
-    coefficients = np.polyfit(sizes, times, deg=2)
-    # Return the fitted polynomial as a function
+    # Use NumPy's polyfit function to fit a linear curve
+    coefficients = np.polyfit(sizes, times, deg=1)
+    # Return the fitted func
     return np.poly1d(coefficients)
 
 def extract_measurements(bench_output):
@@ -54,10 +80,12 @@ def extract_measurements(bench_output):
         else:
             raise
 
-    poly = fit_curve_to_data(measurements_G1)
+    func = fit_curve_to_data(measurements_G1)
     print("Fitting with %s measurements!" % (len(measurements_G1)))
-    print("Here is your poly: %s" % (poly))
-    print(poly(2**28))
+    print("Here is your func: %s" % (func))
+    print("For 2^28 it would take %s seconds" % (func(2**28) / 1e9))
+
+    plot_func(measurements_G1, func)
 
 def main():
     if len(sys.argv) < 1:
