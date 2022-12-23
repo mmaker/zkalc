@@ -13,7 +13,7 @@ fn bench_msm(c: &mut Criterion) {
     let rng = &mut test_rng();
 
     let mut group = c.benchmark_group("msm");
-    for d in 4..5 {
+    for d in 4..6 {
         let size = 1 << d;
         let scalars = (0..size)
             .map(|_| bls12_381::Fr::rand(rng))

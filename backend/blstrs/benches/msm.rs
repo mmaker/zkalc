@@ -9,7 +9,7 @@ fn benchmark_msm(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
 
     let mut powers_of_two = Vec::<usize>::new();
-    for i in 4..=6 {
+    for i in 4..6 {
         powers_of_two.push(2_u32.pow(i).try_into().unwrap());
     }
 
