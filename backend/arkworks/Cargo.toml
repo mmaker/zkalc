@@ -1,0 +1,35 @@
+[package]
+name = "arkworks-benchmarks"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+authors = [
+    "George Kadianakis <desnacked@riseup.net>",
+    "Michele Orrù <michele.orru@berkeley.edu>",
+]
+
+[[bench]]
+name = "msm"
+harness = false
+
+[patch.crates-io]
+ark-std = {git = "https://github.com/arkworks-rs/utils"}
+ark-ec = {git = "https://github.com/arkworks-rs/algebra"}
+ark-test-curves = {git = "https://github.com/arkworks-rs/algebra"}
+ark-ff = {git = "https://github.com/arkworks-rs/algebra"}
+ark-serialize = {git = "https://github.com/arkworks-rs/algebra"}
+ark-serialize-derive = {git = "https://github.com/arkworks-rs/algebra"}
+ark-poly = {git = "https://github.com/arkworks-rs/algebra"}
+ark-relations = {git = "https://github.com/arkworks-rs/snark"}
+
+[dependencies]
+ark-ec = {version = "0.3.0", features = ["std", "parallel"] }
+ark-ff = {version = "0.3.0", features = ["std", "asm", "parallel"] }
+ark-poly = {version = "0.3.0", features = ["std", "parallel"] }
+ark-relations = "0.3.0"
+ark-test-curves = {version = "0.3.0", features = ["bls12_381_curve", "parallel"]}
+ark-serialize = "0.3.0"
+ark-std = {version = "0.3.0", features = ["std", "parallel"] }
+rand = "0.8.5"
+rayon = "1.5"
+criterion = "0.3.5"
