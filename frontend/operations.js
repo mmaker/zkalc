@@ -1,18 +1,14 @@
 function G1MsmTimeInNanoseconds(n) {
-    if  (n == 1) {
-        microseconds = (110 * n);
-    } else {
-        microseconds =  (110 * n) / Math.log2(n)
-    }
+    const a = 110;
+    const b = 0;
+    microseconds = a * n + b;
     return microseconds * 1000;
 }
 
 function G2MsmTimeInNanoseconds(n) {
-    if  (n == 1) {
-        microseconds = (220 * n);
-    } else {
-        microseconds =  (220 * n) / Math.log2(n)
-    }
+    const a = 220;
+    const b = 0;
+    microseconds = a * n + b;
     return microseconds * 1000;
 }
 
