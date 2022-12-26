@@ -2,19 +2,28 @@ import React, { useState } from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Radio, Form, Typography, Input, Select, Space } from "antd";
 
-import coefficients from "./coefficients.json";
 
 const { Title } = Typography;
 const { Option } = Select;
 
-const areas = [
-  { label: "Beijing", value: "Beijing" },
-  { label: "Shanghai", value: "Shanghai" },
+const libs = [
+  { label: "arkworks", value: "arkworks" },
+  { label: "blstrs", value: "blstrs"},
+  { label: "dalek", value: "dalek", disabled: true}
 ];
 
-const sights = {
-  Beijing: ["Tiananmen", "Great Wall"],
-  Shanghai: ["Oriental Pearl", "The Bund"],
+// put this into another file, then do:
+// import estimates from "./estimates.json";
+
+const estimates = {
+  arkworks: [
+    {key: "msm", "value": "msm"},
+    {key: "add", "value": "add"},
+  ],
+  blstrs: [
+    {key: "msm", "value": "msm"},
+    {key: "add", "value": "add"},
+  ]
 };
 
 function App() {
@@ -24,12 +33,12 @@ function App() {
     console.log("Received values of form:", values);
   };
 
-  const handleChange = () => {
-    form.setFieldsValue({ sights: [] });
+  const resetRecipe = () => {
+    form.setFieldsValue({ recipe: [] });
   };
 
   return (
-    <div>
+    <>
       <Title>Zkalc</Title>
       <Form
         form={form}
@@ -37,22 +46,13 @@ function App() {
         onFinish={onFinish}
         autoComplete="off"
       >
-        <Form.Item>
-          <Radio.Group onChange={handleChange} defaultValue="a">
-            <Radio.Button value="a">Hangzhou</Radio.Button>
-            <Radio.Button value="b">Shanghai</Radio.Button>
-            <Radio.Button value="c">Beijing</Radio.Button>
-            <Radio.Button value="d">Chengdu</Radio.Button>
-          </Radio.Group>
-        </Form.Item>
         <Form.Item
-          name="area"
-          label="Area"
-          rules={[{ required: true, message: "Missing area" }]}
-        >
-          <Select options={areas} onChange={handleChange} />
+                  name="lib"
+                  label="Framework"
+                  rules={[{ required: true, message: "Missing lib" }]}>
+          <Radio.Group onChange={resetRecipe} optionType="button" options={libs}/>
         </Form.Item>
-        <Form.List name="sights">
+        <Form.List name="recipe">
           {(fields, { add, remove }) => (
             <>
               {fields.map((field) => (
@@ -60,25 +60,25 @@ function App() {
                   <Form.Item
                     noStyle
                     shouldUpdate={(prevValues, curValues) =>
-                      prevValues.area !== curValues.area ||
-                      prevValues.sights !== curValues.sights
+                      prevValues.lib !== curValues.lib ||
+                      prevValues.recipe !== curValues.recipe
                     }
                   >
                     {() => (
                       <Form.Item
                         {...field}
-                        label="Sight"
-                        name={[field.name, "sight"]}
-                        rules={[{ required: true, message: "Missing sight" }]}
+                        label="Operation"
+                        name={[field.name, "op"]}
+                        rules={[{ required: true, message: "Missing operation" }]}
                       >
                         <Select
-                          disabled={!form.getFieldValue("area")}
-                          style={{ width: 130 }}
+                          disabled={!form.getFieldValue("lib")}
+                          style={{ width: 230 }}
                         >
-                          {(sights[form.getFieldValue("area")] || []).map(
+                          {(estimates[form.getFieldValue("lib")] || []).map(
                             (item) => (
-                              <Option key={item} value={item}>
-                                {item}
+                              <Option key={item["key"]} value={item["value"]}>
+                                {item["value"]}
                               </Option>
                             )
                           )}
@@ -88,9 +88,9 @@ function App() {
                   </Form.Item>
                   <Form.Item
                     {...field}
-                    label="Price"
-                    name={[field.name, "price"]}
-                    rules={[{ required: true, message: "Missing price" }]}
+                    label="Quantity"
+                    name={[field.name, "quantity"]}
+                    rules={[{ required: true, message: "Missing quantity" }]}
                   >
                     <Input />
                   </Form.Item>
@@ -118,7 +118,8 @@ function App() {
           </Button>
         </Form.Item>
       </Form>
-    </div>
+
+    </>
   );
 }
 
