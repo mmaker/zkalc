@@ -2,6 +2,7 @@
 extern crate criterion;
 
 use ark_ec::CurveGroup;
+use ark_ff::Field;
 use ark_ec::VariableBaseMSM;
 use ark_std::test_rng;
 use ark_std::UniformRand;
@@ -52,10 +53,21 @@ fn bench_msm(c: &mut Criterion) {
     }
 }
 
+
+fn bench_sum_of_products(c: &mut Criterion) {
+    let rng = &mut test_rng();
+    c.bench_function("ip", |b| {
+        const SIZE: usize = 256;
+        let lhs: [bls12_381::Fr; SIZE] = (0..SIZE).map(|_| bls12_381::Fr::rand(rng)).collect::<Vec<_>>().try_into().unwrap();
+        let rhs: [bls12_381::Fr; SIZE] = (0..SIZE).map(|_| bls12_381::Fr::rand(rng)).collect::<Vec<_>>().try_into().unwrap();
+        b.iter(|| bls12_381::Fr::sum_of_products(&lhs, &rhs))
+    });
+}
+
 criterion_group! {
     name=arkworks_benchmarks;
     config=Criterion::default();
-    targets = bench_mul, bench_add, bench_msm
+    targets = bench_mul, bench_add, bench_sum_of_products, bench_msm,
 }
 
 criterion_main! {arkworks_benchmarks}
