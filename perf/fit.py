@@ -23,15 +23,8 @@ def parse_benchmark_description(description):
 
 def to_nanoseconds(num, unit_str):
     """Convert `num` in `unit_str` to nanoseconds"""
-    match unit_str:
-        case "ns":
-            return num
-        case "ms":
-            return num * 1e6
-        case "s":
-            return num * 1e9
-        case _:
-            raise
+    units = {"ns": 1, "ms": 1e6, "s": 1e9}
+    return num * units[unit_str]
 
 def plot_func(data, func):
     # Get the sizes and times from the data
@@ -123,7 +116,7 @@ def extract_measurements(bench_output):
         # Write the JSON object to the file
         f.write(json_data)
 
-    print("[!] Wrote results to '%s'! Bye!" % (RESULTS_FNAME))
+    print(f"[!] Wrote results to '{RESULTS_FNAME}'! Bye!")
 
 def main():
     if len(sys.argv) < 1:

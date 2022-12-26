@@ -1,24 +1,122 @@
-import React, {useState} from "react"
-import { Button, Typography, Form, Input, Select } from "antd"
+import React, { useState } from "react";
+import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import { Button, Radio, Form, Typography, Input, Select, Space } from "antd";
 
-import coefficients from "./coefficients.json"
+import coefficients from "./coefficients.json";
 
 const { Title } = Typography;
+const { Option } = Select;
 
+const areas = [
+  { label: "Beijing", value: "Beijing" },
+  { label: "Shanghai", value: "Shanghai" },
+];
+
+const sights = {
+  Beijing: ["Tiananmen", "Great Wall"],
+  Shanghai: ["Oriental Pearl", "The Bund"],
+};
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [form] = Form.useForm();
+
+  const onFinish = (values) => {
+    console.log("Received values of form:", values);
+  };
+
+  const handleChange = () => {
+    form.setFieldsValue({ sights: [] });
+  };
 
   return (
-    <div className="App">
-      <Form>
-      <Form.Item label="Operation">
-        <Select onChange={(value)=>{console.log(value)}}>
-          {[1, 2, 3].map((key)=>
-          <Select.Option key={key} value={coefficients[key]}>{key}</Select.Option>
+    <div>
+      <Title>Zkalc</Title>
+      <Form
+        form={form}
+        name="dynamic_form_complex"
+        onFinish={onFinish}
+        autoComplete="off"
+      >
+        <Form.Item>
+          <Radio.Group onChange={handleChange} defaultValue="a">
+            <Radio.Button value="a">Hangzhou</Radio.Button>
+            <Radio.Button value="b">Shanghai</Radio.Button>
+            <Radio.Button value="c">Beijing</Radio.Button>
+            <Radio.Button value="d">Chengdu</Radio.Button>
+          </Radio.Group>
+        </Form.Item>
+        <Form.Item
+          name="area"
+          label="Area"
+          rules={[{ required: true, message: "Missing area" }]}
+        >
+          <Select options={areas} onChange={handleChange} />
+        </Form.Item>
+        <Form.List name="sights">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map((field) => (
+                <Space key={field.key} align="baseline">
+                  <Form.Item
+                    noStyle
+                    shouldUpdate={(prevValues, curValues) =>
+                      prevValues.area !== curValues.area ||
+                      prevValues.sights !== curValues.sights
+                    }
+                  >
+                    {() => (
+                      <Form.Item
+                        {...field}
+                        label="Sight"
+                        name={[field.name, "sight"]}
+                        rules={[{ required: true, message: "Missing sight" }]}
+                      >
+                        <Select
+                          disabled={!form.getFieldValue("area")}
+                          style={{ width: 130 }}
+                        >
+                          {(sights[form.getFieldValue("area")] || []).map(
+                            (item) => (
+                              <Option key={item} value={item}>
+                                {item}
+                              </Option>
+                            )
+                          )}
+                        </Select>
+                      </Form.Item>
+                    )}
+                  </Form.Item>
+                  <Form.Item
+                    {...field}
+                    label="Price"
+                    name={[field.name, "price"]}
+                    rules={[{ required: true, message: "Missing price" }]}
+                  >
+                    <Input />
+                  </Form.Item>
+
+                  <MinusCircleOutlined onClick={() => remove(field.name)} />
+                </Space>
+              ))}
+
+              <Form.Item>
+                <Button
+                  type="dashed"
+                  onClick={() => add()}
+                  block
+                  icon={<PlusOutlined />}
+                >
+                  Add sights
+                </Button>
+              </Form.Item>
+            </>
           )}
-        </Select>
-      </Form.Item>
+        </Form.List>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
       </Form>
     </div>
   );
