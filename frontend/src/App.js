@@ -34,7 +34,7 @@ function App() {
 
   const onFormChange = (values) => {
     const recipe = form.getFieldsValue();
-    console.log();
+    console.log(recipe);
     setTotal(estimated_time + 1);
   };
 
@@ -61,7 +61,7 @@ function App() {
           {(fields, { add, remove }) => (
             <>
               {fields.map((field) => (
-              <Space key={field.key} align="baseline">
+              <Space key={field.key} align="baseline" style={{ display: 'flex', marginBottom: 8 }}>
                 <MinusCircleOutlined onClick={() => remove(field.name)} />
                   <Form.Item
                     noStyle
