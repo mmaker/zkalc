@@ -50,9 +50,17 @@ fn bench_msm(c: &mut Criterion) {
     group.finish()
 }
 
+fn bench_invert(c: &mut Criterion) {
+    let mut rng = rand::thread_rng();
+    c.bench_function("invert", |b| {
+        let a = Scalar::random(&mut rng);
+        b.iter(|| a.invert().unwrap())
+    });
+}
+
 criterion_group! {name = blstrs_benchmarks;
                   config = Criterion::default().sample_size(10);
-                  targets = bench_mul, bench_add, bench_msm
+                  targets = bench_mul, bench_add, bench_msm, bench_invert
 }
 
 criterion_main!(blstrs_benchmarks);

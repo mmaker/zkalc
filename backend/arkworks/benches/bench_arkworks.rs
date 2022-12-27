@@ -64,10 +64,18 @@ fn bench_sum_of_products(c: &mut Criterion) {
     });
 }
 
+fn bench_invert(c: &mut Criterion) {
+    let mut rng = rand::thread_rng();
+    c.bench_function("invert", |b| {
+        let a = bls12_381::Fr::rand(&mut rng);
+        b.iter(|| a.inverse().unwrap())
+    });
+}
+
 criterion_group! {
     name=arkworks_benchmarks;
     config=Criterion::default();
-    targets = bench_mul, bench_add, bench_sum_of_products, bench_msm,
+    targets = bench_mul, bench_add, bench_sum_of_products, bench_msm, bench_invert
 }
 
 criterion_main! {arkworks_benchmarks}
