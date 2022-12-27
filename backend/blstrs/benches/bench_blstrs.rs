@@ -3,7 +3,8 @@
 use blstrs::{G1Projective, G2Projective, Scalar};
 use criterion::*;
 use group::ff::Field;
-use group::Group;
+use group::{Group, Curve};
+use pairing_lib::{PairingCurveAffine};
 
 fn bench_add(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
@@ -58,9 +59,18 @@ fn bench_invert(c: &mut Criterion) {
     });
 }
 
+fn bench_pairing(c: &mut Criterion) {
+    let mut rng = rand::thread_rng();
+    c.bench_function("pairing", |r| {
+        let a = G1Projective::random(&mut rng).to_affine();
+        let b = G2Projective::random(&mut rng).to_affine();
+        r.iter(|| a.pairing_with(&b))
+    });
+}
+
 criterion_group! {name = blstrs_benchmarks;
                   config = Criterion::default().sample_size(10);
-                  targets = bench_mul, bench_add, bench_msm, bench_invert
+                  targets = bench_mul, bench_add, bench_msm, bench_invert, bench_pairing
 }
 
 criterion_main!(blstrs_benchmarks);

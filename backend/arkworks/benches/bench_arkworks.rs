@@ -4,6 +4,7 @@ extern crate criterion;
 use ark_ec::CurveGroup;
 use ark_ff::Field;
 use ark_ec::VariableBaseMSM;
+use ark_ec::pairing::Pairing;
 use ark_std::test_rng;
 use ark_std::UniformRand;
 use criterion::{BenchmarkId, Criterion, black_box};
@@ -72,10 +73,19 @@ fn bench_invert(c: &mut Criterion) {
     });
 }
 
+fn bench_pairing(c: &mut Criterion) {
+    let mut rng = rand::thread_rng();
+    c.bench_function("pairing", |r| {
+        let a = bls12_381::G1Projective::rand(&mut rng).into_affine();
+        let b = bls12_381::G2Projective::rand(&mut rng).into_affine();
+        r.iter(|| bls12_381::Bls12_381::pairing(a, b))
+    });
+}
+
 criterion_group! {
     name=arkworks_benchmarks;
     config=Criterion::default();
-    targets = bench_mul, bench_add, bench_sum_of_products, bench_msm, bench_invert
+    targets = bench_mul, bench_add, bench_sum_of_products, bench_msm, bench_invert, bench_pairing
 }
 
 criterion_main! {arkworks_benchmarks}
