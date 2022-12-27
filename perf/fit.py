@@ -16,14 +16,16 @@ def parse_benchmark_description(description):
 
     match description[0]:
         case "msm":
-            desc = "MSM_" + description[1]
+            desc = "msm_" + description[1]
             return desc, description[2]
+        case "mul" | "add" | "invert" | "pairing":
+            return description[0], 1
         case _:
             raise NoNeedForFitting
 
 def to_nanoseconds(num, unit_str):
     """Convert `num` in `unit_str` to nanoseconds"""
-    units = {"ns": 1, "ms": 1e6, "s": 1e9}
+    units = {"ns": 1, "µs" : 1e3, "ms": 1e6, "s": 1e9}
     return num * units[unit_str]
 
 def plot_func(data, func):
@@ -72,7 +74,14 @@ def fit_poly_to_data(data):
 
     # Get the sizes and times from the data
     sizes, times = zip(*data.items())
-    # Use NumPy's polyfit function to fit a linear curve
+
+    # Handle simple non-amortized operations like mul
+    # If one mul takes x ms, n muls take x*n ms.
+    if len(sizes) == 1:
+        return poly.Polynomial([0,times[0]])
+
+    # For more amortized operations like MSMs we do linear regression
+    # Use NumPy's polyfit function to fit a linear function to the data
     polynomial = poly.Polynomial.fit(sizes, times, deg=1)
 
 #    plot_func(data, polynomial)
