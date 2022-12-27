@@ -6,6 +6,7 @@ import { Duration } from "luxon";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import {
   AutoComplete,
+  Row, Col,
   Button,
   Radio,
   Form,
@@ -67,30 +68,30 @@ const operations = [
 const estimates = {
   arkworks: {
     msm_g1: {
-      coefficients: [164, 1641],
+      f: (n) => n * 2,
     },
     msm_g2: {
-      coefficients: [164, 1641],
+      f: (n) => n*n*n,
     },
     msm_ff: {
-      coefficients: [164, 1641],
+      f: (n) => n*n,
     },
     msm_gt: {
-      coefficients: [164, 1641],
+      f: (n) => n*n,
     },
   },
   blstrs: {
     msm_g1: {
-      coefficients: [164, 1641],
+      f: (n) => n*n,
     },
     msm_g2: {
-      coefficients: [164, 1641],
+      f: (n) => n*n,
     },
     msm_ff: {
-      coefficients: [164, 1641],
+      f: (n) => n*n,
     },
     msm_gt: {
-      coefficients: [164, 1641],
+      f: (n) => n*n,
     },
   },
 };
@@ -108,8 +109,8 @@ const estimates = {
 // }
 function estimatedTime(instructions) {
   return instructions.recipe.map(item => {
-    var f = estimates[instructions.lib][item.op].coefficients;
-    return f[0] * item.quantity + f[1]
+    var f = estimates[instructions.lib][item.op].f;
+    return f(item.quantity)
   }).reduce((a, b) => a+b, 0)
 }
 
@@ -149,7 +150,7 @@ function App() {
             options={libs}
           />
         </Form.Item>
-        <Form.List name="recipe">
+        <Form.List name="recipe" wrapperCol={1}>
           {(fields, { add, remove }) => (
             <>
               {fields.map((field) => (
@@ -175,8 +176,7 @@ function App() {
                         ]}
                       >
                         <Select
-                          disabled={!form.getFieldValue("lib")}
-                          style={{ width: 230 }}
+                          style={{ width: 150 }}
                           bordered={false}
                           showSearch
                           options={operations} // [form.getFieldValue("lib")]}
@@ -194,9 +194,10 @@ function App() {
                 </Space>
               ))}
 
-              <Form.Item>
+              <Form.Item wrapperCol={2}>
                 <Button
                   type="dashed"
+                  disabled={!form.getFieldValue("lib")}
                   onClick={() => add()}
                   size="large"
                   icon={<PlusOutlined />}
