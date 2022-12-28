@@ -82,10 +82,28 @@ fn bench_pairing(c: &mut Criterion) {
     });
 }
 
+fn bench_pairing_product(c: &mut Criterion) {
+    let mut rng = rand::thread_rng();
+    let mut group = c.benchmark_group("pairing_product");
+    for d in 4..=10 {
+        let size = 1 << d;
+        let g1s = (0..size)
+            .map(|_| bls12_381::G1Projective::rand(&mut rng).into_affine())
+            .collect::<Vec<_>>();
+        let g2s = (0..size)
+            .map(|_| bls12_381::G2Projective::rand(&mut rng).into_affine())
+            .collect::<Vec<_>>();
+
+        group.bench_with_input(BenchmarkId::new("pairing_product", size), &d, |b, _| {
+            b.iter(|| bls12_381::Bls12_381::multi_pairing(&g1s, &g2s))
+        });
+    }
+}
+
 criterion_group! {
     name=arkworks_benchmarks;
     config=Criterion::default();
-    targets = bench_mul, bench_add, bench_sum_of_products, bench_msm, bench_invert, bench_pairing
+    targets = bench_mul, bench_add, bench_sum_of_products, bench_msm, bench_invert, bench_pairing, bench_pairing_product
 }
 
 criterion_main! {arkworks_benchmarks}

@@ -1,10 +1,11 @@
 #![allow(non_snake_case)]
 
-use blstrs::{G1Projective, G2Projective, Scalar};
+use blstrs::{G1Projective, G2Projective, Scalar, G1Affine};
 use criterion::*;
 use group::ff::Field;
 use group::{Group, Curve};
-use pairing_lib::{PairingCurveAffine};
+use pairing_lib::{PairingCurveAffine, MultiMillerLoop, MillerLoopResult};
+use blstrs::{Bls12, G2Prepared};
 
 fn bench_add(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
@@ -68,9 +69,33 @@ fn bench_pairing(c: &mut Criterion) {
     });
 }
 
+fn bench_pairing_product(c: &mut Criterion) {
+    let mut rng = rand::thread_rng();
+    let mut group = c.benchmark_group("pairing_product");
+    for d in 4..=10 {
+        let size = 1 << d;
+        let mut v: Vec<(G1Affine, G2Prepared)> = Vec::new();
+        for _ in 0..size {
+            let g1 = G1Affine::from(G1Projective::random(&mut rng));
+            let g2 = G2Prepared::from(G2Projective::random(&mut rng).to_affine());
+            v.push((g1, g2));
+        }
+
+        let mut v_ref: Vec<(&G1Affine, &G2Prepared)> = Vec::new();
+        for i in 0..size {
+            v_ref.push((&v[i].0, &v[i].1));
+        }
+
+        group.bench_with_input(BenchmarkId::new("pairing_product", size), &d, |b, _| {
+            b.iter(|| Bls12::multi_miller_loop(&v_ref).final_exponentiation())
+        });
+    }
+}
+
+
 criterion_group! {name = blstrs_benchmarks;
                   config = Criterion::default().sample_size(10);
-                  targets = bench_mul, bench_add, bench_msm, bench_invert, bench_pairing
+                  targets = bench_mul, bench_add, bench_msm, bench_invert, bench_pairing, bench_pairing_product
 }
 
 criterion_main!(blstrs_benchmarks);
