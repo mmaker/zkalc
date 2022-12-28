@@ -14,13 +14,12 @@ RESULTS_FNAME = "coefficients.json"
 def parse_benchmark_description(description):
     description = description.split("/")
 
-    match description[0]:
-        case "msm" | "pairing_product":
+    if description[0] in ("msm", "pairing_product"):
             desc = description[0] + "_" + description[1]
             return desc, description[2]
-        case "mul" | "add" | "invert" | "pairing":
+    if description[0] in ("mul", "add", "invert", "pairing"):
             return description[0], 1
-        case _:
+    else:
             raise NoNeedForFitting
 
 def to_nanoseconds(num, unit_str):
