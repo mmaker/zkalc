@@ -8,6 +8,7 @@ import { Button, Radio, Form, Typography, Row, Col, Select, Space, Input, List }
 import { Content } from "antd/es/layout/layout";
 import { InlineMath, BlockMath } from "react-katex";
 import {apply, applyTransformDependencies, parse} from "mathjs";
+import Paragraph from "antd/es/skeleton/Paragraph";
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -97,13 +98,50 @@ function App() {
     setRecipe(recipe => [...recipe, item]);
   }
 
-  const estimatedTime = (instructions) => {
-    return instructions.recipe
+  const humanTime = (nanoseconds) => {
+    const units = ['ns', 'us', 'ms', 's', 'min', 'hr', 'day'];
+    const conversions = [1, 1000, 1000, 1000, 60, 60, 24];
+
+    let value = Number(nanoseconds);
+    let unitIndex = 0;
+    let remainder = 0;
+    while (value >= conversions[unitIndex] && unitIndex < conversions.length - 1) {
+      remainder = value % conversions[unitIndex];
+      value = Math.floor(value / conversions[unitIndex]);
+      unitIndex += 1;
+    }
+
+    if (remainder !== 0) {
+      return `${value.toFixed(1)} ${units[unitIndex-1]}, ${remainder.toFixed(2)} ${units[unitIndex-2]}`;
+    } else {
+      return `${value.toFixed(1)} ${units[unitIndex]}`
+    }
+  }
+  const formatNumber = (num) => {
+    if (num >= 1e10) {
+        const float = num / Math.pow(10, Math.floor(Math.log10(num)));
+        const decimals = Number(float.toFixed(2));
+        const exponent = Math.floor(Math.log10(num));
+        return `${decimals} \\cdot 10^{${exponent}}`;
+    } else if (num >= 1000000000) {
+      return `${(num / 1000000000).toFixed(1)} \\cdot 10^9`;
+    } else if (num >= 1000000) {
+      return `${(num / 1000000).toFixed(1)}\\cdot 10^6`;
+    } else if (num >= 1000) {
+      return `${(num / 1000).toFixed(1)}\\cdot 10^3`;
+    } else {
+      return `${Number(num.toFixed(2))}`;
+    }
+  }
+
+  const estimatedTime = (recipe) => {
+    const estimated_time = recipe
       .map((item) => {
-        var f = estimates[instructions.lib][item.op].f;
+        var f = estimates[lib][item.op].f;
         return f(item.quantity.evaluate());
       })
       .reduce((a, b) => a + b, 0);
+    return humanTime(estimated_time);
   }
 
   const resetRecipe = () => {
@@ -115,11 +153,13 @@ function App() {
   };
 
   const renderFormula = (formula) => {
-    const evaluation = formula.evaluate();
-    if (evaluation.toString() === formula.toTex()) {
+    const evaluation = formatNumber(formula.evaluate());
+    // if the expression is simple, just return it.
+    if (evaluation === formula.toTex()) {
         return formula.toTex();
+    // else, round up to the closest integer
     } else {
-        return formula.toTex() + "=" + formula.evaluate();
+      return formula.toTex() + "\\approx" + evaluation;
     }
   }
 
@@ -137,7 +177,6 @@ function App() {
         align="center"
         style={{ padding: "0 50px", margin: "16x 0" }}
         form={form}
-        onKeyUp={(event)=> {if (event.key === "Enter") form.submit()}}
         onFinish={addIngredient}
         autoComplete="off"
       >
@@ -175,6 +214,7 @@ function App() {
             type="dashed"
             disabled={!form.getFieldValue("lib")}
             size="large"
+            htmlType="submit"
             icon={<PlusOutlined />}
           >
           </Button>
@@ -183,7 +223,7 @@ function App() {
       </Form>
       <Row justify="center">
         <Col align="center" span={8} offset={10}>
-        <Typography.Paragraph align="right"> Total time: {estimatedTime({lib: lib, recipe: recipe})} </Typography.Paragraph>
+        <Typography.Paragraph align="right"> Total time: {estimatedTime(recipe)} </Typography.Paragraph>
         </Col>
       </Row>
       <Row justify="center">
@@ -191,15 +231,15 @@ function App() {
         dataSource={recipe}
         renderItem={(ingredient, index) => (
           <List.Item key={index}>
-            <Col span={20} align="right">
+            <Col span={20}>
             <InlineMath>{renderFormula(ingredient.quantity)}</InlineMath>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            {ingredient.op}:
+            {ingredient.op}
+            </Col>
+            <Col span={20}>
+            {estimatedTime([ingredient])}
             </Col>
             <Col span={10}>
-            {estimatedTime({lib: lib, recipe: [ingredient]})}
-            </Col>
-            <Col span={5}>
             <MinusCircleOutlined onClick={() => removeIngredient(index)}/>
             </Col>
           </List.Item>
