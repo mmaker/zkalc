@@ -32,44 +32,44 @@ const libs = [
 
 const operations = [
   {
-    label: "msm g1",
+    label: "G1 MSM",
     value: "msm_g1",
     description: "Multiscalar Multiplication over GG1",
   },
   {
-    label: "msm g2",
+    label: "G2 MSM",
     value: "msm_g2",
     description: "Multiscalar Multiplication over GG2",
   },
   {
-    label: "pairing",
+    label: "Pairing",
     value: "pairing",
     description: "pairing",
   },
   {
-    label: "pairing product",
+    label: "Pairing product",
     value: "pairing_product",
     description: "pairing product",
   },
   {
-    label: "field addition",
+    label: "Field Addition",
     value: "add_ff",
     description: "field addition",
   },
   {
-    label: "curve addition",
-    value: "add_ec",
-    description: "elliptic curve G1 addition",
-  },
-  {
-    label: "mul",
+    label: "Field Multiplication",
     value: "mul",
     description: "field multiplication",
   },
   {
-    label: "inv",
+    label: "Field Inversion",
     value: "invert",
     description: "inversion",
+  },
+  {
+    label: "Curve Addition",
+    value: "add_ec",
+    description: "elliptic curve G1 addition",
   },
 ];
 
@@ -198,7 +198,7 @@ function App() {
               name="quantity"
               rules={[{ required: true, message: "Missing quantity" }]}
             >
-              <Input placeholder="2^64 + 100" />
+              <Input placeholder="Quantity (e.g. 2^64 + 100)" />
             </Form.Item>
             <Form.Item>
               <Button
