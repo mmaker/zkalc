@@ -34,13 +34,13 @@ const libs = [
 const operations = [
   {
     label: "G1 MSM",
-    value: "msm_g1",
-    description: "Multiscalar Multiplication over GG1",
+    value: "msm_G1",
+    description: "Multiscalar Multiplication over G1",
   },
   {
     label: "G2 MSM",
-    value: "msm_g2",
-    description: "Multiscalar Multiplication over GG2",
+    value: "msm_G2",
+    description: "Multiscalar Multiplication over G2",
   },
   {
     label: "Pairing",
@@ -127,8 +127,8 @@ function App() {
   const estimatedTime = (recipe) => {
     const estimated_time = recipe
       .map((item) => {
-        var f = results_blstrs[item.op]; // XXX lib dependent
-        return f(item.quantity.evaluate());
+        let coeffs = results_blstrs[item.op];
+        return parseInt(coeffs[0])  + (item.quantity.evaluate() * parseInt(coeffs[1]));
       })
       .reduce((a, b) => a + b, 0);
     return humanTime(estimated_time);
