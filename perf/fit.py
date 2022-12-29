@@ -14,9 +14,12 @@ RESULTS_FNAME = "coefficients.json"
 def parse_benchmark_description(description):
     description = description.split("/")
 
-    if description[0] in ("msm", "pairing_product"):
+    if description[0] == "msm":
             desc = description[0] + "_" + description[1]
             return desc, description[2]
+    if description[0] == "pairing_product":
+            desc = description[0]
+            return desc, description[1]
     if description[0] in ("mul", "add", "invert", "pairing"):
             return description[0], 1
     else:

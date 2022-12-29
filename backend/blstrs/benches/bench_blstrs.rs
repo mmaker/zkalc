@@ -86,7 +86,7 @@ fn bench_pairing_product(c: &mut Criterion) {
             v_ref.push((&v[i].0, &v[i].1));
         }
 
-        group.bench_with_input(BenchmarkId::new("pairing_product", size), &d, |b, _| {
+        group.bench_with_input(BenchmarkId::from_parameter(size), &d, |b, _| {
             b.iter(|| Bls12::multi_miller_loop(&v_ref).final_exponentiation())
         });
     }
