@@ -98,7 +98,7 @@ function App() {
     const op = ingredient.op;
     const formula = parse(ingredient.quantity);
     const item = { op: op, quantity: formula };
-    setRecipe((recipe) => [...recipe, item]);
+    setRecipe((recipe) => [item, ...recipe]);
   };
 
   const humanTime = (nanoseconds) => {
@@ -234,10 +234,10 @@ function App() {
         </Row>
         <Row
           justify="center"
-          style={{ maxHeight: "600px", overflowY: "scroll" }}
         >
           <List
             dataSource={recipe}
+            style={{maxHeight: "70vh", overflowY: "scroll"}}
             renderItem={(ingredient, index) => (
               <List.Item key={index}>
                 <Col span={20}>
