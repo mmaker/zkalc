@@ -78,6 +78,7 @@ function App() {
   const [form] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("");
+  const [results, setResults] = React.useState(results_blstrs);
 
   const addIngredient = (ingredient) => {
     const op = ingredient.op;
@@ -127,7 +128,7 @@ function App() {
   const estimatedTime = (recipe) => {
     const estimated_time = recipe
       .map((item) => {
-        let coeffs = results_blstrs[item.op];
+        let coeffs = results[item.op];
         return parseInt(coeffs[0])  + (item.quantity.evaluate() * parseInt(coeffs[1]));
       })
       .reduce((a, b) => a + b, 0);
@@ -153,6 +154,18 @@ function App() {
     }
   };
 
+  const handleLibChange = (e) => {
+      resetRecipe();
+      setLib(e.target.value);
+      if (e.target.value == "arkworks") {
+          setResults(results_arkworks);
+      } else if (e.target.value == "blstrs") {
+          setResults(results_blstrs);
+      } else {
+          throw "wtf"
+      }
+  }
+
   const printAuthors = () => {
     const authors = ['George Kadianakis', 'Michele Orrù']
     authors.sort(() => Math.random() - 0.5);
@@ -177,7 +190,7 @@ function App() {
             rules={[{ required: true, message: "Missing lib" }]}
           >
             <Radio.Group
-              onChange={(e) => setLib(e.target.value)}
+              onChange={(e) => handleLibChange(e)}
               optionType="button"
               options={libs}
             />
