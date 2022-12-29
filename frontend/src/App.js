@@ -55,6 +55,11 @@ const operations = [
     description: "field addition",
   },
   {
+    label: "curve addition",
+    value: "add_ec",
+    description: "elliptic curve G1 addition",
+  },
+  {
     label: "mul",
     value: "mul",
     description: "field multiplication",
@@ -72,6 +77,7 @@ const estimates = {
   arkworks: {
     mul: (n) => 0 + n * 16,
     add_ff: (n) => 0 + n * 3,
+    add_ec: (n) => 0 + n * 1000,
     msm_g1: (n) => 1408808775 + n * 1402994428,
     msm_g2: (n) => 3966014038 + n * 3933109721,
     invert: (n) => 0 + n * 1830,
@@ -81,6 +87,7 @@ const estimates = {
   blstrs: {
     mul: (n) => 0 + n * 13,
     add_ff: (n) => 0 + n * 3,
+    add_ec: (n) => 0 + n * 1000,
     msm_g1: (n) => 888851704 + n * 881313172,
     msm_g2: (n) => 2284591191 + n * 2258823730,
     invert: (n) => 0 + n * 1443,
