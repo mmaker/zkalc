@@ -41,27 +41,27 @@ const operations = [
   },
   {
     label: "pairing",
-    value: "pair",
+    value: "pairing",
     description: "pairing",
   },
   {
-    label: "pairing prod",
-    value: "pairp",
+    label: "pairing product",
+    value: "pairing_product",
     description: "pairing product",
   },
   {
-    label: "add",
-    value: "add",
-    description: "addition",
+    label: "field addition",
+    value: "add_ff",
+    description: "field addition",
   },
   {
     label: "mul",
     value: "mul",
-    description: "multiplication",
+    description: "field multiplication",
   },
   {
     label: "inv",
-    value: "inv",
+    value: "invert",
     description: "inversion",
   },
 ];
@@ -71,21 +71,21 @@ const operations = [
 const estimates = {
   arkworks: {
     mul: (n) => 0 + n * 16,
-    add: (n) => 0 + n * 3,
+    add_ff: (n) => 0 + n * 3,
     msm_g1: (n) => 1408808775 + n * 1402994428,
     msm_g2: (n) => 3966014038 + n * 3933109721,
-    inv: (n) => 0 + n * 1830,
-    pair: (n) => 0 + n * 934521,
-    pairp: (n) => 68111100 + n * 64874073,
+    invert: (n) => 0 + n * 1830,
+    pairing: (n) => 0 + n * 934521,
+    pairing_product: (n) => 68111100 + n * 64874073,
   },
   blstrs: {
     mul: (n) => 0 + n * 13,
-    add: (n) => 0 + n * 3,
+    add_ff: (n) => 0 + n * 3,
     msm_g1: (n) => 888851704 + n * 881313172,
     msm_g2: (n) => 2284591191 + n * 2258823730,
-    inv: (n) => 0 + n * 1443,
-    pair: (n) => 0 + n * 499450,
-    pairp: (n) => 79676490 + n * 76863498,
+    invert: (n) => 0 + n * 1443,
+    pairing: (n) => 0 + n * 499450,
+    pairing_product: (n) => 79676490 + n * 76863498,
   },
 };
 
