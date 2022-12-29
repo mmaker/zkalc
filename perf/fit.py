@@ -90,7 +90,8 @@ def fit_poly_to_data(data):
 #    plot_error(data, polynomial)
 
     # Return the fitted func
-    return polynomial
+    # We call convert() now because fit() returns a result over a scaled basis poly
+    return polynomial.convert()
 
 def extract_measurements(bench_output):
     # Nested dictionary with benchmark results in the following format: { operation : {msm_size : time_in_microseconds }}
