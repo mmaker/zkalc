@@ -15,9 +15,8 @@ import {
   Space,
   Input,
   List,
-  ConfigProvider,
 } from "antd";
-import { InlineMath, BlockMath } from "react-katex";
+import { InlineMath } from "react-katex";
 import { parse } from "mathjs";
 
 import results_blstrs   from "./results_blstrs.json";
@@ -93,10 +92,7 @@ function App() {
     let value = Number(nanoseconds);
     let unitIndex = 0;
     let remainder = 0;
-    while (
-      value >= conversions[unitIndex] &&
-      unitIndex < conversions.length
-    ) {
+    while (value >= conversions[unitIndex] && unitIndex < conversions.length) {
       remainder = value % conversions[unitIndex];
       value = Math.floor(value / conversions[unitIndex]);
       unitIndex += 1;
@@ -210,28 +206,29 @@ function App() {
           </Space>
         </Form>
         <Row justify="center">
-          <Col align="center" span={8} offset={10}>
+          <Col align="center" span={8} offset={6}>
             <Typography.Paragraph align="right">
               <Text strong>Total time:&nbsp;&nbsp;</Text>
               <Text italic>{estimatedTime(recipe)}</Text>
             </Typography.Paragraph>
           </Col>
         </Row>
-        <Row
-          justify="center"
-        >
+        <Row justify="center">
           <List
             dataSource={recipe}
-            style={{maxHeight: "70vh", overflowY: "scroll"}}
+            style={{ maxHeight: "70vh", width: "90vh", overflowY: "scroll" }}
             renderItem={(ingredient, index) => (
               <List.Item key={index}>
-                <Col span={20}>
+                <Col span={10}>
                   <InlineMath>{renderFormula(ingredient.quantity)}</InlineMath>
                   &nbsp;&nbsp;&nbsp;&nbsp;
-                  {ingredient.op}
+                  {
+                    operations.filter((x) => x.value === ingredient.op)[0]
+                      .description
+                  }
                 </Col>
-                <Col span={20}>{estimatedTime([ingredient])}</Col>
-                <Col span={10}>
+                <Col span={10} align="right">{estimatedTime([ingredient])}</Col>
+                <Col span={1}>
                   <MinusCircleOutlined
                     onClick={() => removeIngredient(index)}
                   />
