@@ -20,6 +20,9 @@ import {
 import { InlineMath, BlockMath } from "react-katex";
 import { parse } from "mathjs";
 
+import results_blstrs   from "./results_blstrs.json";
+import results_arkworks from "./results_arkworks.json";
+
 const { Title, Text } = Typography;
 
 const libs = [
@@ -70,31 +73,6 @@ const operations = [
     description: "inversion",
   },
 ];
-// put this into another file, then do:
-// import estimates from "./estimates.json";
-
-const estimates = {
-  arkworks: {
-    mul: (n) => 0 + n * 16,
-    add_ff: (n) => 0 + n * 3,
-    add_ec: (n) => 0 + n * 1000,
-    msm_g1: (n) => 1408808775 + n * 1402994428,
-    msm_g2: (n) => 3966014038 + n * 3933109721,
-    invert: (n) => 0 + n * 1830,
-    pairing: (n) => 0 + n * 934521,
-    pairing_product: (n) => 68111100 + n * 64874073,
-  },
-  blstrs: {
-    mul: (n) => 0 + n * 13,
-    add_ff: (n) => 0 + n * 3,
-    add_ec: (n) => 0 + n * 1000,
-    msm_g1: (n) => 888851704 + n * 881313172,
-    msm_g2: (n) => 2284591191 + n * 2258823730,
-    invert: (n) => 0 + n * 1443,
-    pairing: (n) => 0 + n * 499450,
-    pairing_product: (n) => 79676490 + n * 76863498,
-  },
-};
 
 function App() {
   const [form] = Form.useForm();
@@ -152,7 +130,7 @@ function App() {
   const estimatedTime = (recipe) => {
     const estimated_time = recipe
       .map((item) => {
-        var f = estimates[lib][item.op];
+        var f = results_blstrs[item.op]; // XXX lib dependent
         return f(item.quantity.evaluate());
       })
       .reduce((a, b) => a + b, 0);

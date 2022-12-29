@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 class NoNeedForFitting(Exception): pass
 
-RESULTS_FNAME = "coefficients.json"
+RESULTS_FNAME = "results.json"
 
 def parse_benchmark_description(description):
     description = description.split("/")
@@ -123,7 +123,7 @@ def extract_measurements(bench_output):
 
     # Write results to json file
     with open(RESULTS_FNAME, "w") as f:
-        # Encode the coefficients as a JSON object
+        # Encode the functions as a JSON object
         json_data = json.dumps(results)
         # Write the JSON object to the file
         f.write(json_data)
@@ -132,7 +132,7 @@ def extract_measurements(bench_output):
 
 def main():
     if len(sys.argv) < 1:
-        print("fit.py estimates.json")
+        print("[!] fit.py estimates.json")
         sys.exit(1)
 
     bench_output = []
