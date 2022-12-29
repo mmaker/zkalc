@@ -19,6 +19,7 @@ import {
 import { InlineMath } from "react-katex";
 import { parse } from "mathjs";
 
+// Import our benchmark results
 import results_blstrs   from "./results_blstrs.json";
 import results_arkworks from "./results_arkworks.json";
 
