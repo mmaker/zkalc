@@ -94,7 +94,7 @@ fn bench_pairing_product(c: &mut Criterion) {
             .map(|_| bls12_381::G2Projective::rand(&mut rng).into_affine())
             .collect::<Vec<_>>();
 
-        group.bench_with_input(BenchmarkId::new("pairing_product", size), &d, |b, _| {
+        group.bench_with_input(BenchmarkId::from_parameter(size), &d, |b, _| {
             b.iter(|| bls12_381::Bls12_381::multi_pairing(&g1s, &g2s))
         });
     }
