@@ -6,6 +6,7 @@ use group::ff::Field;
 use group::{Group, Curve};
 use pairing_lib::{PairingCurveAffine, MultiMillerLoop, MillerLoopResult};
 use blstrs::{Bls12, G2Prepared};
+use std::ops::Add;
 
 fn bench_add_ff(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
@@ -22,6 +23,15 @@ fn bench_mul(c: &mut Criterion) {
         let lhs = Scalar::random(&mut rng);
         let rhs = Scalar::random(&mut rng);
         b.iter(|| black_box(lhs) * black_box(rhs))
+    });
+}
+
+fn bench_add_ec(c: &mut Criterion) {
+    let mut rng = rand::thread_rng();
+    c.bench_function("add_ec", |r| {
+        let a = G1Projective::random(&mut rng);
+        let b = G1Projective::random(&mut rng);
+        r.iter(|| a.add(b))
     });
 }
 
@@ -95,7 +105,7 @@ fn bench_pairing_product(c: &mut Criterion) {
 
 criterion_group! {name = blstrs_benchmarks;
                   config = Criterion::default().sample_size(10);
-                  targets = bench_mul, bench_add_ff, bench_msm, bench_invert, bench_pairing, bench_pairing_product
+                  targets = bench_mul, bench_add_ff, bench_add_ec, bench_msm, bench_invert, bench_pairing, bench_pairing_product
 }
 
 criterion_main!(blstrs_benchmarks);

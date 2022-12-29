@@ -8,6 +8,7 @@ use ark_ec::pairing::Pairing;
 use ark_std::test_rng;
 use ark_std::UniformRand;
 use criterion::{BenchmarkId, Criterion, black_box};
+use std::ops::Add;
 
 use ark_test_curves::bls12_381;
 
@@ -26,6 +27,16 @@ fn bench_mul(c: &mut Criterion) {
         let lhs = bls12_381::Fr::rand(&mut rng);
         let rhs = bls12_381::Fr::rand(&mut rng);
         b.iter(|| black_box(lhs) * black_box(rhs))
+    });
+}
+
+
+fn bench_add_ec(c: &mut Criterion) {
+    let mut rng = rand::thread_rng();
+    c.bench_function("add_ec", |r| {
+        let a = bls12_381::G1Projective::rand(&mut rng);
+        let b = bls12_381::G1Projective::rand(&mut rng);
+        r.iter(|| a.add(b))
     });
 }
 
@@ -103,7 +114,7 @@ fn bench_pairing_product(c: &mut Criterion) {
 criterion_group! {
     name=arkworks_benchmarks;
     config=Criterion::default();
-    targets = bench_mul, bench_add_ff, bench_sum_of_products, bench_msm, bench_invert, bench_pairing, bench_pairing_product
+    targets = bench_mul, bench_add_ff, bench_add_ec, bench_sum_of_products, bench_msm, bench_invert, bench_pairing, bench_pairing_product
 }
 
 criterion_main! {arkworks_benchmarks}
