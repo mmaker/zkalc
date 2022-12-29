@@ -11,9 +11,9 @@ use criterion::{BenchmarkId, Criterion, black_box};
 
 use ark_test_curves::bls12_381;
 
-fn bench_add(c: &mut Criterion) {
+fn bench_add_ff(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
-    c.bench_function("add", |b| {
+    c.bench_function("add_ff", |b| {
         let lhs = bls12_381::Fr::rand(&mut rng);
         let rhs = bls12_381::Fr::rand(&mut rng);
         b.iter(|| black_box(lhs) + black_box(rhs))
@@ -103,7 +103,7 @@ fn bench_pairing_product(c: &mut Criterion) {
 criterion_group! {
     name=arkworks_benchmarks;
     config=Criterion::default();
-    targets = bench_mul, bench_add, bench_sum_of_products, bench_msm, bench_invert, bench_pairing, bench_pairing_product
+    targets = bench_mul, bench_add_ff, bench_sum_of_products, bench_msm, bench_invert, bench_pairing, bench_pairing_product
 }
 
 criterion_main! {arkworks_benchmarks}

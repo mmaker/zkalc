@@ -7,9 +7,9 @@ use group::{Group, Curve};
 use pairing_lib::{PairingCurveAffine, MultiMillerLoop, MillerLoopResult};
 use blstrs::{Bls12, G2Prepared};
 
-fn bench_add(c: &mut Criterion) {
+fn bench_add_ff(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
-    c.bench_function("add", |b| {
+    c.bench_function("add_ff", |b| {
         let lhs = Scalar::random(&mut rng);
         let rhs = Scalar::random(&mut rng);
         b.iter(|| black_box(lhs) + black_box(rhs))
@@ -95,7 +95,7 @@ fn bench_pairing_product(c: &mut Criterion) {
 
 criterion_group! {name = blstrs_benchmarks;
                   config = Criterion::default().sample_size(10);
-                  targets = bench_mul, bench_add, bench_msm, bench_invert, bench_pairing, bench_pairing_product
+                  targets = bench_mul, bench_add_ff, bench_msm, bench_invert, bench_pairing, bench_pairing_product
 }
 
 criterion_main!(blstrs_benchmarks);
