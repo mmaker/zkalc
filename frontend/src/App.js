@@ -152,6 +152,12 @@ function App() {
     }
   };
 
+  const printAuthors = () => {
+    const authors = ['George Kadianakis', 'Michele Orrù']
+    authors.sort(() => Math.random() - 0.5);
+    return `Developed by ${authors[0]} and ${authors[1]}.`;
+  }
+
   return (
     <Layout style={{ height: "100vh" }}>
       <Layout.Content>
@@ -239,7 +245,7 @@ function App() {
         </Row>
       </Layout.Content>
       <Layout.Footer align="center">
-        Developed by Michele Orrù and George Kadianakis.
+        {printAuthors()}
       </Layout.Footer>
     </Layout>
   );
