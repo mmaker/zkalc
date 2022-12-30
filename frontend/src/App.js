@@ -155,7 +155,8 @@ function App() {
   };
 
   const handleLibChange = (e) => {
-      resetRecipe();
+      // UX choice: make it easy to see differences between implementations
+      // resetRecipe();
       setLib(e.target.value);
       if (e.target.value == "arkworks") {
           setResults(results_arkworks);
