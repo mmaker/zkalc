@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 
 class NoNeedForFitting(Exception): pass
 
-RESULTS_FNAME = "coefficients.json"
+RESULTS_FNAME = "results.json"
 
 def parse_benchmark_description(description):
     description = description.split("/")
@@ -90,12 +90,13 @@ def fit_poly_to_data(data):
 #    plot_error(data, polynomial)
 
     # Return the fitted func
-    return polynomial
+    # We call convert() now because fit() returns a result over a scaled basis poly
+    return polynomial.convert()
 
 def extract_measurements(bench_output):
     # Nested dictionary with benchmark results in the following format: { operation : {msm_size : time_in_microseconds }}
     measurements = defaultdict(dict)
-    # Dictionary of results in format: { operation : function_desc_str }
+    # Dictionary of results in format: { operation : coefficients }
     results = {}
 
     # Parse benchmarks and make them ready for fitting
@@ -118,12 +119,12 @@ def extract_measurements(bench_output):
         poly = fit_poly_to_data(measurements[operation])
         coeffs = ["%d" % (coeff) for coeff in poly]
         print("%s [%s samples] [2^28 example: %0.2f s]:\n\t%s\n" % (operation, len(measurements[operation]), poly(2**28)/1e9, coeffs))
-        results[operation] = f"(n) => {coeffs[0]} + n * {coeffs[1]}"
+        results[operation] = coeffs
 
 
     # Write results to json file
     with open(RESULTS_FNAME, "w") as f:
-        # Encode the coefficients as a JSON object
+        # Encode the functions as a JSON object
         json_data = json.dumps(results)
         # Write the JSON object to the file
         f.write(json_data)
@@ -132,7 +133,7 @@ def extract_measurements(bench_output):
 
 def main():
     if len(sys.argv) < 1:
-        print("fit.py estimates.json")
+        print("[!] fit.py estimates.json")
         sys.exit(1)
 
     bench_output = []

@@ -19,6 +19,10 @@ import {
 import { InlineMath } from "react-katex";
 import { parse } from "mathjs";
 
+// Import our benchmark results
+import results_blstrs   from "./results_blstrs.json";
+import results_arkworks from "./results_arkworks.json";
+
 const { Title, Text } = Typography;
 
 const libs = [
@@ -29,76 +33,52 @@ const libs = [
 
 const operations = [
   {
-    label: "msm g1",
-    value: "msm_g1",
-    description: "Multiscalar Multiplication over GG1",
+    label: "G1 MSM",
+    value: "msm_G1",
+    description: "Multiscalar Multiplication over G1",
   },
   {
-    label: "msm g2",
-    value: "msm_g2",
-    description: "Multiscalar Multiplication over GG2",
+    label: "G2 MSM",
+    value: "msm_G2",
+    description: "Multiscalar Multiplication over G2",
   },
   {
-    label: "pairing",
+    label: "Pairing",
     value: "pairing",
     description: "pairing",
   },
   {
-    label: "pairing product",
+    label: "Pairing product",
     value: "pairing_product",
     description: "pairing product",
   },
   {
-    label: "field addition",
+    label: "Field Addition",
     value: "add_ff",
     description: "field addition",
   },
   {
-    label: "curve addition",
-    value: "add_ec",
-    description: "elliptic curve G1 addition",
-  },
-  {
-    label: "mul",
+    label: "Field Multiplication",
     value: "mul",
     description: "field multiplication",
   },
   {
-    label: "inv",
+    label: "Field Inversion",
     value: "invert",
     description: "inversion",
   },
+  {
+    label: "Curve Addition",
+    value: "add_ec",
+    description: "elliptic curve G1 addition",
+  },
 ];
-// put this into another file, then do:
-// import estimates from "./estimates.json";
-
-const estimates = {
-  arkworks: {
-    mul: (n) => 0 + n * 16,
-    add_ff: (n) => 0 + n * 3,
-    add_ec: (n) => 0 + n * 1000,
-    msm_g1: (n) => 1408808775 + n * 1402994428,
-    msm_g2: (n) => 3966014038 + n * 3933109721,
-    invert: (n) => 0 + n * 1830,
-    pairing: (n) => 0 + n * 934521,
-    pairing_product: (n) => 68111100 + n * 64874073,
-  },
-  blstrs: {
-    mul: (n) => 0 + n * 13,
-    add_ff: (n) => 0 + n * 3,
-    add_ec: (n) => 0 + n * 1000,
-    msm_g1: (n) => 888851704 + n * 881313172,
-    msm_g2: (n) => 2284591191 + n * 2258823730,
-    invert: (n) => 0 + n * 1443,
-    pairing: (n) => 0 + n * 499450,
-    pairing_product: (n) => 79676490 + n * 76863498,
-  },
-};
 
 function App() {
   const [form] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("");
+  const [results, setResults] = React.useState(results_blstrs);
 
   const addIngredient = (ingredient) => {
     const op = ingredient.op;
@@ -148,8 +128,8 @@ function App() {
   const estimatedTime = (recipe) => {
     const estimated_time = recipe
       .map((item) => {
-        var f = estimates[lib][item.op];
-        return f(item.quantity.evaluate());
+        let coeffs = results[item.op];
+        return parseInt(coeffs[0])  + (item.quantity.evaluate() * parseInt(coeffs[1]));
       })
       .reduce((a, b) => a + b, 0);
     return humanTime(estimated_time);
@@ -174,6 +154,24 @@ function App() {
     }
   };
 
+  const handleLibChange = (e) => {
+      resetRecipe();
+      setLib(e.target.value);
+      if (e.target.value == "arkworks") {
+          setResults(results_arkworks);
+      } else if (e.target.value == "blstrs") {
+          setResults(results_blstrs);
+      } else {
+          throw "wtf"
+      }
+  }
+
+  const printAuthors = () => {
+    const authors = ['George Kadianakis', 'Michele Orrù']
+    authors.sort(() => Math.random() - 0.5);
+    return `Developed by ${authors[0]} and ${authors[1]}.`;
+  }
+
   return (
     <Layout style={{ height: "100vh" }}>
       <Layout.Content>
@@ -192,7 +190,7 @@ function App() {
             rules={[{ required: true, message: "Missing lib" }]}
           >
             <Radio.Group
-              onChange={(e) => setLib(e.target.value)}
+              onChange={(e) => handleLibChange(e)}
               optionType="button"
               options={libs}
             />
@@ -214,7 +212,7 @@ function App() {
               name="quantity"
               rules={[{ required: true, message: "Missing quantity" }]}
             >
-              <Input placeholder="2^64 + 100" />
+              <Input placeholder="Quantity (e.g. 2^64 + 100)" />
             </Form.Item>
             <Form.Item>
               <Button
@@ -261,7 +259,7 @@ function App() {
         </Row>
       </Layout.Content>
       <Layout.Footer align="center">
-        Developed by Michele Orrù and George Kadianakis.
+        {printAuthors()}
       </Layout.Footer>
     </Layout>
   );
