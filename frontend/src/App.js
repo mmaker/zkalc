@@ -20,8 +20,13 @@ import { InlineMath } from "react-katex";
 import { parse } from "mathjs";
 
 // Import our benchmark results
-import results_blstrs   from "./results_blstrs.json";
-import results_arkworks from "./results_arkworks.json";
+import estimates_blstrs   from "./results_blstrs.json";
+import estimates_arkworks from "./results_arkworks.json";
+
+const estimates = {
+  "blstrs": estimates_blstrs,
+  "arkworks": estimates_arkworks,
+}
 
 const { Title, Text } = Typography;
 
@@ -78,7 +83,6 @@ function App() {
   const [form] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("");
-  const [results, setResults] = React.useState(results_blstrs);
 
   const addIngredient = (ingredient) => {
     const op = ingredient.op;
@@ -128,7 +132,7 @@ function App() {
   const estimatedTime = (recipe) => {
     const estimated_time = recipe
       .map((item) => {
-        let coeffs = results[item.op];
+        let coeffs = estimates[lib][item.op];
         return parseInt(coeffs[0])  + (item.quantity.evaluate() * parseInt(coeffs[1]));
       })
       .reduce((a, b) => a + b, 0);
@@ -157,13 +161,11 @@ function App() {
   const handleLibChange = (e) => {
       // UX choice: make it easy to see differences between implementations
       // resetRecipe();
-      setLib(e.target.value);
-      if (e.target.value == "arkworks") {
-          setResults(results_arkworks);
-      } else if (e.target.value == "blstrs") {
-          setResults(results_blstrs);
+      const lib = e.target.value;
+      if (lib in estimates) {
+        setLib(e.target.value);
       } else {
-          throw "wtf"
+        console.error("library not found in estimates")
       }
   }
 
