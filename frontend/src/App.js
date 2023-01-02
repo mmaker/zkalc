@@ -84,6 +84,7 @@ function App() {
   const [form] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("");
+  const [humanTimeFormat, setHumanTimeFormat] = React.useState(true)
 
   const addIngredient = (ingredient) => {
     const op = ingredient.op;
@@ -113,6 +114,29 @@ function App() {
       return `${value.toFixed(1)} ${units[unitIndex]}`;
     }
   };
+
+  const siTime = (num) => {
+    if (num !== 0) {
+    const exponent = Math.floor(Math.log10(num));
+    const float = num / Math.pow(10, exponent);
+    const decimals = Number(float.toFixed(3));
+
+    // time is expressed in seconds, change this to seconds
+    return `${decimals}e${exponent - 9} s`;
+    } else {
+      return "0s"
+    }
+  };
+
+  const formatTime = (num) => {
+    if (humanTimeFormat) {
+      return humanTime(num);
+    } else {
+      return siTime(num);
+    }
+
+  };
+
   const formatNumber = (num) => {
     if (num >= 1e10) {
       const float = num / Math.pow(10, Math.floor(Math.log10(num)));
@@ -137,7 +161,7 @@ function App() {
         return parseInt(coeffs[0])  + (item.quantity.evaluate() * parseInt(coeffs[1]));
       })
       .reduce((a, b) => a + b, 0);
-    return humanTime(estimated_time);
+    return formatTime(estimated_time);
   };
 
   const resetRecipe = () => {
@@ -234,7 +258,7 @@ function App() {
           <Col align="center" span={8} offset={6}>
             <Typography.Paragraph align="right">
               <Text strong>Total time:&nbsp;&nbsp;</Text>
-              <Text italic>{estimatedTime(recipe)}</Text>
+              <Text italic onClick={() => setHumanTimeFormat(!humanTimeFormat)}>{estimatedTime(recipe)}</Text>
             </Typography.Paragraph>
           </Col>
         </Row>
