@@ -4,6 +4,7 @@ import "katex/dist/katex.min.css";
 import React from "react";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import {
+  Avatar,
   Button,
   Layout,
   Radio,
@@ -178,7 +179,8 @@ function App() {
   return (
     <Layout style={{ height: "100vh" }}>
       <Layout.Content>
-        <Title align="center" italic fontSize={100} letterSpacing={-3}>
+        <Title align="center" italic fontSize={100} letterSpacing={-3} onClick={() => {resetRecipe(); form.resetFields();}}>
+        <img src="public/zkalc.png" />
           zkalc
         </Title>
         <Form
