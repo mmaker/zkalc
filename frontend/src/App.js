@@ -21,13 +21,13 @@ import { InlineMath } from "react-katex";
 import { parse } from "mathjs";
 
 // Import our benchmark results
-import estimates_blstrs   from "./results_blstrs.json";
+import estimates_blstrs from "./results_blstrs.json";
 import estimates_arkworks from "./results_arkworks.json";
 
 const estimates = {
-  "blstrs": estimates_blstrs,
-  "arkworks": estimates_arkworks,
-}
+  blstrs: estimates_blstrs,
+  arkworks: estimates_arkworks,
+};
 
 const { Title, Text } = Typography;
 
@@ -84,7 +84,7 @@ function App() {
   const [form] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("");
-  const [humanTimeFormat, setHumanTimeFormat] = React.useState(true)
+  const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
 
   const addIngredient = (ingredient) => {
     const op = ingredient.op;
@@ -117,14 +117,14 @@ function App() {
 
   const siTime = (num) => {
     if (num !== 0) {
-    const exponent = Math.floor(Math.log10(num));
-    const float = num / Math.pow(10, exponent);
-    const decimals = Number(float.toFixed(3));
+      const exponent = Math.floor(Math.log10(num));
+      const float = num / Math.pow(10, exponent);
+      const decimals = Number(float.toFixed(3));
 
-    // time is expressed in seconds, change this to seconds
-    return `${decimals}e${exponent - 9} s`;
+      // time is expressed in seconds, change this to seconds
+      return `${decimals}e${exponent - 9} s`;
     } else {
-      return "0s"
+      return "0s";
     }
   };
 
@@ -134,7 +134,6 @@ function App() {
     } else {
       return siTime(num);
     }
-
   };
 
   const formatNumber = (num) => {
@@ -158,7 +157,9 @@ function App() {
     const estimated_time = recipe
       .map((item) => {
         let coeffs = estimates[lib][item.op];
-        return parseInt(coeffs[0])  + (item.quantity.evaluate() * parseInt(coeffs[1]));
+        return (
+          parseInt(coeffs[0]) + item.quantity.evaluate() * parseInt(coeffs[1])
+        );
       })
       .reduce((a, b) => a + b, 0);
     return formatTime(estimated_time);
@@ -184,27 +185,36 @@ function App() {
   };
 
   const handleLibChange = (e) => {
-      // UX choice: make it easy to see differences between implementations
-      // resetRecipe();
-      const lib = e.target.value;
-      if (lib in estimates) {
-        setLib(e.target.value);
-      } else {
-        console.error("library not found in estimates")
-      }
-  }
+    // UX choice: make it easy to see differences between implementations
+    // resetRecipe();
+    const lib = e.target.value;
+    if (lib in estimates) {
+      setLib(e.target.value);
+    } else {
+      console.error("library not found in estimates");
+    }
+  };
 
   const printAuthors = () => {
-    const authors = ['George Kadianakis', 'Michele Orrù']
+    const authors = ["George Kadianakis", "Michele Orrù"];
     authors.sort(() => Math.random() - 0.5);
     return `Developed by ${authors[0]} and ${authors[1]}.`;
-  }
+  };
 
   return (
     <Layout style={{ height: "100vh" }}>
       <Layout.Content>
-        <Title align="center" italic fontSize={100} letterSpacing={-3} onClick={() => {resetRecipe(); form.resetFields();}}>
-        <img src="public/zkalc.png" />
+        <Title
+          align="center"
+          italic
+          fontSize={100}
+          letterSpacing={-3}
+          onClick={() => {
+            resetRecipe();
+            form.resetFields();
+          }}
+        >
+          <img src="public/zkalc.png" />
           zkalc
         </Title>
         <Form
@@ -258,7 +268,9 @@ function App() {
           <Col align="center" span={8} offset={6}>
             <Typography.Paragraph align="right">
               <Text strong>Total time:&nbsp;&nbsp;</Text>
-              <Text italic onClick={() => setHumanTimeFormat(!humanTimeFormat)}>{estimatedTime(recipe)}</Text>
+              <Text italic onClick={() => setHumanTimeFormat(!humanTimeFormat)}>
+                {estimatedTime(recipe)}
+              </Text>
             </Typography.Paragraph>
           </Col>
         </Row>
@@ -276,7 +288,9 @@ function App() {
                       .description
                   }
                 </Col>
-                <Col span={10} align="right">{estimatedTime([ingredient])}</Col>
+                <Col span={10} align="right">
+                  {estimatedTime([ingredient])}
+                </Col>
                 <Col span={1}>
                   <MinusCircleOutlined
                     onClick={() => removeIngredient(index)}
@@ -287,9 +301,7 @@ function App() {
           />
         </Row>
       </Layout.Content>
-      <Layout.Footer align="center">
-        {printAuthors()}
-      </Layout.Footer>
+      <Layout.Footer align="center">{printAuthors()}</Layout.Footer>
     </Layout>
   );
 }
