@@ -11,35 +11,43 @@ from scipy.interpolate import lagrange
 class NoNeedForFitting(Exception): pass
 
 RESULTS_FNAME = "results.json"
+
 class PolyInterpolation:
+    """Perform a polynomial interpolation at a dataset of operations of `sizes` that take time `times`."""
     def __init__(self, sizes, times):
         self.sizes = sizes
         self.times = times
+        # Polynomials are stored in poly1d form (so for example [2,3] is `2*x + 3`)
         self.polynomials = []
         self.ranges = []
+
+        # Do an interpolation for each pair of points
         for i in range(len(sizes) - 1):
             x = [sizes[i], sizes[i+1]]
             y = [times[i], times[i+1]]
-            # Returns a polynomial in poly1d form so for example [2,3] is `2*x + 3`
             polynomial = lagrange(x, y)
             self.polynomials.append(polynomial)
             self.ranges.append((x[0], x[1]))
 
     def predict(self, size):
-        # If we are asked to predict out of range, extrapolate using the closest polynomial
+        """Use the interpolation results to predict the time at an arbitrary `size`"""
+
+        # We are asked to predict out of range: extrapolate using the closest polynomial
         if size < self.ranges[0][0]:
             return self.polynomials[0](size)
         elif size > self.ranges[-1][1]:
             # XXX here we should be fitting to a n/logn function instead of using the interpolated poly 
             return self.polynomials[-1](size)
 
+        # Find the right polynomial
         for i, (start, end) in enumerate(self.ranges):
             if start <= size <= end:
                 return self.polynomials[i](size)
 
-        raise ValueError("Invalid size ")
+        raise ValueError("Invalid size")
 
     def plot(self):
+        """Plot the interpolated functions against the actual data"""
         x = np.linspace(min(self.sizes), 2**21, 100000)
         y = [self.predict(z) for z in x]
         plt.semilogx(self.sizes, self.times, 'o', base=2)
