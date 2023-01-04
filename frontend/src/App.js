@@ -88,10 +88,11 @@ function App() {
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
 
   const addIngredient = (ingredient) => {
-    const op = ingredient.op;
-    const formula = parse(ingredient.quantity);
-    const item = { op: op, quantity: formula };
-    setRecipe((recipe) => [item, ...recipe]);
+      // by now we assume the formula can be parsed and has been already validated.
+      const op = ingredient.op;
+      const formula = parse(ingredient.quantity);
+      const item = { op: op, quantity: formula };
+      setRecipe((recipe) => [item, ...recipe]);
   };
 
   const humanTime = (nanoseconds) => {
@@ -157,9 +158,16 @@ function App() {
   const estimatedTime = (recipe) => {
     const estimated_time = recipe
       .map((item) => {
-        var f = new Function(estimates[lib][item.op].arguments, estimates[lib][item.op].body);
-        // XXX bad evaluate
-        return f(item.quantity.evaluate());
+        if (item.op in estimates[lib]) {
+          var f = new Function(
+            estimates[lib][item.op].arguments,
+            estimates[lib][item.op].body
+          );
+          // XXX bad evaluate
+          return f(item.quantity.evaluate());
+        } else {
+          return 0;
+        }
       })
       .reduce((a, b) => a + b, 0);
     return formatTime(estimated_time);
@@ -199,6 +207,14 @@ function App() {
     const authors = ["George Kadianakis", "Michele Orrù"];
     authors.sort(() => Math.random() - 0.5);
     return `Developed by ${authors[0]} and ${authors[1]}.`;
+  };
+
+  const validateQuantity = async (rule, value) => {
+    if (value.trim() === '') {
+      throw new Error('Missing quantity');
+    } else {
+      parse(value).evaluate()
+    }
   };
 
   return (
@@ -248,9 +264,9 @@ function App() {
             </Form.Item>
             <Form.Item
               name="quantity"
-              rules={[{ required: true, message: "Missing quantity" }]}
+              rules={[{ validator: validateQuantity }]}
             >
-              <Input placeholder="Quantity (e.g. 2^64 + 100)" />
+              <Input placeholder="Quantity (e.g. 2^8+1)" />
             </Form.Item>
             <Form.Item>
               <Button
