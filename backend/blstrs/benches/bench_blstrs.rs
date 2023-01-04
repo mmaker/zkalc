@@ -39,7 +39,7 @@ fn bench_msm(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
 
     let mut powers_of_two = Vec::<usize>::new();
-    for i in 4..22 {
+    for i in 0..22 {
         powers_of_two.push(2_u32.pow(i).try_into().unwrap());
     }
 
@@ -104,7 +104,7 @@ fn bench_pairing_product(c: &mut Criterion) {
 
 
 criterion_group! {name = blstrs_benchmarks;
-                  config = Criterion::default().sample_size(10);
+                  config = Criterion::default();
                   targets = bench_mul, bench_add_ff, bench_add_ec, bench_msm, bench_invert, bench_pairing, bench_pairing_product
 }
 

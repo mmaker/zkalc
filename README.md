@@ -1,18 +1,18 @@
 # zkalc is a cryptographic calculator!
 
-zkalc helps cryptographers calculate how much time cryptographic operations take in real computers.
+zkalc helps you calculate how much time cryptographic operations will take in a real computer
 
 ## Why?
 
-We noticed that cryptographers tend to be reasonably good at cryptography but they can also be quite bad at estimating how long certain operations will take in actual computers. That creates a gap between cryptography and practice because cryptography engineers have a hard time estimating whether a construction is practical or not.
+We noticed that cryptographers tend to be good at cryptography but they can be quite bad at estimating the time it takes a computer to run their protocol. That creates a gap between cryptography and practice because protocol designers have a hard time estimating whether a construction is practical or not.
 
-The permise of zkalc is that a simple calculator UX might motivate cryptographers to add more real life context into their papers!
+The premise of zkalc is that a simple calculator UX might motivate cryptographers to add more real life into their papers!
 
 ## How?
 
 zkalc does not aim to be accurate; it aims to be simple to use while providing adequate results.
 
-Our scientific methodology is simple: For each operation present in zkalc, we have written benchmarks in the directory
+Our *scientific methodology* is simple: For each operation present in zkalc, we have written benchmarks in the directory
 `backend`. Benchmarks are run and then we fit the results into a simple function using linear regression. When a
 cryptographer uses zkalc, we compute the fitted function to the desired input and present the result.
 
