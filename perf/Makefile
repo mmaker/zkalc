@@ -3,11 +3,9 @@ OUTDIR=../frontend/src/
 all: blstrs arkworks
 
 blstrs:
-	python fit.py blstrs/estimates.json
-	mv results.json $(OUTDIR)/results_blstrs.json
+	./fit.py < blstrs/estimates.json > $(OUTDIR)/results_blstrs.json 2> /dev/null
 
 arkworks:
-	python fit.py arkworks/estimates.json
-	mv results.json $(OUTDIR)/results_arkworks.json
+	./fit.py <  arkworks/estimates.json > $(OUTDIR)/results_arkworks.json 2> /dev/null
 
 .PHONY: blstrs arkworks

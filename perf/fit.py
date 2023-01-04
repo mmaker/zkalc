@@ -1,3 +1,8 @@
+#!/usr/bin/env python3
+"""
+Usage:
+    fit.py < coefficients.json > results.json
+"""
 import sys
 import math
 import json
@@ -10,7 +15,6 @@ from scipy.interpolate import lagrange
 
 class NoNeedForFitting(Exception): pass
 
-RESULTS_FNAME = "results.json"
 class PolyInterpolation:
     def __init__(self, sizes, times):
         self.sizes = sizes
@@ -23,14 +27,14 @@ class PolyInterpolation:
             # Returns a polynomial in poly1d form so for example [2,3] is `2*x + 3`
             polynomial = lagrange(x, y)
             self.polynomials.append(polynomial)
-            self.ranges.append((x[0], x[1]))
+            self.ranges.append([x[0], x[1]])
 
     def predict(self, size):
         # If we are asked to predict out of range, extrapolate using the closest polynomial
         if size < self.ranges[0][0]:
             return self.polynomials[0](size)
         elif size > self.ranges[-1][1]:
-            # XXX here we should be fitting to a n/logn function instead of using the interpolated poly 
+            # XXX here we should be fitting to a n/logn function instead of using the interpolated poly
             return self.polynomials[-1](size)
 
         for i, (start, end) in enumerate(self.ranges):
@@ -48,26 +52,22 @@ class PolyInterpolation:
 
     def export_to_javascript_in_json(self, json):
         json["arguments"] = "n"
-        json["body"] = "const polynomials = ["
-        for polynomial in self.polynomials:
-            json["body"] += f"[{polynomial.coeffs[0]}, {polynomial.coeffs[1]}],"
-        json["body"] += "];\n"
-        json["body"] += "const ranges = ["
-        for start, end in self.ranges:
-            json["body"] += f"([{start}, {end}]),"
-        json["body"] += "];\n"
-        json["body"] += "for (let i = 0; i < ranges.length; i++) {\n"
-        json["body"] += "    const [start, end] = ranges[i];\n"
-        json["body"] += "    if (n >= start && n <= end) {\n"
-        json["body"] += "        return n * polynomials[i][0] + polynomials[i][1];\n"
-        json["body"] += "    }\n"
-        json["body"] += "}\n"
-        json["body"] += "if (n < ranges[0][0]) {\n"
-        json["body"] += "    return n * polynomials[0][0] + polynomials[0][1];\n"
-        json["body"] += "} else if (n > ranges[ranges.length - 1][1]) {\n"
-        json["body"] += "    return n * polynomials[polynomials.length - 1][0] + polynomials[polynomials.length - 1][1];\n"
-        json["body"] += "}\n"
-        json["body"] += "throw new Error('Size out of range');"
+        json["body"] = f'''
+        const polynomials = {str([x.coeffs.tolist() for x in self.polynomials])};
+        const ranges = {str(self.ranges)};
+        for (let i = 0; i < ranges.length; i++) {{
+            const [start, end] = ranges[i];
+            if (n >= start && n <= end) {{
+                return n * polynomials[i][0] + polynomials[i][1];
+            }}
+        }}
+        if (n < ranges[0][0]) {{
+            return n * polynomials[0][0] + polynomials[0][1];
+        }} else if (n > ranges[ranges.length - 1][1]) {{
+            return n * polynomials[polynomials.length - 1][0] + polynomials[polynomials.length - 1][1];
+        }}
+        throw new Error('Size out of range')
+        '''
 
 def parse_benchmark_description(description):
     description = description.split("/")
@@ -98,14 +98,13 @@ def add_measurement_to_json(operation, json, measurement):
     # If one mul takes x ms, n muls take x*n ms.
     if len(sizes) == 1:
         polynomial = poly.Polynomial([0,times[0]])
-        coeffs = ["%d" % (coeff) for coeff in polynomial]
-        print("%s [%s samples] [2^28 example: %0.2f s]:\n\t%s\n" % (operation, len(measurement), polynomial(2**28)/1e9, coeffs))
+        coeffs = list(map(str, polynomial))
+        estimate = polynomial(2**28)*1e-9
+        print(f"{operation} [{len(measurement)} samples] [2^28 example: {estimate:.2} s]:\n\t{coeffs}\n", file=sys.stderr)
         encode_poly_evaluation_as_json(json, coeffs)
-        return
-
-    # Otherwise, do an interpolation!
-    interpolation = PolyInterpolation(sizes, times)
-    interpolation.export_to_javascript_in_json(json)
+    else: # Otherwise, do an interpolation!
+        interpolation = PolyInterpolation(sizes, times)
+        interpolation.export_to_javascript_in_json(json)
 
 def encode_poly_evaluation_as_json(json, coeffs):
     json["arguments"] = "n"
@@ -138,25 +137,14 @@ def extract_measurements(bench_output):
         add_measurement_to_json(operation, results[operation], measurements[operation])
 
     # Write results to json file
-    with open(RESULTS_FNAME, "w") as f:
-        # Encode the functions as a JSON object
-        json_data = json.dumps(results)
-        # Write the JSON object to the file
-        f.write(json_data)
+    # Encode the functions as a JSON object
+    json_data = json.dumps(results)
+    # Write the JSON object to the file
+    sys.stdout.write(json_data)
 
-    print(f"[!] Wrote results to '{RESULTS_FNAME}'! Bye!")
+    print(f"[!] Results written! Bye!", file=sys.stderr)
 
-def main():
-    if len(sys.argv) < 1:
-        print("[!] fit.py estimates.json")
-        sys.exit(1)
-
-    bench_output = []
-    with open(sys.argv[1]) as f:
-        for line in f:
-            bench_output.append(json.loads(line))
-
-    extract_measurements(bench_output)
 
 if __name__ == '__main__':
-    main()
+    bench_output = [json.loads(line) for line in sys.stdin]
+    extract_measurements(bench_output)

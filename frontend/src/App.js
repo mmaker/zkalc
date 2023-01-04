@@ -96,7 +96,7 @@ function App() {
   };
 
   const humanTime = (nanoseconds) => {
-    const units = ["ns", "us", "ms", "s", "min", "hr", "day"];
+    const units = ["ns", "μs", "ms", "s", "min", "hr", "day"];
     const conversions = [1, 1000, 1000, 1000, 60, 60, 24];
 
     let value = Number(nanoseconds);
