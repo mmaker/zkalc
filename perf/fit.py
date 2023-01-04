@@ -16,43 +16,52 @@ from scipy.interpolate import lagrange
 class NoNeedForFitting(Exception): pass
 
 class PolyInterpolation:
+    """Perform a polynomial interpolation at a dataset of operations of `sizes` that take time `times`."""
     def __init__(self, sizes, times):
         self.sizes = sizes
         self.times = times
+        # Polynomials are stored in poly1d form (so for example [2,3] is `2*x + 3`)
         self.polynomials = []
         self.ranges = []
+
+        # Do an interpolation for each pair of points
         for i in range(len(sizes) - 1):
             x = [sizes[i], sizes[i+1]]
             y = [times[i], times[i+1]]
-            # Returns a polynomial in poly1d form so for example [2,3] is `2*x + 3`
             polynomial = lagrange(x, y)
             self.polynomials.append(polynomial)
             self.ranges.append([x[0], x[1]])
 
     def predict(self, size):
-        # If we are asked to predict out of range, extrapolate using the closest polynomial
+        """Use the interpolation results to predict the time at an arbitrary `size`"""
+
+        # We are asked to predict out of range: extrapolate using the closest polynomial
         if size < self.ranges[0][0]:
             return self.polynomials[0](size)
         elif size > self.ranges[-1][1]:
             # XXX here we should be fitting to a n/logn function instead of using the interpolated poly
             return self.polynomials[-1](size)
 
+        # Find the right polynomial
         for i, (start, end) in enumerate(self.ranges):
             if start <= size <= end:
                 return self.polynomials[i](size)
 
-        raise ValueError("Invalid size ")
+        raise ValueError("Invalid size")
 
     def plot(self):
+        """Plot the interpolated functions against the actual data"""
         x = np.linspace(min(self.sizes), 2**21, 100000)
         y = [self.predict(z) for z in x]
         plt.semilogx(self.sizes, self.times, 'o', base=2)
         plt.semilogx(x, y, '-', base=2)
         plt.show()
 
-    def export_to_javascript_in_json(self, json):
-        json["arguments"] = "n"
-        json["body"] = f'''
+    def to_javascript(self):
+        """Export the interpolation results to a Javascript function in json format"""
+        output = {}
+        output["arguments"] = "n"
+        output["body"] = f'''
         const polynomials = {str([x.coeffs.tolist() for x in self.polynomials])};
         const ranges = {str(self.ranges)};
         for (let i = 0; i < ranges.length; i++) {{
@@ -68,53 +77,56 @@ class PolyInterpolation:
         }}
         throw new Error('Size out of range')
         '''
+        return output
 
 def parse_benchmark_description(description):
     description = description.split("/")
 
     if description[0] == "msm":
-            desc = description[0] + "_" + description[1]
-            return desc, description[2]
+        desc = description[0] + "_" + description[1]
+        return desc, description[2]
     if description[0] == "pairing_product":
-            desc = description[0]
-            return desc, description[1]
+        desc = description[0]
+        return desc, description[1]
     if description[0] in ("mul", "add_ff", "add_ec", "invert", "pairing"):
-            return description[0], 1
+        return description[0], 1
     else:
-            raise NoNeedForFitting
+        raise NoNeedForFitting
 
 def to_nanoseconds(num, unit_str):
     """Convert `num` in `unit_str` to nanoseconds"""
     units = {"ns": 1, "µs" : 1e3, "ms": 1e6, "s": 1e9}
     return num * units[unit_str]
 
-def add_measurement_to_json(operation, json, measurement):
-    """Basic linear regression: Extract a linear polynomial from the data"""
+def convert_measurement_to_js_function(operation, measurement):
+    """Fit this measurement's data to a function, and export it as Javascript code"""
 
     # Get the sizes and times from the data
     sizes, times = zip(*measurement.items())
 
-    # Handle simple non-amortized operations like mul
+    # Handle simple non-amortized operations like mul:
     # If one mul takes x ms, n muls take x*n ms.
     if len(sizes) == 1:
         polynomial = poly.Polynomial([0,times[0]])
         coeffs = list(map(str, polynomial))
-        estimate = polynomial(2**28)*1e-9
+        x = int(times[0])
+        estimate = x * 2**28 * 1e-9
         print(f"{operation} [{len(measurement)} samples] [2^28 example: {estimate:.2} s]:\n\t{coeffs}\n", file=sys.stderr)
-        encode_poly_evaluation_as_json(json, coeffs)
-    else: # Otherwise, do an interpolation!
+        return basic_operation_to_js(x)
+    else:
+        # It's a complicated operation: do an interpolation!
         interpolation = PolyInterpolation(sizes, times)
-        interpolation.export_to_javascript_in_json(json)
+        return interpolation.to_javascript()
 
-def encode_poly_evaluation_as_json(json, coeffs):
-    json["arguments"] = "n"
-    json["body"] = f"return {coeffs[0]} + n * {coeffs[1]};"
+def basic_operation_to_js(x):
+    """Given an operation that takes `x` ms, return a Javascript function that computes `n*x`"""
+    output = {}
+    output["arguments"] = "n"
+    output["body"] = f"return n * {x};"
+    return output
 
 def extract_measurements(bench_output):
-    # Nested dictionary with benchmark results in the following format: { operation : {msm_size : time_in_microseconds }}
     measurements = defaultdict(dict)
-    # Dictionary of results in format: { operation : coefficients }
-    results = {}
 
     # Parse benchmarks and make them ready for fitting
     for measurement in bench_output:
@@ -131,20 +143,28 @@ def extract_measurements(bench_output):
         measurement_in_ns = to_nanoseconds(measurement["mean"]["estimate"], measurement["mean"]["unit"])
         measurements[operation][int(size)] = measurement_in_ns
 
-    # Fit benchmark data to polynomial
+    return measurements
+
+def convert_benchmark_to_javascript(bench_output):
+    # Dictionary of results in format: { operation : javascript_function }
+    results = {}
+
+    # Extract measurements into a nested dictionary: { operation : {size : time_in_microseconds }}
+    measurements = extract_measurements(bench_output)
+
+    # Fit each operation to a Javascript function
     for operation in measurements.keys():
-        results[operation] = {}
-        add_measurement_to_json(operation, results[operation], measurements[operation])
+        js_function = convert_measurement_to_js_function(operation, measurements[operation])
+        results[operation] = js_function
 
     # Write results to json file
     # Encode the functions as a JSON object
     json_data = json.dumps(results)
     # Write the JSON object to the file
     sys.stdout.write(json_data)
-
     print(f"[!] Results written! Bye!", file=sys.stderr)
 
 
 if __name__ == '__main__':
     bench_output = [json.loads(line) for line in sys.stdin]
-    extract_measurements(bench_output)
+    convert_benchmark_to_javascript(bench_output)
