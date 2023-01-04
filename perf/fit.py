@@ -6,10 +6,68 @@ from collections import defaultdict
 import numpy as np
 import numpy.polynomial.polynomial as poly
 import matplotlib.pyplot as plt
+from scipy.interpolate import lagrange
 
 class NoNeedForFitting(Exception): pass
 
 RESULTS_FNAME = "results.json"
+class PolyInterpolation:
+    def __init__(self, sizes, times):
+        self.sizes = sizes
+        self.times = times
+        self.polynomials = []
+        self.ranges = []
+        for i in range(len(sizes) - 1):
+            x = [sizes[i], sizes[i+1]]
+            y = [times[i], times[i+1]]
+            # Returns a polynomial in poly1d form so for example [2,3] is `2*x + 3`
+            polynomial = lagrange(x, y)
+            self.polynomials.append(polynomial)
+            self.ranges.append((x[0], x[1]))
+
+    def predict(self, size):
+        # If we are asked to predict out of range, extrapolate using the closest polynomial
+        if size < self.ranges[0][0]:
+            return self.polynomials[0](size)
+        elif size > self.ranges[-1][1]:
+            # XXX here we should be fitting to a n/logn function instead of using the interpolated poly 
+            return self.polynomials[-1](size)
+
+        for i, (start, end) in enumerate(self.ranges):
+            if start <= size <= end:
+                return self.polynomials[i](size)
+
+        raise ValueError("Invalid size ")
+
+    def plot(self):
+        x = np.linspace(min(self.sizes), 2**21, 100000)
+        y = [self.predict(z) for z in x]
+        plt.semilogx(self.sizes, self.times, 'o', base=2)
+        plt.semilogx(x, y, '-', base=2)
+        plt.show()
+
+    def export_to_javascript_in_json(self, json):
+        json["arguments"] = "n"
+        json["body"] = "const polynomials = ["
+        for polynomial in self.polynomials:
+            json["body"] += f"[{polynomial.coeffs[0]}, {polynomial.coeffs[1]}],"
+        json["body"] += "];\n"
+        json["body"] += "const ranges = ["
+        for start, end in self.ranges:
+            json["body"] += f"([{start}, {end}]),"
+        json["body"] += "];\n"
+        json["body"] += "for (let i = 0; i < ranges.length; i++) {\n"
+        json["body"] += "    const [start, end] = ranges[i];\n"
+        json["body"] += "    if (n >= start && n <= end) {\n"
+        json["body"] += "        return n * polynomials[i][0] + polynomials[i][1];\n"
+        json["body"] += "    }\n"
+        json["body"] += "}\n"
+        json["body"] += "if (n < ranges[0][0]) {\n"
+        json["body"] += "    return n * polynomials[0][0] + polynomials[0][1];\n"
+        json["body"] += "} else if (n > ranges[ranges.length - 1][1]) {\n"
+        json["body"] += "    return n * polynomials[polynomials.length - 1][0] + polynomials[polynomials.length - 1][1];\n"
+        json["body"] += "}\n"
+        json["body"] += "throw new Error('Size out of range');"
 
 def parse_benchmark_description(description):
     description = description.split("/")
@@ -30,68 +88,28 @@ def to_nanoseconds(num, unit_str):
     units = {"ns": 1, "µs" : 1e3, "ms": 1e6, "s": 1e9}
     return num * units[unit_str]
 
-def plot_func(data, func):
-    # Get the sizes and times from the data
-    sizes, times = zip(*data.items())
-    # Convert the times from nanoseconds to seconds
-    times = [time / 1e9 for time in times]
-
-    # Generate a range of sizes to use for the plot
-    size_range = np.linspace(min(sizes), max(sizes), 100)
-    # Compute the predicted times for the size range
-    predicted_times = func(size_range)
-    # Convert the predicted times from nanoseconds to seconds
-    predicted_times = [time / 1e9 for time in predicted_times]
-
-    # Create a new figure and plot the actual data
-    plt.figure()
-    plt.scatter(sizes, times, label='Actual data')
-    # Plot the fitted linear function
-    plt.plot(size_range, predicted_times, label='Linear fit')
-    plt.xlabel('Size')
-    plt.ylabel('Time (in seconds)')
-    plt.legend()
-    plt.show()
-
-def plot_error(data, func):
-    # Get the sizes and times from the data
-    sizes, times = zip(*data.items())
-
-    # Calculate the error between the actual and predicted values
-    errors = []
-    for i, size in enumerate(sizes):
-        error = times[i] - func(sizes[i])
-        print("Error: %s for time %s vs predicted time %s" % (error / 1e9, times[i] / 1e9 , func(sizes[i]) / 1e9))
-        errors.append(abs(error))
-
-    plt.semilogx(sizes, errors, 'bo', label='Errors', base=2)
-    plt.xlabel('Sizes')
-    plt.ylabel('Errors')
-    plt.title('Errors at different sizes')
-    plt.legend()
-    plt.show()
-
-def fit_poly_to_data(data):
+def add_measurement_to_json(operation, json, measurement):
     """Basic linear regression: Extract a linear polynomial from the data"""
 
     # Get the sizes and times from the data
-    sizes, times = zip(*data.items())
+    sizes, times = zip(*measurement.items())
 
     # Handle simple non-amortized operations like mul
     # If one mul takes x ms, n muls take x*n ms.
     if len(sizes) == 1:
-        return poly.Polynomial([0,times[0]])
+        polynomial = poly.Polynomial([0,times[0]])
+        coeffs = ["%d" % (coeff) for coeff in polynomial]
+        print("%s [%s samples] [2^28 example: %0.2f s]:\n\t%s\n" % (operation, len(measurement), polynomial(2**28)/1e9, coeffs))
+        encode_poly_evaluation_as_json(json, coeffs)
+        return
 
-    # For more amortized operations like MSMs we do linear regression
-    # Use NumPy's polyfit function to fit a linear function to the data
-    polynomial = poly.Polynomial.fit(sizes, times, deg=1)
+    # Otherwise, do an interpolation!
+    interpolation = PolyInterpolation(sizes, times)
+    interpolation.export_to_javascript_in_json(json)
 
-#    plot_func(data, polynomial)
-#    plot_error(data, polynomial)
-
-    # Return the fitted func
-    # We call convert() now because fit() returns a result over a scaled basis poly
-    return polynomial.convert()
+def encode_poly_evaluation_as_json(json, coeffs):
+    json["arguments"] = "n"
+    json["body"] = f"return {coeffs[0]} + n * {coeffs[1]};"
 
 def extract_measurements(bench_output):
     # Nested dictionary with benchmark results in the following format: { operation : {msm_size : time_in_microseconds }}
@@ -116,11 +134,8 @@ def extract_measurements(bench_output):
 
     # Fit benchmark data to polynomial
     for operation in measurements.keys():
-        poly = fit_poly_to_data(measurements[operation])
-        coeffs = ["%d" % (coeff) for coeff in poly]
-        print("%s [%s samples] [2^28 example: %0.2f s]:\n\t%s\n" % (operation, len(measurements[operation]), poly(2**28)/1e9, coeffs))
-        results[operation] = coeffs
-
+        results[operation] = {}
+        add_measurement_to_json(operation, results[operation], measurements[operation])
 
     # Write results to json file
     with open(RESULTS_FNAME, "w") as f:

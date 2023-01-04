@@ -157,10 +157,9 @@ function App() {
   const estimatedTime = (recipe) => {
     const estimated_time = recipe
       .map((item) => {
-        let coeffs = estimates[lib][item.op];
-        return (
-          parseInt(coeffs[0]) + item.quantity.evaluate() * parseInt(coeffs[1])
-        );
+        var f = new Function(estimates[lib][item.op].arguments, estimates[lib][item.op].body);
+        // XXX bad evaluate
+        return f(item.quantity.evaluate());
       })
       .reduce((a, b) => a + b, 0);
     return formatTime(estimated_time);
