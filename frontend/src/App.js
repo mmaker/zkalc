@@ -1,4 +1,5 @@
 import "katex/dist/katex.min.css";
+import logo from "./zkalc.png";
 
 // import also { useState } if willing to monitor changes to the whole page.
 import React from "react";
@@ -214,7 +215,6 @@ function App() {
             form.resetFields();
           }}
         >
-          <img src="public/zkalc.png" />
           zkalc
         </Title>
         <Form
@@ -277,7 +277,7 @@ function App() {
         <Row justify="center">
           <List
             dataSource={recipe}
-            style={{ maxHeight: "70vh", width: "90vh", overflowY: "scroll" }}
+            style={{ maxHeight: "66.6vh", width: "90vh", overflowY: "scroll" }}
             renderItem={(ingredient, index) => (
               <List.Item key={index}>
                 <Col span={10}>
@@ -301,7 +301,11 @@ function App() {
           />
         </Row>
       </Layout.Content>
-      <Layout.Footer align="center">{printAuthors()}</Layout.Footer>
+      <Layout.Footer align="center">
+        <img src={logo} width={50} />
+        <br />
+        {printAuthors()}
+      </Layout.Footer>
     </Layout>
   );
 }
