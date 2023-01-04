@@ -15,6 +15,7 @@ import {
   Col,
   Select,
   Space,
+  Tooltip,
   Input,
   List,
 } from "antd";
@@ -42,42 +43,50 @@ const operations = [
   {
     label: "G1 MSM",
     value: "msm_G1",
-    description: "Multiscalar Multiplication over G1",
+    description: "Multiscalar multiplication over G1",
+    tooltip: "A linear combination of points and scalars in the G1 group",
   },
   {
     label: "G2 MSM",
     value: "msm_G2",
-    description: "Multiscalar Multiplication over G2",
+    description: "Multiscalar multiplication over G2",
+    tooltip: "A linear combination of points and scalars in the G2 group",
   },
   {
     label: "Pairing",
     value: "pairing",
-    description: "pairing",
+    description: "Pairing(s)",
+    tooltip: "Computation of n pairings",
   },
   {
     label: "Pairing product",
     value: "pairing_product",
-    description: "pairing product",
+    description: "Pairing product",
+    tooltip: "A product of n pairings",
   },
   {
     label: "Field Addition",
     value: "add_ff",
-    description: "field addition",
+    description: "Field addition(s)",
+    tooltip: "Addition of n elements on the field",
   },
   {
     label: "Field Multiplication",
     value: "mul",
-    description: "field multiplication",
+    description: "Field multiplication(s)",
+    tooltip: "Multiplication of n elements on the field",
   },
   {
     label: "Field Inversion",
     value: "invert",
-    description: "inversion",
+    description: "Field inversion(s)",
+    tooltip: "Inversion of n elements on the field",
   },
   {
     label: "Curve Addition",
     value: "add_ec",
-    description: "elliptic curve G1 addition",
+    description: "Elliptic curve G1 additions",
+    tooltip: "Addition of two elements in the G1 group",
   },
 ];
 
@@ -298,10 +307,9 @@ function App() {
                 <Col span={10}>
                   <InlineMath>{renderFormula(ingredient.quantity)}</InlineMath>
                   &nbsp;&nbsp;&nbsp;&nbsp;
-                  {
-                    operations.filter((x) => x.value === ingredient.op)[0]
-                      .description
-                  }
+                  <Tooltip title={operations.filter((x) => x.value === ingredient.op)[0].tooltip}>
+                  {operations.filter((x) => x.value === ingredient.op)[0].description}
+                  </Tooltip>
                 </Col>
                 <Col span={10} align="right">
                   {estimatedTime([ingredient])}
