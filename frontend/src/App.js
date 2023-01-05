@@ -14,6 +14,7 @@ import {
   Row,
   Col,
   Select,
+  Alert,
   Space,
   Tooltip,
   Input,
@@ -228,6 +229,18 @@ function App() {
     }
   };
 
+  const userGuide = () => {
+    return (
+      <>
+        - Basic usage: Choose a backend. Then choose an operation and its size. Press the button! <br />
+        - Choosing a different backend refreshes all results. <br />
+        - All our benchmarks were run with multithreading enabled on the respective platform. <br />
+        - Results above 2^21 have reduced accuracy due to missing benchmarks (See TODO.md) <br />
+        - For more details see the "Help" page!
+      </>
+    );
+  };
+
   return (
     <Layout style={{ height: "100vh" }}>
       <Layout.Content>
@@ -260,6 +273,14 @@ function App() {
               options={libs}
             />
           </Form.Item>
+          <Col span={8} offset={16}>
+            <Space direction="vertical" style={{ width: '90%' }}>
+              <Alert
+                description={userGuide()}
+                type="info"
+              />
+            </Space>
+          </Col>
           <Space align="baseline">
             <Form.Item
               name="op"
