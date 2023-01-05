@@ -88,7 +88,7 @@ def parse_benchmark_description(description):
     if description[0] == "pairing_product":
         desc = description[0]
         return desc, description[1]
-    if description[0] in ("mul", "add_ff", "add_ec", "invert", "pairing"):
+    if description[0] in ("mul_ff", "add_ff", "add_ec", "mul_ec", "invert", "pairing"):
         return description[0], 1
     else:
         raise NoNeedForFitting

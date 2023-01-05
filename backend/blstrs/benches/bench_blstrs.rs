@@ -17,10 +17,19 @@ fn bench_add_ff(c: &mut Criterion) {
     });
 }
 
-fn bench_mul(c: &mut Criterion) {
+fn bench_mul_ff(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
-    c.bench_function("mul", |b| {
+    c.bench_function("mul_ff", |b| {
         let lhs = Scalar::random(&mut rng);
+        let rhs = Scalar::random(&mut rng);
+        b.iter(|| black_box(lhs) * black_box(rhs))
+    });
+}
+
+fn bench_mul_ec(c: &mut Criterion) {
+    let mut rng = rand::thread_rng();
+    c.bench_function("mul_ec", |b| {
+        let lhs = G1Projective::random(&mut rng);
         let rhs = Scalar::random(&mut rng);
         b.iter(|| black_box(lhs) * black_box(rhs))
     });
@@ -105,7 +114,7 @@ fn bench_pairing_product(c: &mut Criterion) {
 
 criterion_group! {name = blstrs_benchmarks;
                   config = Criterion::default();
-                  targets = bench_mul, bench_add_ff, bench_add_ec, bench_msm, bench_invert, bench_pairing, bench_pairing_product
+                  targets = bench_mul_ff, bench_mul_ec, bench_add_ff, bench_add_ec, bench_msm, bench_invert, bench_pairing, bench_pairing_product
 }
 
 criterion_main!(blstrs_benchmarks);
