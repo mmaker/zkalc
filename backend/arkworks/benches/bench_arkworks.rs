@@ -21,7 +21,16 @@ fn bench_add_ff(c: &mut Criterion) {
     });
 }
 
-fn bench_mul(c: &mut Criterion) {
+fn bench_mul_ec(c: &mut Criterion) {
+    let mut rng = rand::thread_rng();
+    c.bench_function("mul_ec", |b| {
+        let lhs = bls12_381::G1Projective::rand(&mut rng);
+        let rhs = bls12_381::Fr::rand(&mut rng);
+        b.iter(|| black_box(lhs) * black_box(rhs))
+    });
+}
+
+fn bench_mul_ff(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
     c.bench_function("mul", |b| {
         let lhs = bls12_381::Fr::rand(&mut rng);
@@ -114,7 +123,7 @@ fn bench_pairing_product(c: &mut Criterion) {
 criterion_group! {
     name=arkworks_benchmarks;
     config=Criterion::default();
-    targets = bench_mul, bench_add_ff, bench_add_ec, bench_sum_of_products, bench_msm, bench_invert, bench_pairing, bench_pairing_product
+    targets = bench_mul_ff, bench_mul_ec, bench_add_ff, bench_add_ec, bench_sum_of_products, bench_msm, bench_invert, bench_pairing, bench_pairing_product
 }
 
 criterion_main! {arkworks_benchmarks}
