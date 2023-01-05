@@ -22,6 +22,8 @@ import {
 import { InlineMath } from "react-katex";
 import { parse } from "mathjs";
 
+///////////////////// Add your benchmarks here /////////////////////
+
 // Import our benchmark results
 import estimates_blstrs from "./results_blstrs.json";
 import estimates_arkworks from "./results_arkworks.json";
