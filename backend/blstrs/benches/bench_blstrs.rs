@@ -48,7 +48,7 @@ fn bench_msm(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
 
     let mut powers_of_two = Vec::<usize>::new();
-    for i in 0..22 {
+    for i in 0..=28 {
         powers_of_two.push(2_u32.pow(i).try_into().unwrap());
     }
 

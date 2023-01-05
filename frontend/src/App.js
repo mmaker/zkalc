@@ -234,10 +234,11 @@ function App() {
       <>
         - Basic usage: Choose a backend. Then choose an operation and its size. Press the button! <br />
         - Choosing a different backend refreshes all results <br />
+        - Tooltips can help you reach zkalc enlightment <br />
         - All benchmarks were run with multithreading enabled on the respective platform <br />
-        - Results above 2^21 have reduced accuracy due to missing benchmarks (See TODO.md) <br />
+        - Results above 2^28 have reduced accuracy due to missing benchmarks (See TODO.md) <br />
         - Click on the total time to get the result in SI units (seconds) <br />
-        - For more details see the "Help" page!
+        - For more details, please check the "Help" page! If you want to help, check TODO.md.
       </>
     );
   };
