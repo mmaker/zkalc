@@ -2,18 +2,19 @@
 
 Here is a bunch of stuff we could add to zkalc in the future:
 
-## Improve accuracy of results
+## Improve result accuracy
 
-Currently our extrapolation strategy is quite sloppy which results in bad results for big inputs. For operations like MSMs whose complexity is generally known we can do better fitting by using the fact that the final function should look like `p(x)/logx`.
+Currently our extrapolation strategy is quite sloppy which results in bad results for inputs out of range. For operations like MSMs whose complexity is generally known, we can do better fitting by using the fact that the final function should behave like `p(x)/logx`.
 
 ## Benchmark more operations:
+
 - FFTs
 - Barycentric evaluation
 
-
 ## Benchmark more libraries:
-- gnark
+
 - halo2 / zkcrypto
+- gnark
 - constantine
 
 ## Benchmark more curves

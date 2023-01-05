@@ -15,13 +15,15 @@ zkalc does not aim to be accurate; it aims to be simple to use while providing a
 Our *scientific methodology* is simple:
 - For each supported operation, we write a benchmark that measures its performance on the various libraries supported.
 - For basic operations like field addition and multiplication we use the benchmark output in a linear fashion. That is, if a single operation takes $x$ seconds on average, $n$ such operations take $n*x$ seconds.
-- For more complicated amortized operations like MSMs, we collect benchmarks for different operation sizes and then perform polynomial interpolation over the data points. We use the resulting polynomials to answer the user's queries.
+- For more complicated operations like MSMs, we collect benchmarks for different operation sizes and then perform polynomial interpolation over the data points. We use the resulting polynomials to answer the user's queries. For user queries outside of the interpolation range we extrapolate using a linear function (see TODO.md for possible improvements here).
 
-Yes, our techniques are based on approximations. On heuristics. But maybe that's good enough for now. If you want to work on a better approach, please get in touch :)
+Yes, our techniques are based on approximations. On heuristics. That's usually good enough when designing protocols. For more precise results, actual robust benchmarks of the desired size must be run.
+
+Please see the TODO.md file for future zkalc directions.
 
 ## Ugh!
 
-### A library/curve/operation that I want is missing!
+### I want a library/curve/operation but it's missing!
 
 If a library/curve/operation that you care about is missing, please open a PR!
 
@@ -34,5 +36,3 @@ You can perform the following steps to add the missing benchmarks:
 - You are done!
 
 If the above is too involved, just do the three top steps and submit a PR with your benchmark results and we will take care of the rest.
-
-

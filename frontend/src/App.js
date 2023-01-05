@@ -233,9 +233,10 @@ function App() {
     return (
       <>
         - Basic usage: Choose a backend. Then choose an operation and its size. Press the button! <br />
-        - Choosing a different backend refreshes all results. <br />
-        - All our benchmarks were run with multithreading enabled on the respective platform. <br />
+        - Choosing a different backend refreshes all results <br />
+        - All benchmarks were run with multithreading enabled on the respective platform <br />
         - Results above 2^21 have reduced accuracy due to missing benchmarks (See TODO.md) <br />
+        - Click on the total time to get the result in SI units (seconds) <br />
         - For more details see the "Help" page!
       </>
     );
