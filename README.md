@@ -23,16 +23,13 @@ Please see the TODO.md file for future zkalc directions.
 
 ## Ugh!
 
-### I want a library/curve/operation but it's missing!
+### I want a library/curve/operation/machine but it's missing!
 
-If a library/curve/operation that you care about is missing, please open a PR!
+If something is missing, please open a PR!
 
-You can perform the following steps to add the missing benchmarks:
-- Write benchmarks for your library/curve/operation in the `backend/` directory following the already existing conventions
-- Your benchmarks must output a JSON file that `perf/fit.py` can understand (it currently understands the format of criterion's `estimates.json`)
-- Run your benchmarks and move their `output.json` to the `perf/` directory
-- Adapt the `Makefile` in the `perf/` directory to your new benchmarks and run `make`
-- Finally, edit the "Add your benchmarks here" section in `frontend/src/App.js` accordingly.
-- You are done!
+Perform the following steps to add the missing benchmarks:
+- If needed, write the benchmarks for the missing library/curve/operation in the `backend/` directory following the already existing conventions
+  - If you write non-Rust benchmarks, they must output a JSON file that `perf/fit.py` can understand (it currently understands the format of criterion's `estimates.json`)
+- Run your benchmarks on the desired machine and move their `output.json` to the `perf/` directory.
 
-If the above is too involved, just do the three top steps and submit a PR with your benchmark results and we will take care of the rest.
+Now submit a PR with the above and the specs of your machine and we will take care of the rest!

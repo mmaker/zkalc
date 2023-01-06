@@ -12,6 +12,7 @@ Currently our extrapolation strategy is quite sloppy which results in bad result
 
 - FFTs
 - Barycentric evaluation
+- IPAs
 
 ## Benchmark more libraries:
 

@@ -53,8 +53,14 @@ fn bench_msm(c: &mut Criterion) {
     let rng = &mut test_rng();
 
     let mut group = c.benchmark_group("msm");
-    for d in 0..=28 {
+    for d in 1..=21 {
         let size = 1 << d;
+
+        // Dynamically control sample size so that big MSMs don't bench eternally
+        if size > 2_u32.pow(20).try_into().unwrap() {
+            group.sample_size(10);
+        }
+
         let scalars = (0..size)
             .map(|_| bls12_381::Fr::rand(rng))
             .collect::<Vec<_>>();
