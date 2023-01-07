@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import "katex/dist/katex.min.css";
 
 import Link from "next/link";
 import Image from "next/image";
 import logo from "../public/logo.png";
+import renderMathInElement from "katex/contrib/auto-render";
 
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import {
@@ -97,6 +98,19 @@ const operations = [
 ];
 
 const Home = () => {
+  const element = React.useRef(null);
+
+  useEffect(() => {
+    if (!element.current) return;
+
+    renderMathInElement(element.current, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+      ],
+    });
+  }, []);
+
   const [form] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("");
@@ -252,7 +266,7 @@ const Home = () => {
   };
 
   return (
-    <Layout style={{ height: "100vh" }}>
+    <Layout style={{ height: "100vh" }} ref={element}>
       <Layout.Content>
         <Title
           align="center"
@@ -366,6 +380,10 @@ const Home = () => {
         <Image src={logo} width={50} alt="" />
         <br />
         {printAuthors()}
+
+        <div>
+          {`$$\\hat\\xi\\,e^{2 \\pi i \\xi x}$$`}
+        </div>
       </Layout.Footer>
     </Layout>
   );
