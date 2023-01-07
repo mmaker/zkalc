@@ -1,40 +1,37 @@
-import "katex/dist/katex.min.css";
-import logo from "./zkalc.png";
+import React, { useEffect } from "react";
 
-// import also { useState } if willing to monitor changes to the whole page.
-import React from "react";
+import "katex/dist/katex.min.css";
+
+import Link from "next/link";
+import Image from "next/image";
+import logo from "../public/logo.png";
+import renderMathInElement from "katex/contrib/auto-render";
+
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import {
-  Avatar,
-  Button,
-  Layout,
-  Radio,
-  Form,
-  Typography,
-  Row,
-  Col,
-  Select,
   Alert,
+  Button,
+  Col,
+  Form,
+  Input,
+  Layout,
+  List,
+  Radio,
+  Row,
+  Select,
   Space,
   Tooltip,
-  Input,
-  List,
+  Typography,
 } from "antd";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  useRouteError,
-} from "react-router-dom";
-import { InlineMath } from "react-katex";
+
 import { parse } from "mathjs";
+import { InlineMath } from "react-katex";
 
 ///////////////////// Add your benchmarks here /////////////////////
 
 // Import our benchmark results
-import estimates_blstrs from "./results_blstrs.json";
-import estimates_arkworks from "./results_arkworks.json";
+import estimates_arkworks from "../data/results_arkworks.json";
+import estimates_blstrs from "../data/results_blstrs.json";
 
 const estimates = {
   blstrs: estimates_blstrs,
@@ -101,6 +98,19 @@ const operations = [
 ];
 
 const Home = () => {
+  const element = React.useRef(null);
+
+  useEffect(() => {
+    if (!element.current) return;
+
+    renderMathInElement(element.current, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+      ],
+    });
+  }, []);
+
   const [form] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("");
@@ -224,7 +234,7 @@ const Home = () => {
 
   const printAuthors = () => {
     const authors = ["George Kadianakis", "Michele Orrù"];
-    authors.sort(() => Math.random() - 0.5);
+    // authors.sort(() => Math.random() - 0.5);
     return `Developed by ${authors[0]} and ${authors[1]}.`;
   };
 
@@ -248,15 +258,15 @@ const Home = () => {
         - Results above 2^28 have reduced accuracy due to missing benchmarks
         (See TODO.md) <br />
         - Click on the total time to get the result in SI units (seconds) <br />
-        - For more details, please check the "Help" page! If you want to help,
-        check TODO.md.
-        <Link to="about">About Us</Link>
+        - For more details, please check the &quot;Help&quot; page! If you want
+        to help, check TODO.md.
+        <Link href="about">About Us</Link>
       </>
     );
   };
 
   return (
-    <Layout style={{ height: "100vh" }}>
+    <Layout style={{ height: "100vh" }} ref={element}>
       <Layout.Content>
         <Title
           align="center"
@@ -367,43 +377,16 @@ const Home = () => {
         </Row>
       </Layout.Content>
       <Layout.Footer align="center">
-        <img src={logo} width={50} />
+        <Image src={logo} width={50} alt="" />
         <br />
         {printAuthors()}
+
+        <div>
+          {`$$\\hat\\xi\\,e^{2 \\pi i \\xi x}$$`}
+        </div>
       </Layout.Footer>
     </Layout>
   );
 };
 
-const About = () => {
-  return (
-    <Title>why don't you tell everybody what the fuck you gotta say</Title>
-  );
-};
-
-const ErrorPage = () => {
-  const error = useRouteError();
-  // console.log("ciao")
-  // console.error(error);
-
-  return (
-    <div id="error-page">
-      <h1>Oops!</h1>
-      <p>Sorry, an unexpected error has occurred.</p>
-      <p>
-        <i>{error.statusText || error.message}</i>
-      </p>
-    </div>
-  );
-};
-
-const App = () => (
-  <Router>
-    <Routes>
-      <Route exact path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
-      <Route path="*" element={<ErrorPage />} />
-    </Routes>
-  </Router>
-);
-export default App;
+export default Home;
