@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "static-export": "next build && next export"
   },
   "dependencies": {
     "@mdx-js/loader": "^2.2.1",
