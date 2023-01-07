@@ -2,32 +2,35 @@ import React from "react";
 
 import "katex/dist/katex.min.css";
 
+import Link from "next/link";
+import Image from "next/image";
+import logo from "../public/logo.png";
+
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import {
-  Avatar,
-  Button,
-  Layout,
-  Radio,
-  Form,
-  Typography,
-  Row,
-  Col,
-  Select,
   Alert,
+  Button,
+  Col,
+  Form,
+  Input,
+  Layout,
+  List,
+  Radio,
+  Row,
+  Select,
   Space,
   Tooltip,
-  Input,
-  List,
+  Typography,
 } from "antd";
 
-import { InlineMath } from "react-katex";
 import { parse } from "mathjs";
+import { InlineMath } from "react-katex";
 
 ///////////////////// Add your benchmarks here /////////////////////
 
 // Import our benchmark results
-import estimates_blstrs from "../data/results_blstrs.json";
 import estimates_arkworks from "../data/results_arkworks.json";
+import estimates_blstrs from "../data/results_blstrs.json";
 
 const estimates = {
   blstrs: estimates_blstrs,
@@ -241,9 +244,9 @@ const Home = () => {
         - Results above 2^28 have reduced accuracy due to missing benchmarks
         (See TODO.md) <br />
         - Click on the total time to get the result in SI units (seconds) <br />
-        - For more details, please check the "Help" page! If you want to help,
-        check TODO.md.
-        {/* <Link to="about">About Us</Link> */}
+        - For more details, please check the &quot;Help&quot; page! If you want
+        to help, check TODO.md.
+        <Link href="about">About Us</Link>
       </>
     );
   };
@@ -360,7 +363,7 @@ const Home = () => {
         </Row>
       </Layout.Content>
       <Layout.Footer align="center">
-        {/* <img src={logo} width={50} /> */}
+        <Image src={logo} width={50} alt="" />
         <br />
         {printAuthors()}
       </Layout.Footer>
