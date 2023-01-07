@@ -20,6 +20,13 @@ import {
   Input,
   List,
 } from "antd";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useRouteError,
+} from "react-router-dom";
 import { InlineMath } from "react-katex";
 import { parse } from "mathjs";
 
@@ -93,18 +100,18 @@ const operations = [
   },
 ];
 
-function App() {
+const Home = () => {
   const [form] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("");
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
 
   const addIngredient = (ingredient) => {
-      // by now we assume the formula can be parsed and has been already validated.
-      const op = ingredient.op;
-      const formula = parse(ingredient.quantity);
-      const item = { op: op, quantity: formula };
-      setRecipe((recipe) => [item, ...recipe]);
+    // by now we assume the formula can be parsed and has been already validated.
+    const op = ingredient.op;
+    const formula = parse(ingredient.quantity);
+    const item = { op: op, quantity: formula };
+    setRecipe((recipe) => [item, ...recipe]);
   };
 
   const humanTime = (nanoseconds) => {
@@ -222,23 +229,28 @@ function App() {
   };
 
   const validateQuantity = async (rule, value) => {
-    if (value.trim() === '') {
-      throw new Error('Missing quantity');
+    if (value.trim() === "") {
+      throw new Error("Missing quantity");
     } else {
-      parse(value).evaluate()
+      parse(value).evaluate();
     }
   };
 
   const userGuide = () => {
     return (
       <>
-        - Basic usage: Choose a backend. Then choose an operation and its size. Press the button! <br />
+        - Basic usage: Choose a backend. Then choose an operation and its size.
+        Press the button! <br />
         - Choosing a different backend refreshes all results <br />
         - Tooltips can help you reach zkalc enlightment <br />
-        - All benchmarks were run with multithreading enabled on the respective platform <br />
-        - Results above 2^28 have reduced accuracy due to missing benchmarks (See TODO.md) <br />
+        - All benchmarks were run with multithreading enabled on the respective
+        platform <br />
+        - Results above 2^28 have reduced accuracy due to missing benchmarks
+        (See TODO.md) <br />
         - Click on the total time to get the result in SI units (seconds) <br />
-        - For more details, please check the "Help" page! If you want to help, check TODO.md.
+        - For more details, please check the "Help" page! If you want to help,
+        check TODO.md.
+        <Link to="about">About Us</Link>
       </>
     );
   };
@@ -276,11 +288,8 @@ function App() {
             />
           </Form.Item>
           <Col span={8} offset={16}>
-            <Space direction="vertical" style={{ width: '90%' }}>
-              <Alert
-                description={userGuide()}
-                type="info"
-              />
+            <Space direction="vertical" style={{ width: "90%" }}>
+              <Alert description={userGuide()} type="info" />
             </Space>
           </Col>
           <Space align="baseline">
@@ -332,8 +341,16 @@ function App() {
                 <Col span={10}>
                   <InlineMath>{renderFormula(ingredient.quantity)}</InlineMath>
                   &nbsp;&nbsp;&nbsp;&nbsp;
-                  <Tooltip title={operations.filter((x) => x.value === ingredient.op)[0].tooltip}>
-                  {operations.filter((x) => x.value === ingredient.op)[0].description}
+                  <Tooltip
+                    title={
+                      operations.filter((x) => x.value === ingredient.op)[0]
+                        .tooltip
+                    }
+                  >
+                    {
+                      operations.filter((x) => x.value === ingredient.op)[0]
+                        .description
+                    }
                   </Tooltip>
                 </Col>
                 <Col span={10} align="right">
@@ -356,6 +373,37 @@ function App() {
       </Layout.Footer>
     </Layout>
   );
-}
+};
 
+const About = () => {
+  return (
+    <Title>why don't you tell everybody what the fuck you gotta say</Title>
+  );
+};
+
+const ErrorPage = () => {
+  const error = useRouteError();
+  // console.log("ciao")
+  // console.error(error);
+
+  return (
+    <div id="error-page">
+      <h1>Oops!</h1>
+      <p>Sorry, an unexpected error has occurred.</p>
+      <p>
+        <i>{error.statusText || error.message}</i>
+      </p>
+    </div>
+  );
+};
+
+const App = () => (
+  <Router>
+    <Routes>
+      <Route exact path="/" element={<Home />} />
+      <Route path="/about" element={<About />} />
+      <Route path="*" element={<ErrorPage />} />
+    </Routes>
+  </Router>
+);
 export default App;
