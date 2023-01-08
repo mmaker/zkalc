@@ -154,16 +154,10 @@ const katex_settings = {
 };
 
 const Home = () => {
-  const element = React.useRef();
-
-  const renderMath = (element) => {
-    if (!element) {
-      return;
-    }
-    renderMathInElement(element, katex_settings);
-  };
-
-  const [backend_form] = Form.useForm();
+  let ingredients_list = React.useRef(null);
+  useEffect(() => {
+    renderMathInElement(ingredients_list.current, katex_settings);
+  });
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("arkworks");
   const [machine, setMachine] = React.useState("x64");
@@ -176,7 +170,7 @@ const Home = () => {
     const op = ingredient.op;
     const formula = parse(ingredient.quantity);
     const item = { op: op, quantity: formula };
-    setRecipe((recipe) => [item, ...recipe]);
+    setRecipe((recipe) => [...recipe, item]);
   };
 
   const humanTime = (nanoseconds) => {
@@ -341,53 +335,6 @@ const Home = () => {
             </Space>
           </a>
         </Dropdown>
-        {/* <Form
-        align="center"
-        style={{ padding: "0 50px", margin: "16x 0" }}
-        form={backend_selection}
-        onFinish={addIngredient}
-        autoComplete="off"
-      >
-        <Space align="baseline">
-          <Form.Item
-            name="machine"
-            rules={[{ required: true, message: "Missing machine" }]}
-          >
-            <Radio.Group
-              onChange={handleLibChange}
-              options={machines}
-            ></Radio.Group>
-          </Form.Item>
-          <Input.Group compact>
-            <Form.Item
-              name="lib"
-              rules={[{ required: true, message: "Missing lib" }]}
-            >
-              <Radio.Group
-                onChange={handleLibChange}
-                optionType="button"
-                options={libs}
-              />
-            </Form.Item>
-            <Form.Item>
-              <Select
-                // disabled={!backend_selection.getFieldValue("lib")}
-                style={{
-                  width: 130,
-                }}
-              >
-                {(ec[backend_selection.getFieldValue("lib")] || []).map(
-                  (item) => (
-                    <Option key={item} value={item}>
-                      {item}
-                    </Option>
-                  )
-                )}
-              </Select>
-            </Form.Item>
-          </Input.Group>
-        </Space>
-      </Form> */}
       </>
     );
   };
@@ -395,14 +342,7 @@ const Home = () => {
   return (
     <Layout style={{ height: "100vh" }}>
       <Layout.Content>
-        <Title
-          align="center"
-          italic
-          onClick={() => {
-            resetRecipe();
-            backend_form.resetFields();
-          }}
-        >
+        <Title align="center" italic onClick={resetRecipe}>
           zkalc
         </Title>
         <Row align="center">
@@ -412,7 +352,7 @@ const Home = () => {
         </Row>
         <br />
         <br />
-        <Form align="center" onFinish={addIngredient} autoComplete="off">
+        <Form onFinish={addIngredient} align="center" autoComplete="off">
           <Space align="baseline">
             <Form.Item
               name="op"
@@ -435,7 +375,6 @@ const Home = () => {
             <Form.Item>
               <Button
                 type="dashed"
-                // disabled={!backend_form.getFieldValue("lib")}
                 size="medium"
                 htmlType="submit"
                 icon={<PlusOutlined />}
@@ -453,38 +392,39 @@ const Home = () => {
             </Typography.Paragraph>
           </Col>
         </Row>
-        {/* </Space> */}
-        <Row justify="center" ref={element} onChange={renderMath}>
+        <Row justify="center" ref={ingredients_list}>
           <List
             dataSource={recipe}
             style={{ maxHeight: "66.6vh", width: "90vh", overflowY: "scroll" }}
-            renderItem={(ingredient, index) => (
-              <List.Item key={index} ref={renderMath}>
-                <Col span={10}>
-                  ${formatFormula(ingredient.quantity)}$
-                  &nbsp;&nbsp;&nbsp;&nbsp;
-                  <Tooltip
-                    title={
-                      operations.filter((x) => x.value === ingredient.op)[0]
-                        .tooltip
-                    }
-                  >
-                    {
-                      operations.filter((x) => x.value === ingredient.op)[0]
-                        .description
-                    }
-                  </Tooltip>
-                </Col>
-                <Col span={10} align="right">
-                  {estimatedTime([ingredient])}
-                </Col>
-                <Col span={1}>
-                  <MinusCircleOutlined
-                    onClick={() => removeIngredient(index)}
-                  />
-                </Col>
-              </List.Item>
-            )}
+            renderItem={(ingredient, index) => {
+              return (
+                <List.Item key={index}>
+                  <Col span={10}>
+                    ${formatFormula(ingredient.quantity)}$
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <Tooltip
+                      title={
+                        operations.filter((x) => x.value === ingredient.op)[0]
+                          .tooltip
+                      }
+                    >
+                      {
+                        operations.filter((x) => x.value === ingredient.op)[0]
+                          .description
+                      }
+                    </Tooltip>
+                  </Col>
+                  <Col span={10} align="right">
+                    {estimatedTime([ingredient])}
+                  </Col>
+                  <Col span={1}>
+                    <MinusCircleOutlined
+                      onClick={() => removeIngredient(index)}
+                    />
+                  </Col>
+                </List.Item>
+              );
+            }}
           />
         </Row>
       </Layout.Content>
