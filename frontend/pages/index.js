@@ -40,13 +40,13 @@ import estimates_blstrs from "../data/results_blstrs.json";
 const estimates = {
   blstrs: {
     bls12_381: {
-      x64: estimates_blstrs,
+      x86_64: estimates_blstrs,
       m1pro: estimates_blstrs,
     },
   },
   arkworks: {
     bls12_381: {
-      x64: estimates_arkworks,
+      x86_64: estimates_arkworks,
       m1pro: estimates_arkworks,
     },
   },
