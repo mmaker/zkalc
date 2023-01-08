@@ -25,7 +25,6 @@ import {
 } from "antd";
 
 import { parse } from "mathjs";
-import { InlineMath } from "react-katex";
 
 ///////////////////// Add your benchmarks here /////////////////////
 
@@ -50,14 +49,16 @@ const operations = [
   {
     label: "G1 MSM",
     value: "msm_G1",
-    description: "Multiscalar multiplication over G1",
-    tooltip: "A linear combination of points and scalars in the G1 group",
+    description: "Multiscalar multiplication over $\\mathbb{G}_1$",
+    tooltip:
+      "A linear combination of points and scalars in the \\mathbb{G}1 group",
   },
   {
     label: "G2 MSM",
     value: "msm_G2",
-    description: "Multiscalar multiplication over G2",
-    tooltip: "A linear combination of points and scalars in the G2 group",
+    description: "Multiscalar multiplication over $\\mathbb{G}_2$",
+    tooltip:
+      "A linear combination of points and scalars in the $\\mathbb{G}_2$ group",
   },
   {
     label: "Pairing",
@@ -97,19 +98,22 @@ const operations = [
   },
 ];
 
+const katex_settings = {
+  delimiters: [
+    { left: "$$", right: "$$", display: true },
+    { left: "$", right: "$", display: false },
+  ],
+};
+
 const Home = () => {
-  const element = React.useRef(null);
+  const element = React.useRef();
 
-  useEffect(() => {
-    if (!element.current) return;
-
-    renderMathInElement(element.current, {
-      delimiters: [
-        { left: "$$", right: "$$", display: true },
-        { left: "$", right: "$", display: false },
-      ],
-    });
-  }, []);
+  const renderMath = (element) => {
+    if (!element) {
+      return;
+    }
+    renderMathInElement(element, katex_settings);
+  };
 
   const [form] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
@@ -246,27 +250,8 @@ const Home = () => {
     }
   };
 
-  const userGuide = () => {
-    return (
-      <>
-        - Basic usage: Choose a backend. Then choose an operation and its size.
-        Press the button! <br />
-        - Choosing a different backend refreshes all results <br />
-        - Tooltips can help you reach zkalc enlightment <br />
-        - All benchmarks were run with multithreading enabled on the respective
-        platform <br />
-        - Results above 2^28 have reduced accuracy due to missing benchmarks
-        (See TODO.md) <br />
-        - Click on the total time to get the result in SI units (seconds) <br />
-        - For more details, please check the &quot;Help&quot; page! If you want
-        to help, check TODO.md.
-        <Link href="about">About Us</Link>
-      </>
-    );
-  };
-
   return (
-    <Layout style={{ height: "100vh" }} ref={element}>
+    <Layout style={{ height: "100vh" }}>
       <Layout.Content>
         <Title
           align="center"
@@ -297,11 +282,6 @@ const Home = () => {
               options={libs}
             />
           </Form.Item>
-          <Col span={8} offset={16}>
-            <Space direction="vertical" style={{ width: "90%" }}>
-              <Alert description={userGuide()} type="info" />
-            </Space>
-          </Col>
           <Space align="baseline">
             <Form.Item
               name="op"
@@ -342,14 +322,14 @@ const Home = () => {
             </Typography.Paragraph>
           </Col>
         </Row>
-        <Row justify="center">
+        <Row justify="center" ref={element} onChange={renderMath}>
           <List
             dataSource={recipe}
             style={{ maxHeight: "66.6vh", width: "90vh", overflowY: "scroll" }}
             renderItem={(ingredient, index) => (
-              <List.Item key={index}>
+              <List.Item key={index} ref={renderMath}>
                 <Col span={10}>
-                  <InlineMath>{renderFormula(ingredient.quantity)}</InlineMath>
+                  ${renderFormula(ingredient.quantity)}$
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <Tooltip
                     title={
@@ -380,10 +360,6 @@ const Home = () => {
         <Image src={logo} width={50} alt="" />
         <br />
         {printAuthors()}
-
-        <div>
-          {`$$\\hat\\xi\\,e^{2 \\pi i \\xi x}$$`}
-        </div>
       </Layout.Footer>
     </Layout>
   );
