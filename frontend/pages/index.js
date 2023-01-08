@@ -54,32 +54,43 @@ const estimates = {
 
 const { Title, Text } = Typography;
 
+const libraries = {
+  arkworks: {label: "arkworks-rs", version: "0.4", url: "https://arkworks.rs/"},
+  blstrs: {label: "blstrs", version: "0.1", url: "blstrs"},
+  dalek: {label: "dalek", version: "0.1", url: "dalek", disabled: true},
+}
 
-const libs = [
-  { label: "arkworks", key: "arkworks", version: "XXX", url: "XXX" },
-  { label: "blstrs", key: "blstrs", version: "XXX", url: "XXX" },
-  { label: "dalek", key: "dalek", disabled: true },
-];
-
-const machines = [
-  {
-    label: "M1 Pro",
-    key: "m1pro",
-  },
-  {
-    label: "ThinkPad",
-    key: "x64",
-  },
-  {
-    label: "ec2-large3",
-    key: "ec2",
-    disabled: true,
-  },
-];
+const machines = {
+  m1pro: {label: "M1 Pro 2021", desciption: "Macbook Pro 2022 14\" M1 Pro"},
+  x86_64: {label: "ThinkPad X1 Carbon", desciption: "ThinkPad X1 Carbon 1970"},
+  ec2large3: {label: "ec2-large3", disabled: true},
+}
 
 const curves = {
-  arkworks: [{ label: "bls12_381", key: "bls12_381" }],
-  blstrs: [{ label: "bls12_381", key: "bls12_381" }],
+  bls12_381: {label: "BLS12-381", key: "bls12_381"},
+}
+
+const libraries_selection = Object.keys(libraries).map((lib) => {
+  return {
+    label: libraries[lib].label,
+    key: lib,
+    disabled: libraries[lib].disabled || false,
+  };
+});
+
+/// these should be automatically generated from the above constants.
+
+const machines_selection = Object.keys(machines).map((machine) => {
+  return {
+    label: machines[machine].label,
+    key: machine,
+    disabled: machines[machine].disabled || false,
+  };
+});
+
+const curves_selection = {
+  arkworks: [curves.bls12_381],
+  blstrs: [curves.bls12_381],
 };
 
 const operations = [
@@ -156,7 +167,7 @@ const Home = () => {
 
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("arkworks");
-  const [machine, setMachine] = React.useState("x64");
+  const [machine, setMachine] = React.useState("x86_64");
   const [curve, setCurve] = React.useState("bls12_381");
   let authors = [
     { name: "George Kadianakis", website: "https://asn-d6.github.io/" },
@@ -304,31 +315,36 @@ const Home = () => {
     return (
       <>
         Estimating &nbsp;
-        <Dropdown menu={{ items: libs, onClick: ({ key }) => setLib(key) }}>
+        <Tooltip placement="top" title={`${libraries[lib].label} v${libraries[lib].version}`}>
+        <Dropdown trigger="click" menu={{ items: libraries_selection, onClick: ({ key }) => setLib(key) }}>
           <a onClick={(e) => e.preventDefault()}>
             <Space>
-              {lib}
+              {libraries[lib].label}
               <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
               &nbsp;
             </Space>
           </a>
         </Dropdown>
+        </Tooltip>
         using &nbsp;
+        <Tooltip placement="top" title={`${machines[machine].desciption}`}>
         <Dropdown
-          menu={{ items: machines, onClick: ({ key }) => setMachine(key) }}
+        trigger={['click']}
+          menu={{ items: machines_selection, onClick: ({ key }) => setMachine(key) }}
         >
           <a onClick={(e) => e.preventDefault()}>
             <Space>
-              {machine}
+              {machines[machine].label}
               <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
               &nbsp;
             </Space>
           </a>
         </Dropdown>
+        </Tooltip>
         over &nbsp;
         <Dropdown
           menu={{
-            items: curves[lib],
+            items: curves_selection[lib],
             onClick: ({ key }) => setCurve(key),
           }}
         >
