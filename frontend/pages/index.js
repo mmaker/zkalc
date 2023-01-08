@@ -7,7 +7,11 @@ import Image from "next/image";
 import logo from "../public/logo.png";
 import renderMathInElement from "katex/contrib/auto-render";
 
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+  MinusCircleOutlined,
+  PlusOutlined,
+  DownOutlined,
+} from "@ant-design/icons";
 import {
   Alert,
   Button,
@@ -22,6 +26,7 @@ import {
   Space,
   Tooltip,
   Typography,
+  Dropdown,
 } from "antd";
 
 import { parse } from "mathjs";
@@ -33,28 +38,60 @@ import estimates_arkworks from "../data/results_arkworks.json";
 import estimates_blstrs from "../data/results_blstrs.json";
 
 const estimates = {
-  blstrs: estimates_blstrs,
-  arkworks: estimates_arkworks,
+  blstrs: {
+    bls12_381: {
+      x64: estimates_blstrs,
+    },
+  },
+  arkworks: {
+    bls12_381: {
+      x64: estimates_arkworks,
+    },
+  },
 };
 
 const { Title, Text } = Typography;
 
 const libs = [
-  { label: "arkworks", value: "arkworks", version: "XXX", url: "XXX" },
-  { label: "blstrs", value: "blstrs", version: "XXX", url: "XXX" },
-  { label: "dalek", value: "dalek", disabled: true },
+  { label: "arkworks", key: "arkworks", version: "XXX", url: "XXX" },
+  { label: "blstrs", key: "blstrs", version: "XXX", url: "XXX" },
+  { label: "dalek", key: "dalek", disabled: true },
 ];
 
 const machines = [
-  { label: "m1", value: "m1", version: "XXX", url: "XXX" },
-  { label: "thinkpad", value: "thinkpad", version: "XXX", url: "XXX" },
-  { label: "ec2", value: "ec2", disabled: true },
+  {
+    label: "M1 Pro",
+    key: "m1pro",
+  },
+  {
+    label: "ThinkPad",
+    key: "x64",
+  },
+  {
+    label: "ec2-large3",
+    key: "ec2",
+  },
 ];
 
-const ec = {
-  arkworks: ["bls12-381"],
-  blstrs: ["bls12-381"],
+const curves = {
+  arkworks: [{ label: "bls12-381", key: "bls12-381" }],
+  blstrs: [{ label: "bls12-381", key: "bls12-381" }],
 };
+
+const items = [
+  {
+    label: "m1",
+    key: "1",
+  },
+  {
+    label: "2nd menu item",
+    key: "2",
+  },
+  {
+    label: "3rd menu item",
+    key: "3",
+  },
+];
 
 const operations = [
   {
@@ -126,9 +163,12 @@ const Home = () => {
     renderMathInElement(element, katex_settings);
   };
 
-  const [backend_selection] = Form.useForm();
+  const [backend_form] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
-  const [lib, setLib] = React.useState("");
+  const [lib, setLib] = React.useState("arkworks");
+  const [machine, setMachine] = React.useState("x64");
+  const [curve, setCurve] = React.useState("bls12_381");
+
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
 
   const addIngredient = (ingredient) => {
@@ -202,10 +242,10 @@ const Home = () => {
   const estimatedTime = (recipe) => {
     const estimated_time = recipe
       .map((item) => {
-        if (item.op in estimates[lib]) {
+        if (item.op in estimates[lib][curve][machine]) {
           var f = new Function(
-            estimates[lib][item.op].arguments,
-            estimates[lib][item.op].body
+            estimates[lib][curve][machine][item.op].arguments,
+            estimates[lib][curve][machine][item.op].body
           );
           // XXX bad evaluate
           return f(item.quantity.evaluate());
@@ -261,39 +301,64 @@ const Home = () => {
     }
   };
 
-  return (
-    <Layout style={{ height: "100vh" }}>
-      <Layout.Content>
-        <Title
-          align="center"
-          italic
-          fontSize={100}
-          letterSpacing={-3}
-          onClick={() => {
-            resetRecipe();
-            backend_selection.resetFields();
+  const BackendSelection = () => {
+    return (
+      <>
+        Estimating &nbsp;
+        <Dropdown menu={{ items: libs, onClick: ({ key }) => setLib(key) }}>
+          <a onClick={(e) => e.preventDefault()}>
+            <Space>
+              {lib}
+              <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
+              &nbsp;
+            </Space>
+          </a>
+        </Dropdown>
+        using &nbsp;
+        <Dropdown
+          menu={{ items: machines, onClick: ({ key }) => setMachine(key) }}
+        >
+          <a onClick={(e) => e.preventDefault()}>
+            <Space>
+              {machine}
+              <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
+              &nbsp;
+            </Space>
+          </a>
+        </Dropdown>
+        over &nbsp;
+        <Dropdown
+          menu={{
+            items: curves["arkworks"],
+            onClick: ({ key }) => setCurve(key),
           }}
         >
-          zkalc
-        </Title>
-        <Form
-          align="center"
-          style={{ padding: "0 50px", margin: "16x 0" }}
-          form={backend_selection}
-          onFinish={addIngredient}
-          autoComplete="off"
-        >
-          <Space align="baseline">
-            <Form.Item
-              name="machine"
-              rules={[{ required: true, message: "Missing machine" }]}
-            >
-              <Radio.Group
-                onChange={handleLibChange}
-                optionType="button"
-                options={machines}
-              ></Radio.Group>
-            </Form.Item>
+          <a onClick={(e) => e.preventDefault()}>
+            <Space>
+              {curve}
+              <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
+              &nbsp;
+            </Space>
+          </a>
+        </Dropdown>
+        {/* <Form
+        align="center"
+        style={{ padding: "0 50px", margin: "16x 0" }}
+        form={backend_selection}
+        onFinish={addIngredient}
+        autoComplete="off"
+      >
+        <Space align="baseline">
+          <Form.Item
+            name="machine"
+            rules={[{ required: true, message: "Missing machine" }]}
+          >
+            <Radio.Group
+              onChange={handleLibChange}
+              options={machines}
+            ></Radio.Group>
+          </Form.Item>
+          <Input.Group compact>
             <Form.Item
               name="lib"
               rules={[{ required: true, message: "Missing lib" }]}
@@ -320,8 +385,33 @@ const Home = () => {
                 )}
               </Select>
             </Form.Item>
-          </Space>
-        </Form>
+          </Input.Group>
+        </Space>
+      </Form> */}
+      </>
+    );
+  };
+
+  return (
+    <Layout style={{ height: "100vh" }}>
+      <Layout.Content>
+        <Title
+          align="center"
+          italic
+          onClick={() => {
+            resetRecipe();
+            backend_form.resetFields();
+          }}
+        >
+          zkalc
+        </Title>
+        <Row align="center">
+          <Text align="center" fontSize={20} color="#999">
+            <BackendSelection />
+          </Text>
+        </Row>
+        <br />
+        <br />
         <Form align="center" onFinish={addIngredient} autoComplete="off">
           <Space align="baseline">
             <Form.Item
@@ -345,7 +435,7 @@ const Home = () => {
             <Form.Item>
               <Button
                 type="dashed"
-                disabled={!backend_selection.getFieldValue("lib")}
+                // disabled={!backend_form.getFieldValue("lib")}
                 size="medium"
                 htmlType="submit"
                 icon={<PlusOutlined />}
@@ -353,8 +443,8 @@ const Home = () => {
             </Form.Item>
           </Space>
         </Form>
-        <Row justify="center">
-          <Col align="center" span={8} offset={6}>
+        <Row align="center" span={24}>
+          <Col span={8} offset={10}>
             <Typography.Paragraph align="right">
               <Text strong>Total time:&nbsp;&nbsp;</Text>
               <Text italic onClick={() => setHumanTimeFormat(!humanTimeFormat)}>
@@ -363,6 +453,7 @@ const Home = () => {
             </Typography.Paragraph>
           </Col>
         </Row>
+        {/* </Space> */}
         <Row justify="center" ref={element} onChange={renderMath}>
           <List
             dataSource={recipe}
