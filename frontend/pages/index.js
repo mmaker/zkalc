@@ -41,16 +41,19 @@ const estimates = {
   blstrs: {
     bls12_381: {
       x64: estimates_blstrs,
+      m1pro: estimates_blstrs,
     },
   },
   arkworks: {
     bls12_381: {
       x64: estimates_arkworks,
+      m1pro: estimates_arkworks,
     },
   },
 };
 
 const { Title, Text } = Typography;
+
 
 const libs = [
   { label: "arkworks", key: "arkworks", version: "XXX", url: "XXX" },
@@ -70,28 +73,14 @@ const machines = [
   {
     label: "ec2-large3",
     key: "ec2",
+    disabled: true,
   },
 ];
 
 const curves = {
-  arkworks: [{ label: "bls12-381", key: "bls12-381" }],
-  blstrs: [{ label: "bls12-381", key: "bls12-381" }],
+  arkworks: [{ label: "bls12_381", key: "bls12_381" }],
+  blstrs: [{ label: "bls12_381", key: "bls12_381" }],
 };
-
-const items = [
-  {
-    label: "m1",
-    key: "1",
-  },
-  {
-    label: "2nd menu item",
-    key: "2",
-  },
-  {
-    label: "3rd menu item",
-    key: "3",
-  },
-];
 
 const operations = [
   {
@@ -154,14 +143,25 @@ const katex_settings = {
 };
 
 const Home = () => {
-  let ingredients_list = React.useRef(null);
+  let ingredientsList = React.useRef(null);
+
   useEffect(() => {
-    renderMathInElement(ingredients_list.current, katex_settings);
+    renderMathInElement(ingredientsList.current, katex_settings);
   });
+  // useEffect(() => {
+  //   let newAuthors = [...authors];
+  //   newAuthors.sort(() => Math.random() - 0.5);
+  //   setAuthors(newAuthors)
+  // });
+
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("arkworks");
   const [machine, setMachine] = React.useState("x64");
   const [curve, setCurve] = React.useState("bls12_381");
+  let authors = [
+    { name: "George Kadianakis", website: "https://asn-d6.github.io/" },
+    { name: "Michele Orrù", website: "https://tumbolandia.net" },
+  ];
 
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
 
@@ -281,10 +281,15 @@ const Home = () => {
     }
   };
 
-  const printAuthors = () => {
-    const authors = ["George Kadianakis", "Michele Orrù"];
-    // authors.sort(() => Math.random() - 0.5);
-    return `Developed by ${authors[0]} and ${authors[1]}.`;
+  const Authors = ({ authors }) => {
+    // only two authors for now
+    return (
+      <Text>
+        Developed by
+        <a href={authors[0].website}> {authors[0].name}</a> and{" "}
+        <a href={authors[1].website}>{authors[1].name}</a>.
+      </Text>
+    );
   };
 
   const validateQuantity = async (rule, value) => {
@@ -323,7 +328,7 @@ const Home = () => {
         over &nbsp;
         <Dropdown
           menu={{
-            items: curves["arkworks"],
+            items: curves[lib],
             onClick: ({ key }) => setCurve(key),
           }}
         >
@@ -392,14 +397,14 @@ const Home = () => {
             </Typography.Paragraph>
           </Col>
         </Row>
-        <Row justify="center" ref={ingredients_list}>
+        <Row justify="center" ref={ingredientsList}>
           <List
             dataSource={recipe}
-            style={{ maxHeight: "66.6vh", width: "90vh", overflowY: "scroll" }}
+            style={{ maxHeight: "64vh", width: "90vh", overflowY: "scroll" }}
             renderItem={(ingredient, index) => {
               return (
                 <List.Item key={index}>
-                  <Col span={10}>
+                  <Col span={14}>
                     ${formatFormula(ingredient.quantity)}$
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <Tooltip
@@ -414,7 +419,7 @@ const Home = () => {
                       }
                     </Tooltip>
                   </Col>
-                  <Col span={10} align="right">
+                  <Col span={6} align="right">
                     {estimatedTime([ingredient])}
                   </Col>
                   <Col span={1}>
@@ -433,7 +438,7 @@ const Home = () => {
           <Image src={logo} width={50} alt="" />
         </Link>
         <br />
-        {printAuthors()}
+        <Authors authors={authors} />
       </Layout.Footer>
     </Layout>
   );
