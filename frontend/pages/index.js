@@ -45,18 +45,29 @@ const libs = [
   { label: "dalek", value: "dalek", disabled: true },
 ];
 
+const machines = [
+  { label: "m1", value: "m1", version: "XXX", url: "XXX" },
+  { label: "thinkpad", value: "thinkpad", version: "XXX", url: "XXX" },
+  { label: "ec2", value: "ec2", disabled: true },
+];
+
+const ec = {
+  arkworks: ["bls12-381"],
+  blstrs: ["bls12-381"],
+};
+
 const operations = [
   {
     label: "G1 MSM",
     value: "msm_G1",
-    description: "Multiscalar multiplication over $\\mathbb{G}_1$",
+    description: "Multiscalar multiplication(s) over $\\mathbb{G}_1$",
     tooltip:
       "A linear combination of points and scalars in the \\mathbb{G}1 group",
   },
   {
     label: "G2 MSM",
     value: "msm_G2",
-    description: "Multiscalar multiplication over $\\mathbb{G}_2$",
+    description: "Multiscalar multiplication(s) over $\\mathbb{G}_2$",
     tooltip:
       "A linear combination of points and scalars in the $\\mathbb{G}_2$ group",
   },
@@ -115,7 +126,7 @@ const Home = () => {
     renderMathInElement(element, katex_settings);
   };
 
-  const [form] = Form.useForm();
+  const [backend_selection] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("");
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
@@ -214,7 +225,7 @@ const Home = () => {
     setRecipe(recipe.filter((_, i) => index !== i));
   };
 
-  const renderFormula = (formula) => {
+  const formatFormula = (formula) => {
     const evaluation = formatNumber(formula.evaluate());
     // if the expression is simple, just return it.
     if (evaluation === formula.toTex()) {
@@ -260,7 +271,7 @@ const Home = () => {
           letterSpacing={-3}
           onClick={() => {
             resetRecipe();
-            form.resetFields();
+            backend_selection.resetFields();
           }}
         >
           zkalc
@@ -268,20 +279,50 @@ const Home = () => {
         <Form
           align="center"
           style={{ padding: "0 50px", margin: "16x 0" }}
-          form={form}
+          form={backend_selection}
           onFinish={addIngredient}
           autoComplete="off"
         >
-          <Form.Item
-            name="lib"
-            rules={[{ required: true, message: "Missing lib" }]}
-          >
-            <Radio.Group
-              onChange={(e) => handleLibChange(e)}
-              optionType="button"
-              options={libs}
-            />
-          </Form.Item>
+          <Space align="baseline">
+            <Form.Item
+              name="machine"
+              rules={[{ required: true, message: "Missing machine" }]}
+            >
+              <Radio.Group
+                onChange={handleLibChange}
+                optionType="button"
+                options={machines}
+              ></Radio.Group>
+            </Form.Item>
+            <Form.Item
+              name="lib"
+              rules={[{ required: true, message: "Missing lib" }]}
+            >
+              <Radio.Group
+                onChange={handleLibChange}
+                optionType="button"
+                options={libs}
+              />
+            </Form.Item>
+            <Form.Item>
+              <Select
+                // disabled={!backend_selection.getFieldValue("lib")}
+                style={{
+                  width: 130,
+                }}
+              >
+                {(ec[backend_selection.getFieldValue("lib")] || []).map(
+                  (item) => (
+                    <Option key={item} value={item}>
+                      {item}
+                    </Option>
+                  )
+                )}
+              </Select>
+            </Form.Item>
+          </Space>
+        </Form>
+        <Form align="center" onFinish={addIngredient} autoComplete="off">
           <Space align="baseline">
             <Form.Item
               name="op"
@@ -304,7 +345,7 @@ const Home = () => {
             <Form.Item>
               <Button
                 type="dashed"
-                disabled={!form.getFieldValue("lib")}
+                disabled={!backend_selection.getFieldValue("lib")}
                 size="medium"
                 htmlType="submit"
                 icon={<PlusOutlined />}
@@ -329,7 +370,7 @@ const Home = () => {
             renderItem={(ingredient, index) => (
               <List.Item key={index} ref={renderMath}>
                 <Col span={10}>
-                  ${renderFormula(ingredient.quantity)}$
+                  ${formatFormula(ingredient.quantity)}$
                   &nbsp;&nbsp;&nbsp;&nbsp;
                   <Tooltip
                     title={
@@ -357,7 +398,9 @@ const Home = () => {
         </Row>
       </Layout.Content>
       <Layout.Footer align="center">
-        <Image src={logo} width={50} alt="" />
+        <Link href="/about">
+          <Image src={logo} width={50} alt="" />
+        </Link>
         <br />
         {printAuthors()}
       </Layout.Footer>
