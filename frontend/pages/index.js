@@ -39,20 +39,22 @@ import { parse } from "mathjs";
 ///////////////////// Add your benchmarks here /////////////////////
 
 // Import our benchmark results
-import estimates_arkworks from "../data/results_arkworks.json";
-import estimates_blstrs from "../data/results_blstrs.json";
+import estimates_arkworks_m1 from "../data/results_arkworks_m1.json";
+import estimates_blstrs_m1 from "../data/results_blstrs_m1.json";
+import estimates_arkworks_t450 from "../data/results_arkworks_t450.json";
+import estimates_blstrs_t450 from "../data/results_blstrs_t450.json";
 
 const estimates = {
   blstrs: {
     bls12_381: {
-      x86_64: estimates_blstrs,
-      m1pro: estimates_blstrs,
+      thinkpad_t450: estimates_blstrs_t450,
+      m1pro: estimates_blstrs_m1,
     },
   },
   arkworks: {
     bls12_381: {
-      x86_64: estimates_arkworks,
-      m1pro: estimates_arkworks,
+      thinkpad_t450: estimates_arkworks_t450,
+      m1pro: estimates_arkworks_m1,
     },
   },
 };
@@ -71,9 +73,9 @@ const libraries = {
 
 const machines = {
   m1pro: { label: "M1 Pro 2021", desciption: 'Macbook Pro 2022 14" M1 Pro' },
-  x86_64: {
-    label: "ThinkPad X1 Carbon",
-    desciption: "ThinkPad X1 Carbon 1970",
+  thinkpad_t450: {
+    label: "ThinkPad T450",
+    desciption: "ThinkPad T450 (4-core i7-5600U CPU @ 2.6 GHz // 8GB RAM)",
   },
   ec2large3: { label: "ec2-large3", disabled: true },
 };
@@ -164,7 +166,7 @@ const operations = {
       </>
     ),
   },
-  mul: {
+  mul_ff: {
     label: (
       <>
         Multiplication over <InlineMath math="\mathbb{F}_p" />
@@ -177,6 +179,22 @@ const operations = {
         Given field elements{" "}
         <InlineMath math="a_1, a_2, \dots, a_n \in \mathbb{F}_p" /> compute{" "}
         <InlineMath math="\prod_i a_i" />
+      </>
+    ),
+  },
+  mul_ec: {
+    label: (
+      <>
+        Scalar multiplication over <InlineMath math="\mathbb{G}_1" />
+      </>
+    ),
+    description: "Scalar multiplication(s)",
+    tooltip_width: 300,
+    tooltip: (
+      <>
+        Given {" "}
+        <InlineMath math="a_1, a_2, \dots, a_n \in \mathbb{F}_p" /> and <InlineMath math="P_1, P_2, \dots, P_n \in \mathbb{G}_1" /> compute{" "}
+        <InlineMath math="a_1 P_1, a_2 P_2, \dots, a_n P_n" />
       </>
     ),
   },
@@ -205,10 +223,14 @@ const operations = {
         Addition over <InlineMath math="\mathbb{G}_1" />
       </>
     ),
-    description: "Elliptic curve $\\mathbb{G}1$ additions",
+    description: (
+      <>
+        Elliptic curve <InlineMath math="\mathbb{G}_1" /> additions
+      </>
+    ),
     tooltip_width: 500,
     tooltip: (
-      <InlineMath math="\mathbb{G}_1^n \mapsto \mathbb{G}_1: (A_0, A_1, \dots, A_n) \mapsto \sum_i A_i" />
+      <InlineMath math="\mathbb{G}_1^n \mapsto \mathbb{G}_1: (A_1, A_1, \dots, A_n) \mapsto \sum_i A_i" />
     ),
   },
 };
@@ -258,7 +280,7 @@ const Home = () => {
   // });
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("arkworks");
-  const [machine, setMachine] = React.useState("x86_64");
+  const [machine, setMachine] = React.useState("thinkpad_t450");
   const [curve, setCurve] = React.useState("bls12_381");
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
 
@@ -485,7 +507,7 @@ const Home = () => {
               <QuestionCircleFilled style={{ fontSize: "25px", color: "black" }} />
             </Link>
             &nbsp;&nbsp;&nbsp;
-            <Link href="/methodology">
+           <Link href="/methodology">
               <DashboardOutlined style={{ fontSize: "25px", color: "black" }} />
             </Link>
             &nbsp;&nbsp;&nbsp;

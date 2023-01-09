@@ -32,7 +32,7 @@ fn bench_mul_ec(c: &mut Criterion) {
 
 fn bench_mul_ff(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
-    c.bench_function("mul", |b| {
+    c.bench_function("mul_ff", |b| {
         let lhs = bls12_381::Fr::rand(&mut rng);
         let rhs = bls12_381::Fr::rand(&mut rng);
         b.iter(|| black_box(lhs) * black_box(rhs))
