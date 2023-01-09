@@ -12,6 +12,9 @@ import {
   MinusCircleOutlined,
   PlusOutlined,
   DownOutlined,
+  QuestionCircleFilled,
+  DashboardOutlined,
+  GithubFilled,
 } from "@ant-design/icons";
 import {
   Alert,
@@ -472,9 +475,26 @@ const Home = () => {
   return (
     <Layout style={{ height: "100vh" }}>
       <Layout.Content>
-        <Title align="center" italic onClick={resetRecipe}>
-          zkalc
-        </Title>
+        <Row align="center" span={24}>
+          <Col span={10} offset={5}>
+            <Title align="center" italic onClick={resetRecipe}>
+              zkalc
+            </Title>
+          </Col>
+          <Col span={2} offset={3}>
+            <Link href="/about">
+              <QuestionCircleFilled style={{ fontSize: "25px", color: "black" }} />
+            </Link>
+            &nbsp;&nbsp;&nbsp;
+            <Link href="/methodology">
+              <DashboardOutlined style={{ fontSize: "25px", color: "black" }} />
+            </Link>
+            &nbsp;&nbsp;&nbsp;
+            <Link href="https://github.com/asn-d6/zkalc">
+              <GithubFilled style={{ fontSize: "25px", color: "black" }} />
+            </Link>
+          </Col>
+        </Row>
         <Row align="center">
           <Text align="center" fontSize={20} color="#999">
             <BackendSelection />
