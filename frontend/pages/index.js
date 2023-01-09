@@ -159,21 +159,10 @@ const Home = () => {
   useEffect(() => {
     renderMathInElement(ingredientsList.current, katex_settings);
   });
-  // useEffect(() => {
-  //   let newAuthors = [...authors];
-  //   newAuthors.sort(() => Math.random() - 0.5);
-  //   setAuthors(newAuthors)
-  // });
-
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("arkworks");
   const [machine, setMachine] = React.useState("x86_64");
-  const [curve, setCurve] = React.useState("bls12_381");
-  let authors = [
-    { name: "George Kadianakis", website: "https://asn-d6.github.io/" },
-    { name: "Michele Orrù", website: "https://tumbolandia.net" },
-  ];
-
+  const [curve, setCurve] = React.useState("BLS12_381");
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
 
   const addIngredient = (ingredient) => {
@@ -292,8 +281,20 @@ const Home = () => {
     }
   };
 
-  const Authors = ({ authors }) => {
+  function Authors() {
     // only two authors for now
+    const _authors = [
+      { name: "George Kadianakis", website: "https://github.com/asn-d6" },
+      { name: "Michele Orrù", website: "https://tumbolandia.net" },
+    ];
+    const [authors, setAuthors] = React.useState(_authors);
+
+    // Randomize author list
+    useEffect(()=>{
+      const randomizedAuthors = [..._authors].sort(() => 0.5 - Math.random());
+      setAuthors(randomizedAuthors);
+    }, []);
+
     return (
       <Text>
         Developed by
@@ -454,7 +455,7 @@ const Home = () => {
           <Image src={logo} width={50} alt="" />
         </Link>
         <br />
-        <Authors authors={authors} />
+        <Authors />
       </Layout.Footer>
     </Layout>
   );
