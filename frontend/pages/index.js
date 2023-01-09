@@ -5,7 +5,7 @@ import "katex/dist/katex.min.css";
 import Link from "next/link";
 import Image from "next/image";
 import logo from "../public/logo.png";
-import renderMathInElement from "katex/contrib/auto-render";
+// import renderMathInElement from "katex/contrib/auto-render";
 
 import { InlineMath, BlockMath } from "react-katex";
 import {
@@ -80,8 +80,8 @@ const curves = {
 
 const operations = {
   msm_G1: {
-    label: "G1 MSM",
-    description: "Multiscalar multiplication(s) over $\\mathbb{G}_1$",
+    label: <>MSM on <InlineMath math="\mathbb{G}_1" /></>,
+    description: <>Multiscalar multiplication(s) over <InlineMath math="\mathbb{G}_1" /></>,
     tooltip: (
       <>
         A linear combination of points and scalars in the{" "}
@@ -90,9 +90,9 @@ const operations = {
     ),
   },
   msm_G2: {
-    label: "G2 MSM",
+    label: <>MSM on <InlineMath math="\mathbb{G}_2"/></>,
     value: "msm_G2",
-    description: "Multiscalar multiplication(s) over $\\mathbb{G}_2$",
+    description: <>Multiscalar multiplication(s) over <InlineMath math="\mathbb{G}_2" /></>,
     tooltip: (
       <>
         A linear combination of points and scalars in the{" "}
@@ -113,33 +113,28 @@ const operations = {
   pairing_product: {
     label: "Pairing product",
     description: "Pairing product",
-    tooltip: <>A product of $n$ pairings</>,
+    tooltip: <InlineMath math="((A_0, B_0), (A_1, B_1), \dots (A_n, B_n)) \mapsto \sum_i e(A_i, B_i)" />,
   },
   add_ff: {
-    label: "Field Addition",
+    label: <>Addition over <InlineMath math="\mathbb{F}_p"/></>,
     description: "Field addition(s)",
-    tooltip: <>Addition of $n$ elements on the field</>,
+    tooltip: <InlineMath>(a _0, a_1, \dots, a_n) \mapsto \sum_i a_i</InlineMath>,
   },
   mul: {
-    label: "Field Multiplication",
+    label:  <>Multiplication over <InlineMath math="\mathbb{F}_p"/></>,
     description: "Field multiplication(s)",
-    tooltip: <>Multiplication of n elements on the field</>,
+    tooltip: <InlineMath math="(a _0, a_1, \dots, a_n) \mapsto \prod_i a_i" />,
   },
   invert: {
-    label: "Field Inversion",
+    label:  <>Inversion over <InlineMath math="\mathbb{F}_p"/></>,
     value: "invert",
     description: "Field inversion(s)",
-    tooltip: <>Inversion of n elements on the field</>,
+    tooltip: <InlineMath math="(a _0, a_1, \dots, a_n) \mapsto (a_0^{-1}, a_1^{-1}, \dots, a_n^{-1} )" />,
   },
   add_ec: {
-    label: "Curve Addition",
-    description: "Elliptic curve G1 additions",
-    tooltip: (
-      <>
-        Addition of two elements in the <InlineMath>\mathbb G_1</InlineMath>{" "}
-        group
-      </>
-    ),
+    label:  <>Addition over <InlineMath math="\mathbb{G}_1"/></>,
+    description: "Elliptic curve $\\mathbb{G}1$ additions",
+    tooltip: <InlineMath math="\mathbb{G}_1^n \mapsto \mathbb{G}_1: (A_0, A_1, \dots, A_n) \mapsto \sum_i A_i" />,
   },
 };
 
@@ -183,9 +178,9 @@ const katex_settings = {
 const Home = () => {
   let ingredientsList = React.useRef(null);
 
-  useEffect(() => {
-    renderMathInElement(ingredientsList.current, katex_settings);
-  });
+  // useEffect(() => {
+  //   renderMathInElement(ingredientsList.current, katex_settings);
+  // });
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("arkworks");
   const [machine, setMachine] = React.useState("x86_64");
@@ -197,9 +192,10 @@ const Home = () => {
     const op = ingredient.op;
     const formula = parse(ingredient.quantity);
     const item = { op: op, quantity: formula };
-    // XXX. changing this to [item, ... recipe] will conflict with katex, which will
+    // XXX. when using renderMathInElelement,
+    // changing this to [item, ... recipe] will conflict with katex, which will
     // cache some of the rendering and thus fuck up our quantities
-    setRecipe((recipe) => [...recipe, item]);
+    setRecipe((recipe) => [item, ...recipe]);
   };
 
   const humanTime = (nanoseconds) => {
@@ -422,7 +418,7 @@ const Home = () => {
               rules={[{ required: true, message: "Missing operation" }]}
             >
               <Select
-                style={{ width: 150 }}
+                style={{ width: 200 }}
                 bordered={false}
                 placeholder="pk ops"
                 showSearch
@@ -463,9 +459,9 @@ const Home = () => {
               return (
                 <List.Item key={index}>
                   <Col span={14}>
-                    ${formatFormula(ingredient.quantity)}$
+                    <InlineMath math={formatFormula(ingredient.quantity)} />
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Tooltip title={operations[ingredient.op].tooltip}>
+                    <Tooltip color="#108ee9" overlayInnerStyle={{width: 300}} title={operations[ingredient.op].tooltip}>
                       {operations[ingredient.op].description}
                     </Tooltip>
                   </Col>
