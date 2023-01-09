@@ -105,8 +105,10 @@ const operations = {
     tooltip_width: 500,
     tooltip: (
       <>
-        A linear combination of points and scalars in the{" "}
-        <InlineMath>\mathbb G_1</InlineMath> group
+        Given scalars{" "}
+        <InlineMath math="a_1, a_2, \dots, a_n \in \mathbb{F}_p" /> and points{" "}
+        <InlineMath math="P_1, P_2, \dots, P_n \in \mathbb{G}_1" /> compute{" "}
+        <InlineMath math="\sum_i a_iP_i" />
       </>
     ),
   },
@@ -136,7 +138,7 @@ const operations = {
     label: "Pairing",
     value: "pairing",
     description: "Pairing(s)",
-    tooltip_width: 100,
+    tooltip_width: 200,
     tooltip: (
       <>
         Computation of <InlineMath>n</InlineMath> pairings
@@ -424,7 +426,7 @@ const Home = () => {
     }, []);
 
     return (
-      <Text>
+        <Text  style={{ fontSize: 10 }}>
         Developed by
         <a href={authors[0].website}> {authors[0].name}</a> and{" "}
         <a href={authors[1].website}>{authors[1].name}</a>.
@@ -517,19 +519,27 @@ const Home = () => {
           </Col>
           <Col span={3} offset={3}>
             <Link href="/about">
-              <QuestionCircleOutlined style={{ fontSize: "25px", color: "black" }} />
+                <Tooltip title="about zkalc">
+                    <QuestionCircleOutlined style={{ fontSize: "25px", color: "black" }} />
+                </Tooltip>
             </Link>
             &nbsp;&nbsp;&nbsp;
             <Link href="/add">
-              <FileAddOutlined style={{ fontSize: "25px", color: "black" }} />
+                <Tooltip title="add benchmark">
+                    <FileAddOutlined style={{ fontSize: "25px", color: "black" }} />
+                </Tooltip>
             </Link>
             &nbsp;&nbsp;&nbsp;
            <Link href="/methodology">
-              <DashboardOutlined style={{ fontSize: "25px", color: "black" }} />
+               <Tooltip title="zkalc scientific methodology">
+                   <DashboardOutlined style={{ fontSize: "25px", color: "black" }} />
+               </Tooltip>
             </Link>
             &nbsp;&nbsp;&nbsp;
             <Link href="https://github.com/asn-d6/zkalc">
-              <GithubOutlined style={{ fontSize: "25px", color: "black" }} />
+                <Tooltip title="zkalc github">
+                    <GithubOutlined style={{ fontSize: "25px", color: "black" }} />
+                </Tooltip>
             </Link>
           </Col>
         </Row>
@@ -620,7 +630,7 @@ const Home = () => {
         <Link href="/about">
           <Image src={logo} width={50} alt="" />
         </Link>
-        <br />
+                    &nbsp;&nbsp;&nbsp;&nbsp;
         <Authors />
       </Layout.Footer>
     </Layout>
