@@ -72,10 +72,15 @@ const libraries = {
 };
 
 const machines = {
-  m1pro: { label: "M1 Pro 2021", desciption: 'Macbook Pro 2022 14" M1 Pro' },
+  m1pro: {
+    label: "M1 Pro 2021",
+    description: 'Macbook Pro 2022 14" M1 Pro',
+    tooltip_width: 250,
+  },
   thinkpad_t450: {
     label: "ThinkPad T450",
-    desciption: "ThinkPad T450 (4-core i7-5600U CPU @ 2.6 GHz // 8GB RAM)",
+    description: "ThinkPad T450 (4-core i7-5600U CPU @ 2.6 GHz // 8GB RAM)",
+    tooltip_width: 400,
   },
   ec2large3: { label: "ec2-large3", disabled: true },
 };
@@ -473,7 +478,13 @@ const Home = () => {
           </a>
         </Dropdown>
         using &nbsp;
-        <Tooltip placement="top" title={`${machines[machine].desciption}`}>
+        <Tooltip
+          placement="top"
+          title={`${machines[machine].description}`}
+          overlayInnerStyle={{
+            width: machines[machine].tooltip_width,
+          }}
+        >
           <Dropdown
             menu={{
               items: machines_selection,
