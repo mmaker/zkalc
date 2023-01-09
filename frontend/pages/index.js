@@ -495,6 +495,7 @@ const Home = () => {
 
   return (
     <Layout style={{ height: "100vh" }}>
+      <br />
       <Layout.Content>
         <Row align="center" span={24}>
           <Col span={10} offset={5}>
@@ -527,6 +528,7 @@ const Home = () => {
           <Space align="baseline">
             <Form.Item
               name="op"
+              initialValue="msm_G1"
               rules={[{ required: true, message: "Missing operation" }]}
             >
               <Select
@@ -554,7 +556,7 @@ const Home = () => {
           </Space>
         </Form>
         <Row align="center" span={24}>
-          <Col span={8} offset={10}>
+          <Col span={8} offset={6}>
             <Typography.Paragraph align="right">
               <Text strong>Total time:&nbsp;&nbsp;</Text>
               <Text italic onClick={() => setHumanTimeFormat(!humanTimeFormat)}>
