@@ -1,31 +1,48 @@
 import "katex/dist/katex.min.css";
 
-import {Layout, LayoutContent} from "antd";
+import {Layout, LayoutContent, Col} from "antd";
 import {InlineMath} from "react-katex";
+
+import Link from "next/link";
+import Image from "next/image";
+
+import logo from "../public/logo.png";
 
 <Layout>
 <Layout.Content>
 
-# Notation
+<Col span={16} offset={4}>
 
-- <InlineMath math="\mathbb{F}_p" /> is the scalar field
-- <InlineMath math="\mathbb{G}_1" /> is the base group
-- <InlineMath math="\mathbb{G}_2" /> is the second group (available only for type-III pairing groups)
-- <InlineMath math="\mathbb{G}_T" /> is the target group
+<center>
+<br/><br/>
+<Link href="/">
+    <Image src={logo} width={100} alt="" />
+</Link>
 
-# About
+[zkalc](https://github.com/zkalc/zkalc) helps you calculate how much time cryptographic operations take on a real computer
 
-- Basic usage: Choose a backend. Then choose an operation and its size.
-Press the button! <br />
-- Choosing a different backend refreshes all results <br />
-- Tooltips can help you reach zkalc enlightment <br />
-- All benchmarks were run with multithreading enabled on the respective
-platform <br />
-- Results above 2^28 have reduced accuracy due to missing benchmarks
-(See TODO.md) <br />
-- Click on the total time to get the result in SI units (seconds) <br />
-- For more details, please check the &quot;Help&quot; page! If you want
-to help, check TODO.md.
+</center>
+## Why?
+
+Cryptographers tend to be good at cryptography but they can be quite bad at estimating the time it takes a computer to run their schemes.
+
+We hope that zkalc can help shorten the gap between cryptography and practice:
+- Cryptographers can use the simple zkalc UX to learn how fast their paper will run on various machines
+- Protocol designers can more easily tune the parameters of their protocol depending on their requirements
+
+## I need a library/curve/operation/machine but it's missing!
+
+If something you need is missing, please help us add it!
+
+Perform the following steps to add any missing benchmarks:
+- If new benchmarks are needed, write code for them in the `backend/` directory following the [already existing conventions](https://github.com/zkalc/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs)
+  - If you write non-Rust benchmarks, they must output a JSON file that `perf/fit.py` can understand (it currently [understands a small subset](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py#L128) of the [format](https://github.com/asn-d6/zkalc/blob/main/perf/blstrs/estimates.json) of criterion's `estimates.json`)
+- Run your benchmarks on the desired machine and move their `output.json` to the `perf/` directory.
+
+Finally, please submit a PR with the above mentioning the specs of your machine and we will take care of the rest!
+
+
+</Col>
 
 </Layout.Content>
 </Layout>

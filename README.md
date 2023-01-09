@@ -17,19 +17,19 @@ zkalc is not 100% accurate; it aims to be easy to use while providing adequate r
 The *scientific methodology* is simple:
 - For each supported operation, we write a benchmark that measures its performance.
 - For basic operations like field addition and multiplication we use the benchmark results in a linear fashion. That is, if a single operation takes `x` seconds on average, `n` such operations take `n*x` seconds.
-- For more complicated operations like MSMs, we run benchmarks for different input sizes and then perform polynomial interpolation over the benchmark results. We use the interpolated polynomials to answer the user's queries. For user queries outside of the interpolation range we extrapolate using a linear function (see TODO.md for possible improvements here).
+- For more complicated operations like MSMs, we run benchmarks for different input sizes and then perform polynomial interpolation over the benchmark results. We use the interpolated polynomials to answer the user's queries. For user queries outside of the interpolation range we extrapolate using a linear function (see [TODO.md](https://github.com/zkalc/zkalc/blob/main/TODO.md) for possible improvements here).
 
 Yes, our techniques are based on approximations. On heuristics. That's usually good enough when designing protocols. For more precise results, actual robust benchmarks of the desired size must be run.
 
-There is still lots of ways we can improve zkalc. Please check [the TODO file](./TODO.md) to see how you can also help!
+There is still lots of ways we can improve zkalc. Please check [the TODO file](https://github.com/zkalc/zkalc/blob/main/TODO.md) to see how you can also help!
 
 ## I need a library/curve/operation/machine but it's missing!
 
 If something you need is missing, please help us add it!
 
 Perform the following steps to add any missing benchmarks:
-- If new benchmarks are needed, write code for them in the `backend/` directory following the already existing conventions
-  - If you write non-Rust benchmarks, they must output a JSON file that `perf/fit.py` can understand (it currently understands the format of criterion's `estimates.json`)
+- If new benchmarks are needed, write code for them in the `backend/` directory following the [already existing conventions](https://github.com/zkalc/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs)
+  - If you write non-Rust benchmarks, they must output a JSON file that `perf/fit.py` can understand (it currently [understands a small subset](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py#L128) of the [format](https://github.com/asn-d6/zkalc/blob/main/perf/blstrs/estimates.json) of criterion's `estimates.json`)
 - Run your benchmarks on the desired machine and move their `output.json` to the `perf/` directory.
 
-Finally, submit a PR with the above mentioning the specs of your machine and we will take care of the rest!
+Finally, please submit a PR with the above mentioning the specs of your machine and we will take care of the rest!

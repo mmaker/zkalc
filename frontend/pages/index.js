@@ -20,6 +20,7 @@ import {
   Alert,
   Button,
   Col,
+  ConfigProvider,
   Form,
   Input,
   Layout,
@@ -420,7 +421,6 @@ const Home = () => {
           title={`${libraries[lib].label} v${libraries[lib].version}`}
         >
           <Dropdown
-            trigger="click"
             menu={{
               items: libraries_selection,
               onClick: ({ key }) => setLib(key),
@@ -453,7 +453,6 @@ const Home = () => {
         using &nbsp;
         <Tooltip placement="top" title={`${machines[machine].desciption}`}>
           <Dropdown
-            trigger={["click"]}
             menu={{
               items: machines_selection,
               onClick: ({ key }) => setMachine(key),
@@ -481,8 +480,12 @@ const Home = () => {
               zkalc
             </Title>
           </Col>
-          <Col span={2} offset={3}>
+          <Col span={3} offset={3}>
             <Link href="/about">
+              <QuestionCircleFilled style={{ fontSize: "25px", color: "black" }} />
+            </Link>
+            &nbsp;&nbsp;&nbsp;
+            <Link href="/help">
               <QuestionCircleFilled style={{ fontSize: "25px", color: "black" }} />
             </Link>
             &nbsp;&nbsp;&nbsp;

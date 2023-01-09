@@ -1,12 +1,40 @@
 import "katex/dist/katex.min.css";
 
-import {Layout, LayoutContent} from "antd";
+import {Layout, LayoutContent, Col} from "antd";
 import {InlineMath} from "react-katex";
+
+import Link from "next/link";
+import Image from "next/image";
+
+import logo from "../public/logo.png";
 
 <Layout>
 <Layout.Content>
 
+<Col span={16} offset={4}>
+
+<center>
+<br/><br/>
+<Link href="/">
+    <Image src={logo} width={100} alt="" />
+</Link>
+</center>
+
+#  Methodology
+
+zkalc is not 100% accurate; it aims to be easy to use while providing adequate results.
+
+The *scientific methodology* is simple:
+- For each supported operation, we write a benchmark that measures its performance.
+- For basic operations like field addition and multiplication we use the benchmark results in a linear fashion. That is, if a single operation takes `x` seconds on average, `n` such operations take `n*x` seconds.
+- For more complicated operations like MSMs, we run benchmarks for different input sizes and then perform polynomial interpolation over the benchmark results. We use the interpolated polynomials to answer the user's queries. For user queries outside of the interpolation range we extrapolate using a linear function (see [TODO.md](https://github.com/zkalc/zkalc/blob/main/TODO.md) for possible improvements here).
+
+Yes, our techniques are based on approximations. On heuristics. That's usually good enough when designing protocols. For more precise results, actual robust benchmarks of the desired size must be run.
+
+There is still lots of ways we can improve zkalc. Please check [the TODO file](https://github.com/zkalc/zkalc/blob/main/TODO.md) to see how you can also help!
+
 # Benchmarking toolsuite
 
+</Col>
 </Layout.Content>
 </Layout>
