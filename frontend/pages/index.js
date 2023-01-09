@@ -118,13 +118,13 @@ const operations = [
     label: "Pairing product",
     value: "pairing_product",
     description: "Pairing product",
-    tooltip: "A product of n pairings",
+    tooltip: "A product of $n$ pairings",
   },
   {
     label: "Field Addition",
     value: "add_ff",
     description: "Field addition(s)",
-    tooltip: "Addition of n elements on the field",
+    tooltip: "Addition of $n$ elements on the field",
   },
   {
     label: "Field Multiplication",
@@ -162,7 +162,7 @@ const Home = () => {
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("arkworks");
   const [machine, setMachine] = React.useState("x86_64");
-  const [curve, setCurve] = React.useState("BLS12_381");
+  const [curve, setCurve] = React.useState("bls12_381");
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
 
   const addIngredient = (ingredient) => {
@@ -327,21 +327,6 @@ const Home = () => {
           </a>
         </Dropdown>
         </Tooltip>
-        using &nbsp;
-        <Tooltip placement="top" title={`${machines[machine].desciption}`}>
-        <Dropdown
-        trigger={['click']}
-          menu={{ items: machines_selection, onClick: ({ key }) => setMachine(key) }}
-        >
-          <a onClick={(e) => e.preventDefault()}>
-            <Space>
-              {machines[machine].label}
-              <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
-              &nbsp;
-            </Space>
-          </a>
-        </Dropdown>
-        </Tooltip>
         over &nbsp;
         <Dropdown
           menu={{
@@ -357,6 +342,21 @@ const Home = () => {
             </Space>
           </a>
         </Dropdown>
+        using &nbsp;
+        <Tooltip placement="top" title={`${machines[machine].desciption}`}>
+        <Dropdown
+        trigger={['click']}
+          menu={{ items: machines_selection, onClick: ({ key }) => setMachine(key) }}
+        >
+          <a onClick={(e) => e.preventDefault()}>
+            <Space>
+              {machines[machine].label}
+              <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
+              &nbsp;
+            </Space>
+          </a>
+        </Dropdown>
+        </Tooltip>
       </>
     );
   };
