@@ -7,8 +7,11 @@ import Link from "next/link";
 import Image from "next/image";
 
 import logo from "../public/logo.png";
+import benchmark_data from "../public/methodology_benchmark_data.png";
+import interpolation from "../public/methodology_interpolation.png";
+import extrapolation from "../public/methodology_extrapolation.png";
 
-<Layout style={{ height: "100vh" }}>
+<Layout>
 <Layout.Content>
 
 <Col span={16} offset={4}>
@@ -48,13 +51,37 @@ For simple operations like basic scalar multiplication and field addition which 
 
 ## Fitting amortized operations
 
-However, there are also more complicated operations like MSMs which are amortized and their performance doesn't follow a simple linear curve. For these operations, we [collect benchmark data](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs#L52) for various sizes and then perform [polynomial interpolation](https://www.youtube.com/watch?v=yQsDxOdn1hk) over the entire dataset.
+However, there are also more complicated operations like MSMs which are amortized and their performance doesn't follow a simple linear curve. For example, consider the figure below which displays the benchmark data from a <InlineMath>\mathbb G_1</InlineMath> MSM operation (the x-axis is in log scale):
 
-That is, for each pair of benchmark data <InlineMath math="(x_i, f(x_i))" /> and <InlineMath math="(x_{i+1}, f(x_{i+1}))" /> we interpolate a linear polynomial [that goes through both points](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py). After we interpolate all points, we end up with a bunch of polynomials that can be evaluated at <InlineMath math="n" /> to approximate <InlineMath math="f(n)" /> when <InlineMath math="n" /> is within the range of the benchmark data: as long as <InlineMath math="min(x_i) \le n \le max(x_i)" /> the interpolated polynomial will evaluate to a reasonable value.
+<br />
+<center>
+<Image src={benchmark_data} width={1280} alt="" />
+</center>
+<br />
 
-However, if a user asks for <InlineMath math="f(n)" /> where <InlineMath math="n" /> is bigger than <InlineMath math="max(x_i)" /> we need to extrapolate. In this case, we take the rightmost polynomial and use that to evaluate <InlineMath math="f(n)" />.
 
-Note here that when we extrapolate, the rightmost polynomial is linear and hence it's not able to faithfully follow the non-linear <InlineMath math="f(x)" />. Hence zkalc will be more inaccurate in that case. Please see [TODO.md](https://github.com/zkalc/zkalc/blob/main/TODO.md) for possible improvements here.
+For these operations, we [collect benchmark data](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs#L52) for various sizes and then perform [polynomial interpolation](https://www.youtube.com/watch?v=yQsDxOdn1hk) over the entire dataset as can be seen on the figure below.
+
+That is, for each pair of benchmark data <InlineMath math="(x_i, f(x_i))" /> and <InlineMath math="(x_{i+1}, f(x_{i+1}))" /> we interpolate a linear polynomial [that goes through both points](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py). After we interpolate all pairs of points, we end up with a bunch of polynomials. We can then approximate <InlineMath math="f(n)" /> by evaluating the right polynomial at <InlineMath math="n" /> and as long as <InlineMath math="min(x_i) \le n \le max(x_i)" /> the interpolated polynomial will evaluate to a value close to <InlineMath math="f(n)" />.
+
+<br />
+<center>
+<Image src={interpolation} width={1280} alt="" />
+</center>
+<br />
+
+However, if a user asks for <InlineMath math="f(n)" /> where <InlineMath math="n" /> is bigger than <InlineMath math="max(x_i)" /> we need to extrapolate. In this case, we take the rightmost polynomial and use that to evaluate <InlineMath math="f(n)" /> as we do in the figure below.
+
+<br />
+<center>
+<Image src={extrapolation} width={1280} alt="" />
+</center>
+<br />
+
+
+Observe that the rightmost polynomial is linear and hence it's not able to faithfully follow the non-linear <InlineMath math="f(x)" />. Hence zkalc will get more and more inaccurate the bigger <InlineMath math="n" /> is. See our [TODO document](https://github.com/zkalc/zkalc/blob/main/TODO.md) for possible improvements here.
+
+<br />
 
 ## Moving the fitted functions to zkalc
 
