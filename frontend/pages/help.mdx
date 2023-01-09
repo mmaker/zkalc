@@ -1,0 +1,40 @@
+import "katex/dist/katex.min.css";
+
+import {Layout, LayoutContent, Col} from "antd";
+import {InlineMath} from "react-katex";
+
+import Link from "next/link";
+import Image from "next/image";
+
+import logo from "../public/logo.png";
+
+<Layout>
+<Layout.Content>
+
+<Col span={16} offset={4}>
+
+<center>
+<br/><br/>
+<Link href="/">
+    <Image src={logo} width={100} alt="" />
+</Link>
+</center>
+
+# zkalc manual
+
+- Tooltips can help you reach zkalc enlightment <br />
+- All benchmarks were run with multithreading enabled unless mentioned <br />
+- Results above 2^22 have reduced accuracy due to missing benchmarks (see [TODO.md](https://github.com/zkalc/zkalc/blob/main/TODO.md)) <br />
+- Click on the total time to get the result in SI units (seconds) <br />
+- For more details, please check our [Github](https://github.com/zkalc/zkalc)!
+
+## Notation
+
+- <InlineMath math="\mathbb{F}_p" /> is the scalar field
+- <InlineMath math="\mathbb{G}_1" /> is the base group
+- <InlineMath math="\mathbb{G}_2" /> is the second group (available only for type-III pairing groups)
+- <InlineMath math="\mathbb{G}_T" /> is the target group
+
+</Col>
+</Layout.Content>
+</Layout>
