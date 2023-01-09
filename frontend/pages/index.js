@@ -80,8 +80,17 @@ const curves = {
 
 const operations = {
   msm_G1: {
-    label: <>MSM on <InlineMath math="\mathbb{G}_1" /></>,
-    description: <>Multiscalar multiplication(s) over <InlineMath math="\mathbb{G}_1" /></>,
+    label: (
+      <>
+        MSM on <InlineMath math="\mathbb{G}_1" />
+      </>
+    ),
+    description: (
+      <>
+        Multiscalar multiplication(s) over <InlineMath math="\mathbb{G}_1" />
+      </>
+    ),
+    tooltip_width: 500,
     tooltip: (
       <>
         A linear combination of points and scalars in the{" "}
@@ -90,13 +99,24 @@ const operations = {
     ),
   },
   msm_G2: {
-    label: <>MSM on <InlineMath math="\mathbb{G}_2"/></>,
+    label: (
+      <>
+        MSM on <InlineMath math="\mathbb{G}_2" />
+      </>
+    ),
     value: "msm_G2",
-    description: <>Multiscalar multiplication(s) over <InlineMath math="\mathbb{G}_2" /></>,
+    description: (
+      <>
+        Multiscalar multiplication(s) over <InlineMath math="\mathbb{G}_2" />
+      </>
+    ),
+    tooltip_width: 500,
     tooltip: (
       <>
-        A linear combination of points and scalars in the{" "}
-        <InlineMath>\mathbb G_2</InlineMath> group
+        Given scalars{" "}
+        <InlineMath math="a_1, a_2, \dots, a_n \in \mathbb{F}_p" /> and points{" "}
+        <InlineMath math="P_1, P_2, \dots, P_n \in \mathbb{G}_2" /> compute{" "}
+        <InlineMath math="\sum_i a_iP_i" />
       </>
     ),
   },
@@ -104,6 +124,7 @@ const operations = {
     label: "Pairing",
     value: "pairing",
     description: "Pairing(s)",
+    tooltip_width: 100,
     tooltip: (
       <>
         Computation of <InlineMath>n</InlineMath> pairings
@@ -113,28 +134,78 @@ const operations = {
   pairing_product: {
     label: "Pairing product",
     description: "Pairing product",
-    tooltip: <InlineMath math="((A_0, B_0), (A_1, B_1), \dots (A_n, B_n)) \mapsto \sum_i e(A_i, B_i)" />,
+    tooltip_width: 500,
+    tooltip: (
+      <>
+        Given as input{" "}
+        <InlineMath math="A_1, A_2, \dots, A_n \in \mathbb{G}_1" /> and{" "}
+        <InlineMath math="B_1, B_2, \dots, B_n \in \mathbb{G}_2" />, compute:
+        <BlockMath math="\sum_i e(A_i, B_i)" />
+      </>
+    ),
   },
   add_ff: {
-    label: <>Addition over <InlineMath math="\mathbb{F}_p"/></>,
+    label: (
+      <>
+        Addition over <InlineMath math="\mathbb{F}_p" />
+      </>
+    ),
     description: "Field addition(s)",
-    tooltip: <InlineMath>(a _0, a_1, \dots, a_n) \mapsto \sum_i a_i</InlineMath>,
+    tooltip_width: 300,
+    tooltip: (
+      <>
+        Given field elements{" "}
+        <InlineMath math="a_1, a_2, \dots, a_n \in \mathbb{F}_p" /> compute{" "}
+        <InlineMath math="\sum_i a_i" />
+      </>
+    ),
   },
   mul: {
-    label:  <>Multiplication over <InlineMath math="\mathbb{F}_p"/></>,
+    label: (
+      <>
+        Multiplication over <InlineMath math="\mathbb{F}_p" />
+      </>
+    ),
     description: "Field multiplication(s)",
-    tooltip: <InlineMath math="(a _0, a_1, \dots, a_n) \mapsto \prod_i a_i" />,
+    tooltip_width: 300,
+    tooltip: (
+      <>
+        Given field elements{" "}
+        <InlineMath math="a_1, a_2, \dots, a_n \in \mathbb{F}_p" /> compute{" "}
+        <InlineMath math="\prod_i a_i" />
+      </>
+    ),
   },
   invert: {
-    label:  <>Inversion over <InlineMath math="\mathbb{F}_p"/></>,
+    label: (
+      <>
+        Inversion over <InlineMath math="\mathbb{F}_p" />
+      </>
+    ),
     value: "invert",
     description: "Field inversion(s)",
-    tooltip: <InlineMath math="(a _0, a_1, \dots, a_n) \mapsto (a_0^{-1}, a_1^{-1}, \dots, a_n^{-1} )" />,
+    tooltip_width: 300,
+    tooltip: (
+      <>
+        Given field elements{" "}
+        <InlineMath math="a_1, a_2, \dots, a_n \in \mathbb{F}_p" /> compute{" "}
+        <InlineMath math="a_1^{-1}, a_2^{-1}, \dots, a_n^{-1}" />
+        <br />
+        <Text italic> without batch inversion formulae</Text>
+      </>
+    ),
   },
   add_ec: {
-    label:  <>Addition over <InlineMath math="\mathbb{G}_1"/></>,
+    label: (
+      <>
+        Addition over <InlineMath math="\mathbb{G}_1" />
+      </>
+    ),
     description: "Elliptic curve $\\mathbb{G}1$ additions",
-    tooltip: <InlineMath math="\mathbb{G}_1^n \mapsto \mathbb{G}_1: (A_0, A_1, \dots, A_n) \mapsto \sum_i A_i" />,
+    tooltip_width: 500,
+    tooltip: (
+      <InlineMath math="\mathbb{G}_1^n \mapsto \mathbb{G}_1: (A_0, A_1, \dots, A_n) \mapsto \sum_i A_i" />
+    ),
   },
 };
 
@@ -461,7 +532,13 @@ const Home = () => {
                   <Col span={14}>
                     <InlineMath math={formatFormula(ingredient.quantity)} />
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Tooltip color="#108ee9" overlayInnerStyle={{width: 300}} title={operations[ingredient.op].tooltip}>
+                    <Tooltip
+                      color="#108ee9"
+                      overlayInnerStyle={{
+                        width: operations[ingredient.op].tooltip_width,
+                      }}
+                      title={operations[ingredient.op].tooltip}
+                    >
                       {operations[ingredient.op].description}
                     </Tooltip>
                   </Col>
