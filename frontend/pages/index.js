@@ -39,8 +39,8 @@ import { parse } from "mathjs";
 ///////////////////// Add your benchmarks here /////////////////////
 
 // Import our benchmark results
-import estimates_arkworks_m1 from "../data/results_arkworks_m1.json";
-import estimates_blstrs_m1 from "../data/results_blstrs_m1.json";
+import estimates_arkworks_macbookpro2021 from "../data/results_arkworks_macbookpro2021.json";
+import estimates_blstrs_macbookpro2021 from "../data/results_blstrs_macbookpro2021.json";
 import estimates_arkworks_t450 from "../data/results_arkworks_t450.json";
 import estimates_blstrs_t450 from "../data/results_blstrs_t450.json";
 
@@ -48,13 +48,13 @@ const estimates = {
   blstrs: {
     bls12_381: {
       thinkpad_t450: estimates_blstrs_t450,
-      m1pro: estimates_blstrs_m1,
+      m1pro: estimates_blstrs_macbookpro2021,
     },
   },
   arkworks: {
     bls12_381: {
       thinkpad_t450: estimates_arkworks_t450,
-      m1pro: estimates_arkworks_m1,
+      m1pro: estimates_arkworks_macbookpro2021,
     },
   },
 };
@@ -574,6 +574,7 @@ const Home = () => {
                     <InlineMath math={formatFormula(ingredient.quantity)} />
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <Tooltip
+                      placement="top"
                       color="#108ee9"
                       overlayInnerStyle={{
                         width: operations[ingredient.op].tooltip_width,
