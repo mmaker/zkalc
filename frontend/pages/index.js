@@ -301,6 +301,7 @@ const Home = () => {
   // useEffect(() => {
   //   renderMathInElement(ingredientsList.current, katex_settings);
   // });
+  const [ingredientForm] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("arkworks");
   const [machine, setMachine] = React.useState("m1pro");
@@ -397,6 +398,7 @@ const Home = () => {
   };
 
   const resetRecipe = () => {
+    ingredientForm.resetFields();
     setRecipe([]);
   };
 
@@ -559,7 +561,7 @@ const Home = () => {
         </Row>
         <br />
         <br />
-        <Form onFinish={addIngredient} align="center" autoComplete="off">
+        <Form form={ingredientForm}  onFinish={addIngredient} align="center" autoComplete="off">
           <Space align="baseline">
             <Form.Item
               name="op"
