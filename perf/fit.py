@@ -16,45 +16,60 @@ from scipy.interpolate import lagrange
 class NoNeedForFitting(Exception): pass
 
 class PolyInterpolation:
-    """Perform a polynomial interpolation at a dataset of operations of `sizes` that take time `times`."""
-    def __init__(self, sizes, times):
-        self.sizes = sizes
-        self.times = times
+    """
+    Perform a polynomial interpolation where `xs` and `ys` are arrays of values used to approximate some function f: `y = f(x)`.
+
+    For each pair of points, we interpolate a Lagrange polynomial and save it in `self.polynomials`. We also save the
+    range it covers in the `x` axis in `self.ranges`.
+
+    The `predict()` method accesses those polynomials and can evaluate f(n) at an arbitrary point `n`. If `n` is out of
+    range, it will extrapolate using the closest polynomial.
+
+    Finally, `to_javascript()` exports the `predict()` function as a Javascript function for use by the zkalc website.
+    """
+    def __init__(self, xs, ys):
+        self.xs = xs
+        self.ys = ys
         # Polynomials are stored in poly1d form (so for example [2,3] is `2*x + 3`)
         self.polynomials = []
         self.ranges = []
 
         # Do an interpolation for each pair of points
-        for i in range(len(sizes) - 1):
-            x = [sizes[i], sizes[i+1]]
-            y = [times[i], times[i+1]]
+        for i in range(len(xs) - 1):
+            x = [xs[i], xs[i+1]]
+            y = [ys[i], ys[i+1]]
             polynomial = lagrange(x, y)
             self.polynomials.append(polynomial)
             self.ranges.append([x[0], x[1]])
 
-    def predict(self, size):
-        """Use the interpolation results to predict the time at an arbitrary `size`"""
+    def predict(self, n):
+        """Use the interpolation results to evaluate f(n) at an arbitrary `n`"""
 
         # We are asked to predict out of range: extrapolate using the closest polynomial
-        if size < self.ranges[0][0]:
-            return self.polynomials[0](size)
-        elif size > self.ranges[-1][1]:
+        if n < self.ranges[0][0]:
+            return self.polynomials[0](n)
+        elif n > self.ranges[-1][1]:
             # XXX here we should be fitting to a n/logn function instead of using the interpolated poly
-            return self.polynomials[-1](size)
+            return self.polynomials[-1](n)
 
         # Find the right polynomial
         for i, (start, end) in enumerate(self.ranges):
-            if start <= size <= end:
-                return self.polynomials[i](size)
+            if start <= n <= end:
+                return self.polynomials[i](n)
 
         raise ValueError("Invalid size")
 
     def plot(self):
         """Plot the interpolated functions against the actual data"""
-        x = np.linspace(min(self.sizes), 2**21, 100000)
+        x = np.linspace(min(self.xs), 2**21, 100000)
         y = [self.predict(z) for z in x]
-        plt.semilogx(self.sizes, self.times, 'o', base=2)
-        plt.semilogx(x, y, '-', base=2)
+        plt.semilogx(self.xs, self.ys, 'o', base=2, label="Benchmark data")
+        plt.semilogx(x, y, '-', base=2, label="Fitted function")
+
+        plt.xlabel("Operation input size")
+        plt.ylabel("Operation time (in nanoseconds)")
+
+        plt.legend()
         plt.show()
 
     def to_javascript(self):
@@ -88,7 +103,7 @@ def parse_benchmark_description(description):
     if description[0] == "pairing_product":
         desc = description[0]
         return desc, description[1]
-    if description[0] in ("mul_ff", "add_ff", "add_ec", "mul_ec", "invert", "pairing"):
+    if description[0] in ("mul_ff", "mul_ec", "add_ff", "add_ec", "mul_ec", "invert", "pairing"):
         return description[0], 1
     else:
         raise NoNeedForFitting
@@ -107,14 +122,11 @@ def convert_measurement_to_js_function(operation, measurement):
     # Handle simple non-amortized operations like mul:
     # If one mul takes x ms, n muls take x*n ms.
     if len(sizes) == 1:
-        polynomial = poly.Polynomial([0,times[0]])
-        coeffs = list(map(str, polynomial))
         x = int(times[0])
-        estimate = x * 2**28 * 1e-9
-        print(f"{operation} [{len(measurement)} samples] [2^28 example: {estimate:.2} s]:\n\t{coeffs}\n", file=sys.stderr)
+        print(f"{operation} [{len(measurement)} samples] [2^28 example: {(x * 2**28 * 1e-9):.2} s]:\n\t{x}\n", file=sys.stderr)
         return basic_operation_to_js(x)
     else:
-        # It's a complicated operation: do an interpolation!
+        # It's a complicated operation: do a proper polynomial interpolation!
         interpolation = PolyInterpolation(sizes, times)
         return interpolation.to_javascript()
 

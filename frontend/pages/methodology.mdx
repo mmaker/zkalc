@@ -8,7 +8,7 @@ import Image from "next/image";
 
 import logo from "../public/logo.png";
 
-<Layout>
+<Layout style={{ height: "100vh" }}>
 <Layout.Content>
 
 <Col span={16} offset={4}>
@@ -18,22 +18,55 @@ import logo from "../public/logo.png";
 <Link href="/">
     <Image src={logo} width={100} alt="" />
 </Link>
-</center>
 
-#  Methodology
+#  zkalc scientific methodology
+
+</center>
 
 zkalc is not 100% accurate; it aims to be easy to use while providing adequate results.
 
-The *scientific methodology* is simple:
-- For each supported operation, we write a benchmark that measures its performance.
-- For basic operations like field addition and multiplication we use the benchmark results in a linear fashion. That is, if a single operation takes `x` seconds on average, `n` such operations take `n*x` seconds.
-- For more complicated operations like MSMs, we run benchmarks for different input sizes and then perform polynomial interpolation over the benchmark results. We use the interpolated polynomials to answer the user's queries. For user queries outside of the interpolation range we extrapolate using a linear function (see [TODO.md](https://github.com/zkalc/zkalc/blob/main/TODO.md) for possible improvements here).
 
-Yes, our techniques are based on approximations. On heuristics. That's usually good enough when designing protocols. For more precise results, actual robust benchmarks of the desired size must be run.
+
+Our *scientific methodology* is simple:
+1. For each supported operation, we run benchmarks that measures its performance.
+2. For each operation, we fit the benchmark data to a function which is then exported to the zkalc website.
+3. When a user queries zkalc for an operation of size <InlineMath math="n" />, we evaluate the exported function at <InlineMath math="n" />.
+
+We will now go deeper into the above, also linking to the relevant places in the codebase.
+
+## Running benchmarks
+
+The [`backend/` directory](https://github.com/asn-d6/zkalc/blob/main/backend/) contains benchmarks for all the crypto libraries and operations we support. [Consider for example](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs) the benchmarks for the `arkworks` library.
+
+Running `make` on the `backend/` directory will run every benchmark and move the results to the `perf/` directory where they will get fitted to functions.
+
+Now we have benchmark data for every operation in the `perf/` directory. The next step is to fit a function <InlineMath math="f(x)" /> to every operation, and then export <InlineMath math="f(x)" /> to Javascript and call it from the zkalc website.
+
+## Fitting simple operations
+
+For simple operations like basic scalar multiplication and field addition which are not amortized we use the benchmark results in a linear fashion. That is, if a single scalar multiplication takes <InlineMath math="x" /> seconds on average, <InlineMath math="n" /> such operations will take <InlineMath math="n*x" /> seconds. That results in a linear function <InlineMath math="f(x) = n*x" /> that can easily be exported to the zkalc website.
+
+## Fitting amortized operations
+
+However, there are also more complicated operations like MSMs which are amortized and their performance doesn't follow a simple linear curve. For these operations, we [collect benchmark data](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs#L52) for various sizes and then perform [polynomial interpolation](https://www.youtube.com/watch?v=yQsDxOdn1hk) over the entire dataset.
+
+That is, for each pair of benchmark data <InlineMath math="(x_i, f(x_i))" /> and <InlineMath math="(x_{i+1}, f(x_{i+1}))" /> we interpolate a linear polynomial [that goes through both points](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py). After we interpolate all points, we end up with a bunch of polynomials that can be evaluated at <InlineMath math="n" /> to approximate <InlineMath math="f(n)" /> when <InlineMath math="n" /> is within the range of the benchmark data: as long as <InlineMath math="min(x_i) \le n \le max(x_i)" /> the interpolated polynomial will evaluate to a reasonable value.
+
+However, if a user asks for <InlineMath math="f(n)" /> where <InlineMath math="n" /> is bigger than <InlineMath math="max(x_i)" /> we need to extrapolate. In this case, we take the rightmost polynomial and use that to evaluate <InlineMath math="f(n)" />.
+
+Note here that when we extrapolate, the rightmost polynomial is linear and hence it's not able to faithfully follow the non-linear <InlineMath math="f(x)" />. Hence zkalc will be more inaccurate in that case. Please see [TODO.md](https://github.com/zkalc/zkalc/blob/main/TODO.md) for possible improvements here.
+
+## Moving the fitted functions to zkalc
+
+Finally, after all operations have been fitted to functions, we [export the functions to Javascript](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py#L60) and [dump them](https://github.com/asn-d6/zkalc/blob/main/frontend/data/results_arkworks_macbookpro2021.json) on the `frontend/` directory to be used by the zkalc website.
+
+<br />
+
+----
+
+<br />
 
 There is still lots of ways we can improve zkalc. Please check [the TODO file](https://github.com/zkalc/zkalc/blob/main/TODO.md) to see how you can also help!
-
-# Benchmarking toolsuite
 
 </Col>
 </Layout.Content>
