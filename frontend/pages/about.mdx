@@ -41,18 +41,6 @@ We hope that zkalc can help shorten the gap between cryptography and practice:
 
 <br/>
 
-### I need a library/curve/operation/machine but it's missing!
-
-If something you need is missing, please help us add it!
-
-Perform the following steps to add any missing benchmarks:
-- If new benchmarks are needed, write code for them in the `backend/` directory following the [already existing conventions](https://github.com/zkalc/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs)
-  - If you write non-Rust benchmarks, they must output a JSON file that `perf/fit.py` can understand (it currently [understands a small subset](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py#L128) of the [format](https://github.com/asn-d6/zkalc/blob/main/perf/blstrs/estimates.json) of criterion's `estimates.json`)
-- Run your benchmarks on the desired machine and move their `output.json` to the `perf/` directory.
-
-Finally, please submit a PR with the above mentioning the specs of your machine and we will take care of the rest!
-
-
 </Col>
 
 </Layout.Content>

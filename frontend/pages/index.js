@@ -12,9 +12,10 @@ import {
   MinusCircleOutlined,
   PlusOutlined,
   DownOutlined,
-  QuestionCircleFilled,
+  QuestionCircleOutlined,
   DashboardOutlined,
-  GithubFilled,
+  GithubOutlined,
+  FileAddOutlined,
 } from "@ant-design/icons";
 import {
   Alert,
@@ -516,7 +517,11 @@ const Home = () => {
           </Col>
           <Col span={3} offset={3}>
             <Link href="/about">
-              <QuestionCircleFilled style={{ fontSize: "25px", color: "black" }} />
+              <QuestionCircleOutlined style={{ fontSize: "25px", color: "black" }} />
+            </Link>
+            &nbsp;&nbsp;&nbsp;
+            <Link href="/add">
+              <FileAddOutlined style={{ fontSize: "25px", color: "black" }} />
             </Link>
             &nbsp;&nbsp;&nbsp;
            <Link href="/methodology">
@@ -524,7 +529,7 @@ const Home = () => {
             </Link>
             &nbsp;&nbsp;&nbsp;
             <Link href="https://github.com/asn-d6/zkalc">
-              <GithubFilled style={{ fontSize: "25px", color: "black" }} />
+              <GithubOutlined style={{ fontSize: "25px", color: "black" }} />
             </Link>
           </Col>
         </Row>
