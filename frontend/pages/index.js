@@ -7,6 +7,7 @@ import Image from "next/image";
 import logo from "../public/logo.png";
 import renderMathInElement from "katex/contrib/auto-render";
 
+import { InlineMath, BlockMath } from "react-katex";
 import {
   MinusCircleOutlined,
   PlusOutlined,
@@ -55,20 +56,94 @@ const estimates = {
 const { Title, Text } = Typography;
 
 const libraries = {
-  arkworks: {label: "arkworks-rs", version: "0.4", url: "https://arkworks.rs/"},
-  blstrs: {label: "blstrs", version: "0.1", url: "blstrs"},
-  dalek: {label: "dalek", version: "0.1", url: "dalek", disabled: true},
-}
+  arkworks: {
+    label: "arkworks-rs",
+    version: "0.4",
+    url: "https://arkworks.rs/",
+  },
+  blstrs: { label: "blstrs", version: "0.1", url: "blstrs" },
+  dalek: { label: "dalek", version: "0.1", url: "dalek", disabled: true },
+};
 
 const machines = {
-  m1pro: {label: "M1 Pro 2021", desciption: "Macbook Pro 2022 14\" M1 Pro"},
-  x86_64: {label: "ThinkPad X1 Carbon", desciption: "ThinkPad X1 Carbon 1970"},
-  ec2large3: {label: "ec2-large3", disabled: true},
-}
+  m1pro: { label: "M1 Pro 2021", desciption: 'Macbook Pro 2022 14" M1 Pro' },
+  x86_64: {
+    label: "ThinkPad X1 Carbon",
+    desciption: "ThinkPad X1 Carbon 1970",
+  },
+  ec2large3: { label: "ec2-large3", disabled: true },
+};
 
 const curves = {
-  bls12_381: {label: "BLS12-381", key: "bls12_381"},
-}
+  bls12_381: { label: "BLS12-381", key: "bls12_381" },
+};
+
+const operations = {
+  msm_G1: {
+    label: "G1 MSM",
+    description: "Multiscalar multiplication(s) over $\\mathbb{G}_1$",
+    tooltip: (
+      <>
+        A linear combination of points and scalars in the{" "}
+        <InlineMath>\mathbb G_1</InlineMath> group
+      </>
+    ),
+  },
+  msm_G2: {
+    label: "G2 MSM",
+    value: "msm_G2",
+    description: "Multiscalar multiplication(s) over $\\mathbb{G}_2$",
+    tooltip: (
+      <>
+        A linear combination of points and scalars in the{" "}
+        <InlineMath>\mathbb G_2</InlineMath> group
+      </>
+    ),
+  },
+  pairing: {
+    label: "Pairing",
+    value: "pairing",
+    description: "Pairing(s)",
+    tooltip: (
+      <>
+        Computation of <InlineMath>n</InlineMath> pairings
+      </>
+    ),
+  },
+  pairing_product: {
+    label: "Pairing product",
+    description: "Pairing product",
+    tooltip: <>A product of $n$ pairings</>,
+  },
+  add_ff: {
+    label: "Field Addition",
+    description: "Field addition(s)",
+    tooltip: <>Addition of $n$ elements on the field</>,
+  },
+  mul: {
+    label: "Field Multiplication",
+    description: "Field multiplication(s)",
+    tooltip: <>Multiplication of n elements on the field</>,
+  },
+  invert: {
+    label: "Field Inversion",
+    value: "invert",
+    description: "Field inversion(s)",
+    tooltip: <>Inversion of n elements on the field</>,
+  },
+  add_ec: {
+    label: "Curve Addition",
+    description: "Elliptic curve G1 additions",
+    tooltip: (
+      <>
+        Addition of two elements in the <InlineMath>\mathbb G_1</InlineMath>{" "}
+        group
+      </>
+    ),
+  },
+};
+
+/// these should be automatically generated from the above constants.
 
 const libraries_selection = Object.keys(libraries).map((lib) => {
   return {
@@ -77,8 +152,6 @@ const libraries_selection = Object.keys(libraries).map((lib) => {
     disabled: libraries[lib].disabled || false,
   };
 });
-
-/// these should be automatically generated from the above constants.
 
 const machines_selection = Object.keys(machines).map((machine) => {
   return {
@@ -93,58 +166,12 @@ const curves_selection = {
   blstrs: [curves.bls12_381],
 };
 
-const operations = [
-  {
-    label: "G1 MSM",
-    value: "msm_G1",
-    description: "Multiscalar multiplication(s) over $\\mathbb{G}_1$",
-    tooltip:
-      "A linear combination of points and scalars in the \\mathbb{G}1 group",
-  },
-  {
-    label: "G2 MSM",
-    value: "msm_G2",
-    description: "Multiscalar multiplication(s) over $\\mathbb{G}_2$",
-    tooltip:
-      "A linear combination of points and scalars in the $\\mathbb{G}_2$ group",
-  },
-  {
-    label: "Pairing",
-    value: "pairing",
-    description: "Pairing(s)",
-    tooltip: "Computation of n pairings",
-  },
-  {
-    label: "Pairing product",
-    value: "pairing_product",
-    description: "Pairing product",
-    tooltip: "A product of $n$ pairings",
-  },
-  {
-    label: "Field Addition",
-    value: "add_ff",
-    description: "Field addition(s)",
-    tooltip: "Addition of $n$ elements on the field",
-  },
-  {
-    label: "Field Multiplication",
-    value: "mul",
-    description: "Field multiplication(s)",
-    tooltip: "Multiplication of n elements on the field",
-  },
-  {
-    label: "Field Inversion",
-    value: "invert",
-    description: "Field inversion(s)",
-    tooltip: "Inversion of n elements on the field",
-  },
-  {
-    label: "Curve Addition",
-    value: "add_ec",
-    description: "Elliptic curve G1 additions",
-    tooltip: "Addition of two elements in the G1 group",
-  },
-];
+const operations_selection = Object.keys(operations).map((operation) => {
+  return {
+    label: operations[operation].label,
+    value: operation,
+  };
+});
 
 const katex_settings = {
   delimiters: [
@@ -170,6 +197,8 @@ const Home = () => {
     const op = ingredient.op;
     const formula = parse(ingredient.quantity);
     const item = { op: op, quantity: formula };
+    // XXX. changing this to [item, ... recipe] will conflict with katex, which will
+    // cache some of the rendering and thus fuck up our quantities
     setRecipe((recipe) => [...recipe, item]);
   };
 
@@ -281,7 +310,7 @@ const Home = () => {
     }
   };
 
-  function Authors() {
+  const Authors = () => {
     // only two authors for now
     const _authors = [
       { name: "George Kadianakis", website: "https://github.com/asn-d6" },
@@ -290,7 +319,7 @@ const Home = () => {
     const [authors, setAuthors] = React.useState(_authors);
 
     // Randomize author list
-    useEffect(()=>{
+    useEffect(() => {
       const randomizedAuthors = [..._authors].sort(() => 0.5 - Math.random());
       setAuthors(randomizedAuthors);
     }, []);
@@ -316,16 +345,25 @@ const Home = () => {
     return (
       <>
         Estimating &nbsp;
-        <Tooltip placement="top" title={`${libraries[lib].label} v${libraries[lib].version}`}>
-        <Dropdown trigger="click" menu={{ items: libraries_selection, onClick: ({ key }) => setLib(key) }}>
-          <a onClick={(e) => e.preventDefault()}>
-            <Space>
-              {libraries[lib].label}
-              <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
-              &nbsp;
-            </Space>
-          </a>
-        </Dropdown>
+        <Tooltip
+          placement="top"
+          title={`${libraries[lib].label} v${libraries[lib].version}`}
+        >
+          <Dropdown
+            trigger="click"
+            menu={{
+              items: libraries_selection,
+              onClick: ({ key }) => setLib(key),
+            }}
+          >
+            <a onClick={(e) => e.preventDefault()}>
+              <Space>
+                {libraries[lib].label}
+                <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
+                &nbsp;
+              </Space>
+            </a>
+          </Dropdown>
         </Tooltip>
         over &nbsp;
         <Dropdown
@@ -344,18 +382,21 @@ const Home = () => {
         </Dropdown>
         using &nbsp;
         <Tooltip placement="top" title={`${machines[machine].desciption}`}>
-        <Dropdown
-        trigger={['click']}
-          menu={{ items: machines_selection, onClick: ({ key }) => setMachine(key) }}
-        >
-          <a onClick={(e) => e.preventDefault()}>
-            <Space>
-              {machines[machine].label}
-              <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
-              &nbsp;
-            </Space>
-          </a>
-        </Dropdown>
+          <Dropdown
+            trigger={["click"]}
+            menu={{
+              items: machines_selection,
+              onClick: ({ key }) => setMachine(key),
+            }}
+          >
+            <a onClick={(e) => e.preventDefault()}>
+              <Space>
+                {machines[machine].label}
+                <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
+                &nbsp;
+              </Space>
+            </a>
+          </Dropdown>
         </Tooltip>
       </>
     );
@@ -385,7 +426,7 @@ const Home = () => {
                 bordered={false}
                 placeholder="pk ops"
                 showSearch
-                options={operations}
+                options={operations_selection}
               />
             </Form.Item>
             <Form.Item
@@ -424,16 +465,8 @@ const Home = () => {
                   <Col span={14}>
                     ${formatFormula(ingredient.quantity)}$
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Tooltip
-                      title={
-                        operations.filter((x) => x.value === ingredient.op)[0]
-                          .tooltip
-                      }
-                    >
-                      {
-                        operations.filter((x) => x.value === ingredient.op)[0]
-                          .description
-                      }
+                    <Tooltip title={operations[ingredient.op].tooltip}>
+                      {operations[ingredient.op].description}
                     </Tooltip>
                   </Col>
                   <Col span={6} align="right">
