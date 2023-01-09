@@ -485,10 +485,6 @@ const Home = () => {
               <QuestionCircleFilled style={{ fontSize: "25px", color: "black" }} />
             </Link>
             &nbsp;&nbsp;&nbsp;
-            <Link href="/help">
-              <QuestionCircleFilled style={{ fontSize: "25px", color: "black" }} />
-            </Link>
-            &nbsp;&nbsp;&nbsp;
             <Link href="/methodology">
               <DashboardOutlined style={{ fontSize: "25px", color: "black" }} />
             </Link>
