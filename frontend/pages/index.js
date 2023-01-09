@@ -592,7 +592,7 @@ const Home = () => {
           </Space>
         </Form>
         <Row align="center" span={24}>
-          <Col span={8} offset={6}>
+          <Col span={8} offset={4}>
             <Typography.Paragraph align="right">
               <Text strong>Total time:&nbsp;&nbsp;</Text>
               <Text italic onClick={() => setHumanTimeFormat(!humanTimeFormat)}>
