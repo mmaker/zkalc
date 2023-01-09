@@ -441,7 +441,7 @@ const Home = () => {
         >
           <a onClick={(e) => e.preventDefault()}>
             <Space>
-              {curve}
+              {curves[curve].label}
               <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
               &nbsp;
             </Space>
