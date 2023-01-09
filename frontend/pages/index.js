@@ -200,7 +200,7 @@ const operations = {
   mul_ec: {
     label: (
       <>
-        Scalar multiplication over <InlineMath math="\mathbb{G}_1" />
+        Scalar mult. over <InlineMath math="\mathbb{G}_1" />
       </>
     ),
     description: (
