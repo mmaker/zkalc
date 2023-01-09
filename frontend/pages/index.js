@@ -527,7 +527,7 @@ const Home = () => {
       <br />
       <Layout.Content>
         <Row align="center" span={24}>
-          <Col span={10} offset={5}>
+          <Col span={10} offset={6}>
             <Title align="center" italic onClick={resetRecipe}>
               zkalc
             </Title>
@@ -569,7 +569,7 @@ const Home = () => {
               <Select
                 style={{ width: 230 }}
                 bordered={false}
-                placeholder="pk ops"
+                placeholder="Operation (e.g. add)"
                 showSearch
                 options={operations_selection}
               />
