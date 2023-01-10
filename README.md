@@ -1,6 +1,6 @@
-# zkalc is a cryptographic calculator!
+# [zkalc](https://zka.lc) is a cryptographic calculator!
 
-zkalc helps you calculate how much time cryptographic operations take on a real computer
+[zkalc](https://zka.lc) helps you calculate how much time cryptographic operations take on a real computer
 
 ## Why?
 
@@ -10,26 +10,12 @@ We hope that zkalc can help shorten the gap between cryptography and practice:
 - Cryptographers can use the simple zkalc UX to learn how fast their paper will run on various machines
 - Protocol designers can more easily tune the parameters of their protocol depending on their requirements
 
-## How does zkalc work?
+Please see the various pages of [the website](https://zka.lc) for more information on how zkalc works.
 
-zkalc is not 100% accurate; it aims to be easy to use while providing adequate results.
+## Codebase Structure
 
-The *scientific methodology* is simple:
-- For each supported operation, we write a benchmark that measures its performance.
-- For basic operations like field addition and multiplication we use the benchmark results in a linear fashion. That is, if a single operation takes `x` seconds on average, `n` such operations take `n*x` seconds.
-- For more complicated operations like MSMs, we run benchmarks for different input sizes and then perform polynomial interpolation over the benchmark results. We use the interpolated polynomials to answer the user's queries. For user queries outside of the interpolation range we extrapolate using a linear function (see [TODO.md](https://github.com/zkalc/zkalc/blob/main/TODO.md) for possible improvements here).
+- `backend/` is the directory with all the benchmarks
+- `frontend/` is the directory with the website (do `npm install` and then `npm run dev` to start it locally)
+- `perf/` is the directory with the curve fitting logic
 
-Yes, our techniques are based on approximations. On heuristics. That's usually good enough when designing protocols. For more precise results, actual robust benchmarks of the desired size must be run.
-
-There is still lots of ways we can improve zkalc. Please check [the TODO file](https://github.com/zkalc/zkalc/blob/main/TODO.md) to see how you can also help!
-
-## I need a library/curve/operation/machine but it's missing!
-
-If something you need is missing, please help us add it!
-
-Perform the following steps to add any missing benchmarks:
-- If new benchmarks are needed, write code for them in the `backend/` directory following the [already existing conventions](https://github.com/zkalc/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs)
-  - If you write non-Rust benchmarks, they must output a JSON file that `perf/fit.py` can understand (it currently [understands a small subset](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py#L128) of the [format](https://github.com/asn-d6/zkalc/blob/main/perf/blstrs/estimates.json) of criterion's `estimates.json`)
-- Run your benchmarks on the desired machine and move their `output.json` to the `perf/` directory.
-
-Finally, please submit a PR with the above mentioning the specs of your machine and we will take care of the rest!
+Enjoy!

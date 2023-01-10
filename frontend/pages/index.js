@@ -164,7 +164,11 @@ const operations = {
         Addition over <InlineMath math="\mathbb{F}_p" />
       </>
     ),
-    description: "Field addition(s)",
+    description: (
+      <>
+          Field addition(s) over <InlineMath math="\mathbb{F}_p" />
+      </>
+    ),
     tooltip_width: 300,
     tooltip: (
       <>
@@ -180,7 +184,11 @@ const operations = {
         Multiplication over <InlineMath math="\mathbb{F}_p" />
       </>
     ),
-    description: "Field multiplication(s)",
+    description: (
+      <>
+          Field multiplication(s) over <InlineMath math="\mathbb{F}_p" />
+      </>
+    ),
     tooltip_width: 300,
     tooltip: (
       <>
@@ -196,7 +204,11 @@ const operations = {
         Scalar multiplication over <InlineMath math="\mathbb{G}_1" />
       </>
     ),
-    description: "Scalar multiplication(s)",
+    description: (
+      <>
+          Scalar multiplication(s) over <InlineMath math="\mathbb{G}_1" />
+      </>
+    ),
     tooltip_width: 300,
     tooltip: (
       <>
@@ -213,7 +225,11 @@ const operations = {
       </>
     ),
     value: "invert",
-    description: "Field inversion(s)",
+    description: (
+      <>
+          Field inversion(s) over <InlineMath math="\mathbb{F}_p" />
+      </>
+    ),
     tooltip_width: 300,
     tooltip: (
       <>
@@ -288,7 +304,7 @@ const Home = () => {
   // });
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("arkworks");
-  const [machine, setMachine] = React.useState("thinkpad_t450");
+  const [machine, setMachine] = React.useState("m1pro");
   const [curve, setCurve] = React.useState("bls12_381");
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
 
@@ -558,7 +574,7 @@ const Home = () => {
               rules={[{ required: true, message: "Missing operation" }]}
             >
               <Select
-                style={{ width: 200 }}
+                style={{ width: 230 }}
                 bordered={false}
                 placeholder="pk ops"
                 showSearch
@@ -567,6 +583,7 @@ const Home = () => {
             </Form.Item>
             <Form.Item
               name="quantity"
+              style={{ width: 110 }}
               rules={[{ validator: validateQuantity }]}
             >
               <Input placeholder="Quantity (e.g. 2^8+1)" />
