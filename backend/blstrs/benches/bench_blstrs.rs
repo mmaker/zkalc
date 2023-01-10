@@ -47,18 +47,14 @@ fn bench_add_ec(c: &mut Criterion) {
 fn bench_msm(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
 
-    let mut powers_of_two = Vec::<usize>::new();
-    for i in 1..=21 {
-        powers_of_two.push(2_u32.pow(i).try_into().unwrap());
-    }
-
     let mut group = c.benchmark_group("msm");
-    for size in powers_of_two.into_iter() {
+    for logsize in 1..=21 {
         // Dynamically control sample size so that big MSMs don't bench eternally
-        if size > 2_u32.pow(20).try_into().unwrap() {
+        if logsize > 20 {
             group.sample_size(10);
         }
 
+        let size = 1 << logsize;
         let vec_a: Vec<_> = (0..size).map(|_| Scalar::random(&mut rng)).collect();
         // G1 benchmarks
         let vec_B_G1: Vec<_> = (0..size).map(|_| G1Projective::random(&mut rng)).collect();
