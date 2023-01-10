@@ -32,10 +32,10 @@ import {
   Dropdown,
 } from "antd";
 
-import { parse } from "mathjs";
+import { parse, ResultSet } from "mathjs";
 
-import {Footer} from "../components/footer";
-import {Layout} from "../components/layout";
+import { Footer } from "../components/footer";
+import { Layout } from "../components/layout";
 
 ///////////////////// Add your benchmarks here /////////////////////
 
@@ -68,7 +68,11 @@ const libraries = {
     version: "0.3.0",
     url: "https://arkworks.rs/",
   },
-  blstrs: { label: "blstrs", version: "0.6.1", url: "https://github.com/filecoin-project/blstrs" },
+  blstrs: {
+    label: "blstrs",
+    version: "0.6.1",
+    url: "https://github.com/filecoin-project/blstrs",
+  },
   dalek: { label: "dalek", version: "0.1", url: "dalek", disabled: true },
 };
 
@@ -429,13 +433,17 @@ const Home = () => {
     }
   };
 
-
-
   const validateQuantity = async (rule, value) => {
     if (value.trim() === "") {
       throw new Error("Missing quantity");
     } else {
-      parse(value).evaluate();
+      const evaluated = parse(value).evaluate();
+
+      console.log(evaluated)
+
+      if (evaluated instanceof ResultSet) {
+        throw new Error("Only single expressions are supported");
+      }
     }
   };
 
@@ -506,94 +514,94 @@ const Home = () => {
 
   return (
     <Layout>
-       <Row align="center">
-          <Text align="center" fontSize={20} color="#999">
-            <BackendSelection />
-          </Text>
-        </Row>
-        <br />
-        <br />
-        <Form
-          form={ingredientForm}
-          onFinish={addIngredient}
-          align="center"
-          autoComplete="off"
-        >
-          <Space align="baseline">
-            <Form.Item
-              name="op"
-              initialValue="msm_G1"
-              rules={[{ required: true, message: "Missing operation" }]}
-            >
-              <Select
-                style={{ width: 230 }}
-                bordered={false}
-                placeholder="Operation (e.g. add)"
-                showSearch
-                options={operations_selection}
-              />
-            </Form.Item>
-            <Form.Item
-              name="quantity"
-              style={{ width: 110 }}
-              rules={[{ validator: validateQuantity }]}
-            >
-              <Input placeholder="Quantity (e.g. 2^8+1)" />
-            </Form.Item>
-            <Form.Item>
-              <Button
-                type="dashed"
-                size="medium"
-                htmlType="submit"
-                icon={<PlusOutlined />}
-              ></Button>
-            </Form.Item>
-          </Space>
-        </Form>
-        <Row align="center" span={24}>
-          <Col span={8} offset={4}>
-            <Typography.Paragraph align="right">
-              <Text strong>Total time:&nbsp;&nbsp;</Text>
-              <Text italic onClick={() => setHumanTimeFormat(!humanTimeFormat)}>
-                {estimatedTime(recipe)}
-              </Text>
-            </Typography.Paragraph>
-          </Col>
-        </Row>
-        <Row justify="center" ref={ingredientsList}>
-          <List
-            dataSource={recipe}
-            style={{ width: "90vh" }}
-            renderItem={(ingredient, index) => {
-              return (
-                <List.Item key={index}>
-                  <Col span={14}>
-                    <InlineMath math={formatFormula(ingredient.quantity)} />
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Tooltip
-                      placement="top"
-                      color="#108ee9"
-                      overlayInnerStyle={{
-                        width: operations[ingredient.op].tooltip_width,
-                      }}
-                      title={operations[ingredient.op].tooltip}
-                    >
-                      {operations[ingredient.op].description}
-                    </Tooltip>
-                  </Col>
-                  <Col span={6} align="right">
-                    {estimatedTime([ingredient])}
-                  </Col>
-                  <Col span={1}>
-                    <MinusCircleOutlined
-                      onClick={() => removeIngredient(index)}
-                    />
-                  </Col>
-                </List.Item>
-              );
-            }}
-          />
-        </Row>
+      <Row align="center">
+        <Text align="center" fontSize={20} color="#999">
+          <BackendSelection />
+        </Text>
+      </Row>
+      <br />
+      <br />
+      <Form
+        form={ingredientForm}
+        onFinish={addIngredient}
+        align="center"
+        autoComplete="off"
+      >
+        <Space align="baseline">
+          <Form.Item
+            name="op"
+            initialValue="msm_G1"
+            rules={[{ required: true, message: "Missing operation" }]}
+          >
+            <Select
+              style={{ width: 230 }}
+              bordered={false}
+              placeholder="Operation (e.g. add)"
+              showSearch
+              options={operations_selection}
+            />
+          </Form.Item>
+          <Form.Item
+            name="quantity"
+            style={{ width: 110 }}
+            rules={[{ validator: validateQuantity }]}
+          >
+            <Input placeholder="Quantity (e.g. 2^8+1)" />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="dashed"
+              size="medium"
+              htmlType="submit"
+              icon={<PlusOutlined />}
+            ></Button>
+          </Form.Item>
+        </Space>
+      </Form>
+      <Row align="center" span={24}>
+        <Col span={8} offset={4}>
+          <Typography.Paragraph align="right">
+            <Text strong>Total time:&nbsp;&nbsp;</Text>
+            <Text italic onClick={() => setHumanTimeFormat(!humanTimeFormat)}>
+              {estimatedTime(recipe)}
+            </Text>
+          </Typography.Paragraph>
+        </Col>
+      </Row>
+      <Row justify="center" ref={ingredientsList}>
+        <List
+          dataSource={recipe}
+          style={{ width: "90vh" }}
+          renderItem={(ingredient, index) => {
+            return (
+              <List.Item key={index}>
+                <Col span={14}>
+                  <InlineMath math={formatFormula(ingredient.quantity)} />
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <Tooltip
+                    placement="top"
+                    color="#108ee9"
+                    overlayInnerStyle={{
+                      width: operations[ingredient.op].tooltip_width,
+                    }}
+                    title={operations[ingredient.op].tooltip}
+                  >
+                    {operations[ingredient.op].description}
+                  </Tooltip>
+                </Col>
+                <Col span={6} align="right">
+                  {estimatedTime([ingredient])}
+                </Col>
+                <Col span={1}>
+                  <MinusCircleOutlined
+                    onClick={() => removeIngredient(index)}
+                  />
+                </Col>
+              </List.Item>
+            );
+          }}
+        />
+      </Row>
     </Layout>
   );
 };
