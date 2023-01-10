@@ -288,7 +288,7 @@ const operations_selection = Object.keys(operations).map((operation) => {
   };
 });
 
-const katex_settings = {
+const katexSettings = {
   delimiters: [
     { left: "$$", right: "$$", display: true },
     { left: "$", right: "$", display: false },
@@ -347,7 +347,7 @@ const Home = () => {
       const float = num / Math.pow(10, exponent);
       const decimals = Number(float.toFixed(3));
 
-      // time is expressed in seconds, change this to seconds
+      // time is expressed in nanoseconds, change this to seconds
       return `${decimals}e${exponent - 9} s`;
     } else {
       return "0s";
@@ -443,7 +443,7 @@ const Home = () => {
     }, []);
 
     return (
-        <Text  style={{ fontSize: 10 }}>
+        <Text style={{ fontSize: 12 }}>
         Developed by
         <a href={authors[0].website}> {authors[0].name}</a> and{" "}
         <a href={authors[1].website}>{authors[1].name}</a>.
@@ -640,9 +640,9 @@ const Home = () => {
       </Layout.Content>
       <Layout.Footer align="center">
         <Link href="/about">
-          <Image src={logo} width={50} alt="" />
+          <Image src={logo} width={27} alt="" />
         </Link>
-                    &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
         <Authors />
       </Layout.Footer>
     </Layout>
