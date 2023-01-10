@@ -1,5 +1,5 @@
 import { List, Col, Tooltip } from "antd";
-import { formatNumber, formatFormula } from "../lib/formula";
+import { formatNumber, formatTime, formatFormula } from "../lib/formula";
 
 import { InlineMath } from "react-katex";
 import { MinusCircleOutlined } from "@ant-design/icons";
@@ -9,9 +9,13 @@ const RecipeItem = ({
   ingredient,
   removeIngredient,
   estimatedTime,
+  formatTime,
 }) => {
+  const operation = operations[ingredient.op];
+  const time = estimatedTime(ingredient);
+
   return (
-    <List.Item>
+    <List.Item className={time === null ? "invalid-ingredient" : ""}>
       <Col span={14}>
         <InlineMath math={formatFormula(ingredient.quantity)} />
         &nbsp;&nbsp;&nbsp;&nbsp;
@@ -19,15 +23,15 @@ const RecipeItem = ({
           placement="top"
           color="#108ee9"
           overlayInnerStyle={{
-            width: operations[ingredient.op].tooltip_width,
+            width: operation.tooltip_width,
           }}
-          title={operations[ingredient.op].tooltip}
+          title={operation.tooltip}
         >
-          {operations[ingredient.op].description}
+          {operation.description}
         </Tooltip>
       </Col>
-      <Col span={6} align="right">
-        {estimatedTime([ingredient])}
+      <Col span={6} align="right" className="time">
+        {time !== null ? formatTime(time) : "unavailable"}
       </Col>
       <Col span={1}>
         <MinusCircleOutlined onClick={removeIngredient} />
@@ -41,6 +45,7 @@ export const Recipe = ({
   removeIngredient,
   operations,
   estimatedTime,
+  formatTime,
 }) => {
   return (
     <List
@@ -53,6 +58,7 @@ export const Recipe = ({
             ingredient={ingredient}
             operations={operations}
             estimatedTime={estimatedTime}
+            formatTime={formatTime}
             removeIngredient={() => removeIngredient(index)}
           />
         );

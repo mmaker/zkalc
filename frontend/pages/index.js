@@ -368,20 +368,23 @@ const Home = () => {
     }
   };
 
-  const estimatedTime = (recipe) => {
+  const estimatedTime = (item) => {
+    if (item.op in estimates[lib][curve][machine]) {
+      var f = new Function(
+        estimates[lib][curve][machine][item.op].arguments,
+        estimates[lib][curve][machine][item.op].body
+      );
+      // XXX bad evaluate
+      return f(item.quantity.evaluate());
+    } else {
+      return null;
+    }
+  };
+
+  const estimatedTimeForRecipe = (recipe) => {
     const estimated_time = recipe
-      .map((item) => {
-        if (item.op in estimates[lib][curve][machine]) {
-          var f = new Function(
-            estimates[lib][curve][machine][item.op].arguments,
-            estimates[lib][curve][machine][item.op].body
-          );
-          // XXX bad evaluate
-          return f(item.quantity.evaluate());
-        } else {
-          return 0;
-        }
-      })
+      .map(estimatedTime)
+      .filter((x) => x !== null)
       .reduce((a, b) => a + b, 0);
     return formatTime(estimated_time);
   };
@@ -536,7 +539,7 @@ const Home = () => {
           <Typography.Paragraph align="right">
             <Text strong>Total time:&nbsp;&nbsp;</Text>
             <Text italic onClick={() => setHumanTimeFormat(!humanTimeFormat)}>
-              {estimatedTime(recipe)}
+              {estimatedTimeForRecipe(recipe)}
             </Text>
           </Typography.Paragraph>
         </Col>
@@ -547,6 +550,7 @@ const Home = () => {
           removeIngredient={removeIngredient}
           operations={operations}
           estimatedTime={estimatedTime}
+          formatTime={formatTime}
         />
       </Row>
     </Layout>
