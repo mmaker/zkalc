@@ -18,7 +18,7 @@ export const Header = () => {
     <Row align="center" span={24} id="header">
       <Col span={2}>
         <Link href="/about">
-          <Image src={logo} width={50} alt="" />
+          <Image src={logo} width={80} alt="" />
         </Link>
       </Col>
       <Col span={10} offset={4}>

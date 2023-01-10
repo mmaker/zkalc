@@ -12,5 +12,5 @@
     "ec2large3": {
         "label": "ec2-large3",
         "disabled": true
-    },
+    }
 }
