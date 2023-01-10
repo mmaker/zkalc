@@ -165,7 +165,7 @@ const operations = {
     ),
     description: (
       <>
-          Field addition(s) over <InlineMath math="\mathbb{F}_p" />
+        Field addition(s) over <InlineMath math="\mathbb{F}_p" />
       </>
     ),
     tooltip_width: 300,
@@ -185,7 +185,7 @@ const operations = {
     ),
     description: (
       <>
-          Field multiplication(s) over <InlineMath math="\mathbb{F}_p" />
+        Field multiplication(s) over <InlineMath math="\mathbb{F}_p" />
       </>
     ),
     tooltip_width: 300,
@@ -205,14 +205,14 @@ const operations = {
     ),
     description: (
       <>
-          Scalar multiplication(s) over <InlineMath math="\mathbb{G}_1" />
+        Scalar multiplication(s) over <InlineMath math="\mathbb{G}_1" />
       </>
     ),
     tooltip_width: 300,
     tooltip: (
       <>
-        Given {" "}
-        <InlineMath math="a_1, a_2, \dots, a_n \in \mathbb{F}_p" /> and <InlineMath math="P_1, P_2, \dots, P_n \in \mathbb{G}_1" /> compute{" "}
+        Given <InlineMath math="a_1, a_2, \dots, a_n \in \mathbb{F}_p" /> and{" "}
+        <InlineMath math="P_1, P_2, \dots, P_n \in \mathbb{G}_1" /> compute{" "}
         <InlineMath math="a_1 P_1, a_2 P_2, \dots, a_n P_n" />
       </>
     ),
@@ -226,7 +226,7 @@ const operations = {
     value: "invert",
     description: (
       <>
-          Field inversion(s) over <InlineMath math="\mathbb{F}_p" />
+        Field inversion(s) over <InlineMath math="\mathbb{F}_p" />
       </>
     ),
     tooltip_width: 300,
@@ -443,7 +443,7 @@ const Home = () => {
     }, []);
 
     return (
-        <Text style={{ fontSize: 12 }}>
+      <Text style={{ fontSize: 12 }}>
         Developed by
         <a href={authors[0].website}> {authors[0].name}</a> and{" "}
         <a href={authors[1].website}>{authors[1].name}</a>.
@@ -536,9 +536,11 @@ const Home = () => {
           </Col>
           <Col span={3} offset={3}>
             <Link href="/about">
-                <Tooltip title="about zkalc">
-                    <QuestionCircleOutlined style={{ fontSize: "25px", color: "black" }} />
-                </Tooltip>
+              <Tooltip title="about zkalc">
+                <QuestionCircleOutlined
+                  style={{ fontSize: "25px", color: "black" }}
+                />
+              </Tooltip>
             </Link>
             &nbsp;&nbsp;&nbsp;
            <Link href="/methodology">
@@ -548,9 +550,9 @@ const Home = () => {
             </Link>
             &nbsp;&nbsp;&nbsp;
             <Link href="https://github.com/asn-d6/zkalc">
-                <Tooltip title="zkalc github">
-                    <GithubOutlined style={{ fontSize: "25px", color: "black" }} />
-                </Tooltip>
+              <Tooltip title="zkalc github">
+                <GithubOutlined style={{ fontSize: "25px", color: "black" }} />
+              </Tooltip>
             </Link>
           </Col>
         </Row>
@@ -561,7 +563,12 @@ const Home = () => {
         </Row>
         <br />
         <br />
-        <Form form={ingredientForm}  onFinish={addIngredient} align="center" autoComplete="off">
+        <Form
+          form={ingredientForm}
+          onFinish={addIngredient}
+          align="center"
+          autoComplete="off"
+        >
           <Space align="baseline">
             <Form.Item
               name="op"
