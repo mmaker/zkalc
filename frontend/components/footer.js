@@ -18,7 +18,7 @@ const Authors = () => {
   }, []);
 
   return (
-    <Text>
+    <Text style={{ fontSize: 13 }}>
       Developed by
       <a href={authors[0].website}> {authors[0].name}</a> and{" "}
       <a href={authors[1].website}>{authors[1].name}</a>.
