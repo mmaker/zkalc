@@ -525,9 +525,9 @@ const Home = () => {
   };
 
   return (
-    <Layout style={{ height: "100vh" }}>
+    <Layout style={{ minHeight: "100vh" }}>
       <br />
-      <Layout.Content>
+      <Layout.Content id="content">
         <Row align="center" span={24}>
         <Col span={2}>
           <Link href="/about">
@@ -618,7 +618,7 @@ const Home = () => {
         <Row justify="center" ref={ingredientsList}>
           <List
             dataSource={recipe}
-            style={{ maxHeight: "64vh", width: "90vh", overflowY: "scroll" }}
+            style={{ width: "90vh" }}
             renderItem={(ingredient, index) => {
               return (
                 <List.Item key={index}>
@@ -649,7 +649,7 @@ const Home = () => {
             }}
           />
         </Row>
-      <div style={{marginTop: "auto"}}>
+      <div id="footer">
         <Authors />
       </div>
       </Layout.Content>
