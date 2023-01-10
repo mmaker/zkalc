@@ -36,6 +36,7 @@ import { parse, ResultSet } from "mathjs";
 
 import { Footer } from "../components/footer";
 import { Layout } from "../components/layout";
+import { Recipe } from "../components/recipe";
 
 ///////////////////// Add your benchmarks here /////////////////////
 
@@ -367,23 +368,6 @@ const Home = () => {
     }
   };
 
-  const formatNumber = (num) => {
-    if (num >= 1e10) {
-      const float = num / Math.pow(10, Math.floor(Math.log10(num)));
-      const decimals = Number(float.toFixed(2));
-      const exponent = Math.floor(Math.log10(num));
-      return `${decimals} \\cdot 10^{${exponent}}`;
-    } else if (num >= 1000000000) {
-      return `${(num / 1000000000).toFixed(1)} \\cdot 10^9`;
-    } else if (num >= 1000000) {
-      return `${(num / 1000000).toFixed(1)}\\cdot 10^6`;
-    } else if (num >= 1000) {
-      return `${(num / 1000).toFixed(1)}\\cdot 10^3`;
-    } else {
-      return `${Number(num.toFixed(2))}`;
-    }
-  };
-
   const estimatedTime = (recipe) => {
     const estimated_time = recipe
       .map((item) => {
@@ -411,17 +395,6 @@ const Home = () => {
     setRecipe(recipe.filter((_, i) => index !== i));
   };
 
-  const formatFormula = (formula) => {
-    const evaluation = formatNumber(formula.evaluate());
-    // if the expression is simple, just return it.
-    if (evaluation === formula.toTex()) {
-      return formula.toTex();
-      // else, round up to the closest integer
-    } else {
-      return formula.toTex() + "\\approx" + evaluation;
-    }
-  };
-
   const handleLibChange = (e) => {
     // UX choice: make it easy to see differences between implementations
     // resetRecipe();
@@ -439,7 +412,7 @@ const Home = () => {
     } else {
       const evaluated = parse(value).evaluate();
 
-      console.log(evaluated)
+      console.log(evaluated);
 
       if (evaluated instanceof ResultSet) {
         throw new Error("Only single expressions are supported");
@@ -569,37 +542,11 @@ const Home = () => {
         </Col>
       </Row>
       <Row justify="center" ref={ingredientsList}>
-        <List
-          dataSource={recipe}
-          style={{ width: "90vh" }}
-          renderItem={(ingredient, index) => {
-            return (
-              <List.Item key={index}>
-                <Col span={14}>
-                  <InlineMath math={formatFormula(ingredient.quantity)} />
-                  &nbsp;&nbsp;&nbsp;&nbsp;
-                  <Tooltip
-                    placement="top"
-                    color="#108ee9"
-                    overlayInnerStyle={{
-                      width: operations[ingredient.op].tooltip_width,
-                    }}
-                    title={operations[ingredient.op].tooltip}
-                  >
-                    {operations[ingredient.op].description}
-                  </Tooltip>
-                </Col>
-                <Col span={6} align="right">
-                  {estimatedTime([ingredient])}
-                </Col>
-                <Col span={1}>
-                  <MinusCircleOutlined
-                    onClick={() => removeIngredient(index)}
-                  />
-                </Col>
-              </List.Item>
-            );
-          }}
+        <Recipe
+          recipe={recipe}
+          removeIngredient={removeIngredient}
+          operations={operations}
+          estimatedTime={estimatedTime}
         />
       </Row>
     </Layout>
