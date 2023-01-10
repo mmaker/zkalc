@@ -462,6 +462,21 @@ const Home = () => {
     return (
       <>
         Estimating &nbsp;
+        <Dropdown
+          menu={{
+            items: curves_selection[lib],
+            onClick: ({ key }) => setCurve(key),
+          }}
+        >
+          <a onClick={(e) => e.preventDefault()}>
+            <Space>
+              {curves[curve].label}
+              <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
+              &nbsp;
+            </Space>
+          </a>
+        </Dropdown>
+        implemented in &nbsp;
         <Tooltip
           placement="top"
           title={`${libraries[lib].label} v${libraries[lib].version}`}
@@ -481,21 +496,6 @@ const Home = () => {
             </a>
           </Dropdown>
         </Tooltip>
-        over &nbsp;
-        <Dropdown
-          menu={{
-            items: curves_selection[lib],
-            onClick: ({ key }) => setCurve(key),
-          }}
-        >
-          <a onClick={(e) => e.preventDefault()}>
-            <Space>
-              {curves[curve].label}
-              <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
-              &nbsp;
-            </Space>
-          </a>
-        </Dropdown>
         using &nbsp;
         <Tooltip
           placement="top"
