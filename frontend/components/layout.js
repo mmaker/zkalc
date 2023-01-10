@@ -1,5 +1,6 @@
 import React from "react";
 import { Footer } from "./footer";
+import { Header } from "./header";
 import logo from "../public/logo.png";
 
 import Link from "next/link";
@@ -20,45 +21,8 @@ const { Title } = Typography;
 export const Layout = ({ children }) => {
   return (
     <antd.Layout style={{ minHeight: "100vh" }}>
-      <br />
       <antd.Layout.Content id="content">
-        <Row align="center" span={24}>
-          <Col span={2}>
-            <Link href="/about">
-              <Image src={logo} width={50} alt="" />
-            </Link>
-          </Col>
-          <Col span={10} offset={4}>
-            <Link href="/">
-              <Title align="center" italic>
-                zkalc
-              </Title>
-            </Link>
-          </Col>
-          <Col span={3} offset={3}>
-            <Link href="/about">
-              <Tooltip title="about zkalc">
-                <QuestionCircleOutlined
-                  style={{ fontSize: "25px", color: "black" }}
-                />
-              </Tooltip>
-            </Link>
-            &nbsp;&nbsp;&nbsp;
-            <Link href="/methodology">
-              <Tooltip title="zkalc scientific methodology">
-                <ExperimentOutlined
-                  style={{ fontSize: "25px", color: "black" }}
-                />
-              </Tooltip>
-            </Link>
-            &nbsp;&nbsp;&nbsp;
-            <Link href="https://github.com/asn-d6/zkalc">
-              <Tooltip title="zkalc github">
-                <GithubOutlined style={{ fontSize: "25px", color: "black" }} />
-              </Tooltip>
-            </Link>
-          </Col>
-        </Row>
+        <Header />
 
         {children}
 

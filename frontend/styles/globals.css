@@ -1,10 +1,14 @@
 #content {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+}
+
+#header {
+  padding: 1rem 0;
 }
 
 #footer {
-    text-align: center;
-    padding: 1rem 0;
-    margin-top: auto;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: auto;
 }
