@@ -529,7 +529,12 @@ const Home = () => {
       <br />
       <Layout.Content>
         <Row align="center" span={24}>
-          <Col span={10} offset={6}>
+        <Col span={2}>
+          <Link href="/about">
+          <Image src={logo} width={50} alt="" />
+        </Link>
+        </Col>
+          <Col span={10} offset={4}>
             <Title align="center" italic onClick={resetRecipe}>
               zkalc
             </Title>
@@ -644,14 +649,10 @@ const Home = () => {
             }}
           />
         </Row>
-      </Layout.Content>
-      <Layout.Footer align="center">
-        <Link href="/about">
-          <Image src={logo} width={27} alt="" />
-        </Link>
-        &nbsp;&nbsp;&nbsp;&nbsp;
+      <div style={{marginTop: "auto"}}>
         <Authors />
-      </Layout.Footer>
+      </div>
+      </Layout.Content>
     </Layout>
   );
 };
