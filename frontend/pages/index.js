@@ -13,9 +13,8 @@ import {
   PlusOutlined,
   DownOutlined,
   QuestionCircleOutlined,
-  DashboardOutlined,
+  ExperimentOutlined,
   GithubOutlined,
-  FileAddOutlined,
 } from "@ant-design/icons";
 import {
   Alert,
@@ -540,15 +539,9 @@ const Home = () => {
                 </Tooltip>
             </Link>
             &nbsp;&nbsp;&nbsp;
-            <Link href="/add">
-                <Tooltip title="add benchmark">
-                    <FileAddOutlined style={{ fontSize: "25px", color: "black" }} />
-                </Tooltip>
-            </Link>
-            &nbsp;&nbsp;&nbsp;
            <Link href="/methodology">
                <Tooltip title="zkalc scientific methodology">
-                   <DashboardOutlined style={{ fontSize: "25px", color: "black" }} />
+                   <ExperimentOutlined style={{ fontSize: "25px", color: "black" }} />
                </Tooltip>
             </Link>
             &nbsp;&nbsp;&nbsp;

@@ -8,7 +8,7 @@ import Image from "next/image";
 
 import logo from "../public/logo.png";
 
-<Layout style={{ height: "100vh" }}>
+<Layout>
 <Layout.Content>
 
 <Col span={16} offset={4}>
@@ -36,7 +36,9 @@ We hope that zkalc can help shorten the gap between cryptography and practice:
 
 <br/>
 
-### The zkalc manual
+<center>
+## The zkalc manual
+</center>
 
 - Tooltips can help you reach zkalc enlightment <br />
 - All benchmarks were run with multithreading enabled unless mentioned <br />
@@ -44,6 +46,46 @@ We hope that zkalc can help shorten the gap between cryptography and practice:
 - Click on the total time to get the result in SI units (seconds) <br />
 
 <br/>
+
+<center>
+## How to add benchmarks to zkalc?
+<br/>
+</center>
+
+If a functionality you need is missing, please help us add it! First, make sure you <Link href="/methodology">check out our methodology page</Link> and then follow the instructions below:
+
+## I want to add a new cryptographic operation!
+
+zkalc does not currently support all possible cryptographic operations. For example, maybe you want to add benchmarks for FFTs.
+
+To do so follow the following steps:
+- Find the existing benchmarks in the `backend/` directory, and add benchmark code for the new cryptographic operation following the [already existing conventions](https://github.com/zkalc/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs).
+- Run all benchmarks on your machine by running `make` in the `backend/` directory.
+
+Finally, please open a PR with your changes and the json benchmark output files and we will take care of the rest!
+
+## I want to add benchmarks for a different machine!
+
+zkalc only supports a few machine types right now. Do you have access to a beefy AWS machine or to some GPU prover? We would love your benchmarks!
+
+Simply run all benchmarks on your beefy AWS machine by running `make` in the `backend/` directory.
+Then open a PR with the json benchmark output files and we will take care of the rest!
+
+If your machine is especially weak (rpi4) or particularly strong (GPU prover) consider modifying the benchmark parameters (e.g. increase/decrease the size of the MSMs) and get in touch with us!
+
+## I want to benchmark a different elliptic curve!
+
+zkalc only supports BLS12-381 right now but we would love to support BLS12-377 or curve25519 or whatever really.
+
+To add benchmarks for a different elliptic curve, write benchmarks for the new curve in the `backend/` directory following the [already existing conventions](https://github.com/zkalc/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs).
+
+Note that if your benchmarks do not use the [criterion benchmark framework](https://docs.rs/criterion/latest/criterion/) you will need to adapt your benchmark framework to output a JSON file that the zkalc interpolation script understands (it currently [understands a small subset](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py#L128) of the [format](https://github.com/asn-d6/zkalc/blob/main/perf/blstrs/estimates.json) of criterion's `estimates.json`). If you are confused, get in touch and we will help.
+
+Finally, please open a PR with your changes and the json benchmark output files and we will take care of the rest!
+
+## I want to benchmark a different cryptographic libray!
+
+Please follow the same process as adding a different elliptic curve.
 
 </Col>
 
