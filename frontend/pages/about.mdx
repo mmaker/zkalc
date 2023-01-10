@@ -13,7 +13,7 @@ import logo from "../public/logo.png";
 
 <center>
 
-[zkalc](https://github.com/zkalc/zkalc) helps you calculate how much time
+[zkalc](https://github.com/asn-d6/zkalc) helps you calculate how much time
 cryptographic operations take on a real computer
 
 <br />
@@ -45,7 +45,7 @@ We hope that zkalc can help shorten the gap between cryptography and practice:
 - All benchmarks were run with multithreading enabled unless mentioned <br />
 - Results above <InlineMath math="\mathbb{2^{22}}" /> have reduced accuracy due
   to missing benchmarks (see
-  [TODO.md](https://github.com/zkalc/zkalc/blob/main/TODO.md)) <br />
+  [TODO.md](https://github.com/asn-d6/zkalc/blob/main/TODO.md)) <br />
 - Click on the total time to get the result in SI units (seconds) <br />
 
 <br />
@@ -68,7 +68,7 @@ To do so follow the following steps:
 
 - Find the existing benchmarks in the `backend/` directory, and add benchmark
   code for the new cryptographic operation following the
-  [already existing conventions](https://github.com/zkalc/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs).
+  [already existing conventions](https://github.com/asn-d6/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs).
 - Run all benchmarks on your machine by running `make` in the `backend/`
   directory.
 
@@ -95,7 +95,7 @@ or curve25519 or whatever really.
 
 To add benchmarks for a different elliptic curve, write benchmarks for the new
 curve in the `backend/` directory following the
-[already existing conventions](https://github.com/zkalc/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs).
+[already existing conventions](https://github.com/asn-d6/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs).
 
 Note that if your benchmarks do not use the
 [criterion benchmark framework](https://docs.rs/criterion/latest/criterion/) you
