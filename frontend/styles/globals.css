@@ -1,0 +1,23 @@
+#content {
+  display: flex;
+  flex-direction: column;
+}
+
+#header {
+  padding: 1rem 0;
+}
+
+#footer {
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: auto;
+}
+
+.invalid-ingredient {
+  background-color: #ffdada;
+}
+
+.invalid-ingredient .time {
+  color: #ff0000;
+  font-weight: bold;
+}

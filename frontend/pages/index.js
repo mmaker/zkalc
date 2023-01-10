@@ -4,7 +4,6 @@ import "katex/dist/katex.min.css";
 
 import Link from "next/link";
 import Image from "next/image";
-import logo from "../public/logo.png";
 // import renderMathInElement from "katex/contrib/auto-render";
 
 import { InlineMath, BlockMath } from "react-katex";
@@ -23,7 +22,6 @@ import {
   ConfigProvider,
   Form,
   Input,
-  Layout,
   List,
   Radio,
   Row,
@@ -34,7 +32,11 @@ import {
   Dropdown,
 } from "antd";
 
-import { parse } from "mathjs";
+import { parse, ResultSet } from "mathjs";
+
+import { Footer } from "../components/footer";
+import { Layout } from "../components/layout";
+import { Recipe } from "../components/recipe";
 
 ///////////////////// Add your benchmarks here /////////////////////
 
@@ -67,7 +69,11 @@ const libraries = {
     version: "0.3.0",
     url: "https://arkworks.rs/",
   },
-  blstrs: { label: "blstrs", version: "0.6.1", url: "https://github.com/filecoin-project/blstrs" },
+  blstrs: {
+    label: "blstrs",
+    version: "0.6.1",
+    url: "https://github.com/filecoin-project/blstrs",
+  },
   dalek: { label: "dalek", version: "0.1", url: "dalek", disabled: true },
 };
 
@@ -362,37 +368,23 @@ const Home = () => {
     }
   };
 
-  const formatNumber = (num) => {
-    if (num >= 1e10) {
-      const float = num / Math.pow(10, Math.floor(Math.log10(num)));
-      const decimals = Number(float.toFixed(2));
-      const exponent = Math.floor(Math.log10(num));
-      return `${decimals} \\cdot 10^{${exponent}}`;
-    } else if (num >= 1000000000) {
-      return `${(num / 1000000000).toFixed(1)} \\cdot 10^9`;
-    } else if (num >= 1000000) {
-      return `${(num / 1000000).toFixed(1)}\\cdot 10^6`;
-    } else if (num >= 1000) {
-      return `${(num / 1000).toFixed(1)}\\cdot 10^3`;
+  const estimatedTime = (item) => {
+    if (item.op in estimates[lib][curve][machine]) {
+      var f = new Function(
+        estimates[lib][curve][machine][item.op].arguments,
+        estimates[lib][curve][machine][item.op].body
+      );
+      // XXX bad evaluate
+      return f(item.quantity.evaluate());
     } else {
-      return `${Number(num.toFixed(2))}`;
+      return null;
     }
   };
 
-  const estimatedTime = (recipe) => {
+  const estimatedTimeForRecipe = (recipe) => {
     const estimated_time = recipe
-      .map((item) => {
-        if (item.op in estimates[lib][curve][machine]) {
-          var f = new Function(
-            estimates[lib][curve][machine][item.op].arguments,
-            estimates[lib][curve][machine][item.op].body
-          );
-          // XXX bad evaluate
-          return f(item.quantity.evaluate());
-        } else {
-          return 0;
-        }
-      })
+      .map(estimatedTime)
+      .filter((x) => x !== null)
       .reduce((a, b) => a + b, 0);
     return formatTime(estimated_time);
   };
@@ -406,17 +398,6 @@ const Home = () => {
     setRecipe(recipe.filter((_, i) => index !== i));
   };
 
-  const formatFormula = (formula) => {
-    const evaluation = formatNumber(formula.evaluate());
-    // if the expression is simple, just return it.
-    if (evaluation === formula.toTex()) {
-      return formula.toTex();
-      // else, round up to the closest integer
-    } else {
-      return formula.toTex() + "\\approx" + evaluation;
-    }
-  };
-
   const handleLibChange = (e) => {
     // UX choice: make it easy to see differences between implementations
     // resetRecipe();
@@ -428,34 +409,17 @@ const Home = () => {
     }
   };
 
-  const Authors = () => {
-    // only two authors for now
-    const _authors = [
-      { name: "George Kadianakis", website: "https://github.com/asn-d6" },
-      { name: "Michele Orrù", website: "https://tumbolandia.net" },
-    ];
-    const [authors, setAuthors] = React.useState(_authors);
-
-    // Randomize author list
-    useEffect(() => {
-      const randomizedAuthors = [..._authors].sort(() => 0.5 - Math.random());
-      setAuthors(randomizedAuthors);
-    }, []);
-
-    return (
-      <Text style={{ fontSize: 12 }}>
-        Developed by
-        <a href={authors[0].website}> {authors[0].name}</a> and{" "}
-        <a href={authors[1].website}>{authors[1].name}</a>.
-      </Text>
-    );
-  };
-
   const validateQuantity = async (rule, value) => {
     if (value.trim() === "") {
       throw new Error("Missing quantity");
     } else {
-      parse(value).evaluate();
+      const evaluated = parse(value).evaluate();
+
+      console.log(evaluated);
+
+      if (evaluated instanceof ResultSet) {
+        throw new Error("Only single expressions are supported");
+      }
     }
   };
 
@@ -525,134 +489,70 @@ const Home = () => {
   };
 
   return (
-    <Layout style={{ height: "100vh" }}>
+    <Layout>
+      <Row align="center">
+        <Text align="center" fontSize={20} color="#999">
+          <BackendSelection />
+        </Text>
+      </Row>
       <br />
-      <Layout.Content>
-        <Row align="center" span={24}>
-        <Col span={2}>
-          <Link href="/about">
-          <Image src={logo} width={50} alt="" />
-        </Link>
+      <br />
+      <Form
+        form={ingredientForm}
+        onFinish={addIngredient}
+        align="center"
+        autoComplete="off"
+      >
+        <Space align="baseline">
+          <Form.Item
+            name="op"
+            initialValue="msm_G1"
+            rules={[{ required: true, message: "Missing operation" }]}
+          >
+            <Select
+              style={{ width: 230 }}
+              bordered={false}
+              placeholder="Operation (e.g. add)"
+              showSearch
+              options={operations_selection}
+            />
+          </Form.Item>
+          <Form.Item
+            name="quantity"
+            style={{ width: 110 }}
+            rules={[{ validator: validateQuantity }]}
+          >
+            <Input placeholder="Quantity (e.g. 2^8+1)" />
+          </Form.Item>
+          <Form.Item>
+            <Button
+              type="dashed"
+              size="medium"
+              htmlType="submit"
+              icon={<PlusOutlined />}
+            ></Button>
+          </Form.Item>
+        </Space>
+      </Form>
+      <Row align="center" span={24}>
+        <Col span={8} offset={4}>
+          <Typography.Paragraph align="right">
+            <Text strong>Total time:&nbsp;&nbsp;</Text>
+            <Text italic onClick={() => setHumanTimeFormat(!humanTimeFormat)}>
+              {estimatedTimeForRecipe(recipe)}
+            </Text>
+          </Typography.Paragraph>
         </Col>
-          <Col span={10} offset={4}>
-            <Title align="center" italic onClick={resetRecipe}>
-              zkalc
-            </Title>
-          </Col>
-          <Col span={3} offset={3}>
-            <Link href="/about">
-              <Tooltip title="about zkalc">
-                <QuestionCircleOutlined
-                  style={{ fontSize: "25px", color: "black" }}
-                />
-              </Tooltip>
-            </Link>
-            &nbsp;&nbsp;&nbsp;
-           <Link href="/methodology">
-               <Tooltip title="zkalc scientific methodology">
-                   <ExperimentOutlined style={{ fontSize: "25px", color: "black" }} />
-               </Tooltip>
-            </Link>
-            &nbsp;&nbsp;&nbsp;
-            <Link href="https://github.com/asn-d6/zkalc">
-              <Tooltip title="zkalc github">
-                <GithubOutlined style={{ fontSize: "25px", color: "black" }} />
-              </Tooltip>
-            </Link>
-          </Col>
-        </Row>
-        <Row align="center">
-          <Text align="center" fontSize={20} color="#999">
-            <BackendSelection />
-          </Text>
-        </Row>
-        <br />
-        <br />
-        <Form
-          form={ingredientForm}
-          onFinish={addIngredient}
-          align="center"
-          autoComplete="off"
-        >
-          <Space align="baseline">
-            <Form.Item
-              name="op"
-              initialValue="msm_G1"
-              rules={[{ required: true, message: "Missing operation" }]}
-            >
-              <Select
-                style={{ width: 230 }}
-                bordered={false}
-                placeholder="Operation (e.g. add)"
-                showSearch
-                options={operations_selection}
-              />
-            </Form.Item>
-            <Form.Item
-              name="quantity"
-              style={{ width: 110 }}
-              rules={[{ validator: validateQuantity }]}
-            >
-              <Input placeholder="Quantity (e.g. 2^8+1)" />
-            </Form.Item>
-            <Form.Item>
-              <Button
-                type="dashed"
-                size="medium"
-                htmlType="submit"
-                icon={<PlusOutlined />}
-              ></Button>
-            </Form.Item>
-          </Space>
-        </Form>
-        <Row align="center" span={24}>
-          <Col span={8} offset={4}>
-            <Typography.Paragraph align="right">
-              <Text strong>Total time:&nbsp;&nbsp;</Text>
-              <Text italic onClick={() => setHumanTimeFormat(!humanTimeFormat)}>
-                {estimatedTime(recipe)}
-              </Text>
-            </Typography.Paragraph>
-          </Col>
-        </Row>
-        <Row justify="center" ref={ingredientsList}>
-          <List
-            dataSource={recipe}
-            style={{ maxHeight: "64vh", width: "90vh", overflowY: "scroll" }}
-            renderItem={(ingredient, index) => {
-              return (
-                <List.Item key={index}>
-                  <Col span={14}>
-                    <InlineMath math={formatFormula(ingredient.quantity)} />
-                    &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Tooltip
-                      placement="top"
-                      color="#108ee9"
-                      overlayInnerStyle={{
-                        width: operations[ingredient.op].tooltip_width,
-                      }}
-                      title={operations[ingredient.op].tooltip}
-                    >
-                      {operations[ingredient.op].description}
-                    </Tooltip>
-                  </Col>
-                  <Col span={6} align="right">
-                    {estimatedTime([ingredient])}
-                  </Col>
-                  <Col span={1}>
-                    <MinusCircleOutlined
-                      onClick={() => removeIngredient(index)}
-                    />
-                  </Col>
-                </List.Item>
-              );
-            }}
-          />
-        </Row>
-      <div style={{marginTop: "auto"}}>
-        <Authors />
-      </div>
-      </Layout.Content>
+      </Row>
+      <Row justify="center" ref={ingredientsList}>
+        <Recipe
+          recipe={recipe}
+          removeIngredient={removeIngredient}
+          operations={operations}
+          estimatedTime={estimatedTime}
+          formatTime={formatTime}
+        />
+      </Row>
     </Layout>
   );
 };

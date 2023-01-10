@@ -1,6 +1,7 @@
 import "katex/dist/katex.min.css";
 
-import {Layout, LayoutContent, Col} from "antd";
+import { Col } from "antd";
+import { Layout } from "../components/Layout";
 import {InlineMath} from "react-katex";
 
 import Link from "next/link";
@@ -11,16 +12,9 @@ import benchmark_data from "../public/methodology_benchmark_data.png";
 import interpolation from "../public/methodology_interpolation.png";
 import extrapolation from "../public/methodology_extrapolation.png";
 
-<Layout>
-<Layout.Content>
-
 <Col span={16} offset={4}>
 
 <center>
-<br/><br/>
-<Link href="/">
-    <Image src={logo} width={100} alt="" />
-</Link>
 
 #  zkalc scientific methodology
 
@@ -94,5 +88,5 @@ Finally, after all operations have been fitted to functions, we [export the func
 There is still lots of ways we can improve zkalc. Please check [the TODO file](https://github.com/zkalc/zkalc/blob/main/TODO.md) to see how you can also help!
 
 </Col>
-</Layout.Content>
-</Layout>
+
+export default ({ children }) => <Layout>{children}</Layout>
