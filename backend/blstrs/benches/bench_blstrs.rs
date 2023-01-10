@@ -80,7 +80,7 @@ fn bench_invert(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
     c.bench_function("invert", |b| {
         let a = Scalar::random(&mut rng);
-        b.iter(|| a.invert().unwrap())
+        b.iter(|| a.invert().unwrap());
     });
 }
 
