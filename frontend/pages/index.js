@@ -65,10 +65,10 @@ const { Title, Text } = Typography;
 const libraries = {
   arkworks: {
     label: "arkworks-rs",
-    version: "0.4",
+    version: "0.3.0",
     url: "https://arkworks.rs/",
   },
-  blstrs: { label: "blstrs", version: "0.1", url: "blstrs" },
+  blstrs: { label: "blstrs", version: "0.6.1", url: "https://github.com/filecoin-project/blstrs" },
   dalek: { label: "dalek", version: "0.1", url: "dalek", disabled: true },
 };
 
