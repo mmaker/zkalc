@@ -4,7 +4,6 @@ import "katex/dist/katex.min.css";
 
 import Link from "next/link";
 import Image from "next/image";
-import logo from "../public/logo.png";
 // import renderMathInElement from "katex/contrib/auto-render";
 
 import { InlineMath, BlockMath } from "react-katex";
@@ -23,7 +22,6 @@ import {
   ConfigProvider,
   Form,
   Input,
-  Layout,
   List,
   Radio,
   Row,
@@ -37,6 +35,7 @@ import {
 import { parse } from "mathjs";
 
 import {Footer} from "../components/footer";
+import {Layout} from "../components/layout";
 
 ///////////////////// Add your benchmarks here /////////////////////
 
@@ -506,43 +505,8 @@ const Home = () => {
   };
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
-      <br />
-      <Layout.Content id="content">
-        <Row align="center" span={24}>
-        <Col span={2}>
-          <Link href="/about">
-          <Image src={logo} width={50} alt="" />
-        </Link>
-        </Col>
-          <Col span={10} offset={4}>
-            <Title align="center" italic onClick={resetRecipe}>
-              zkalc
-            </Title>
-          </Col>
-          <Col span={3} offset={3}>
-            <Link href="/about">
-              <Tooltip title="about zkalc">
-                <QuestionCircleOutlined
-                  style={{ fontSize: "25px", color: "black" }}
-                />
-              </Tooltip>
-            </Link>
-            &nbsp;&nbsp;&nbsp;
-           <Link href="/methodology">
-               <Tooltip title="zkalc scientific methodology">
-                   <ExperimentOutlined style={{ fontSize: "25px", color: "black" }} />
-               </Tooltip>
-            </Link>
-            &nbsp;&nbsp;&nbsp;
-            <Link href="https://github.com/asn-d6/zkalc">
-              <Tooltip title="zkalc github">
-                <GithubOutlined style={{ fontSize: "25px", color: "black" }} />
-              </Tooltip>
-            </Link>
-          </Col>
-        </Row>
-        <Row align="center">
+    <Layout>
+       <Row align="center">
           <Text align="center" fontSize={20} color="#999">
             <BackendSelection />
           </Text>
@@ -630,8 +594,6 @@ const Home = () => {
             }}
           />
         </Row>
-      <Footer/>
-      </Layout.Content>
     </Layout>
   );
 };
