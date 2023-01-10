@@ -46,6 +46,10 @@ import estimates_blstrs_macbookpro2021 from "../data/results_blstrs_macbookpro20
 import estimates_arkworks_t450 from "../data/results_arkworks_t450.json";
 import estimates_blstrs_t450 from "../data/results_blstrs_t450.json";
 
+import curves from "../data/curves.json"
+import libraries from "../data/libraries.json"
+import machines from "../data/machines.json"
+
 const estimates = {
   blstrs: {
     bls12_381: {
@@ -63,37 +67,6 @@ const estimates = {
 
 const { Title, Text } = Typography;
 
-const libraries = {
-  arkworks: {
-    label: "arkworks-rs",
-    version: "0.3.0",
-    url: "https://arkworks.rs/",
-  },
-  blstrs: {
-    label: "blstrs",
-    version: "0.6.1",
-    url: "https://github.com/filecoin-project/blstrs",
-  },
-  dalek: { label: "dalek", version: "0.1", url: "dalek", disabled: true },
-};
-
-const machines = {
-  m1pro: {
-    label: "M1 Pro 2021",
-    description: 'Macbook Pro 2022 14" M1 Pro',
-    tooltip_width: 250,
-  },
-  thinkpad_t450: {
-    label: "ThinkPad T450",
-    description: "ThinkPad T450 (4-core i7-5600U CPU @ 2.6 GHz // 8GB RAM)",
-    tooltip_width: 400,
-  },
-  ec2large3: { label: "ec2-large3", disabled: true },
-};
-
-const curves = {
-  bls12_381: { label: "BLS12-381", key: "bls12_381" },
-};
 
 const operations = {
   msm_G1: {
