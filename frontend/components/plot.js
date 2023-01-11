@@ -1,5 +1,3 @@
-// install (please make sure versions match peerDependencies)
-// yarn add @nivo/core @nivo/line
 import { ResponsiveLine } from '@nivo/line'
 
 export const samplesToPlotData = (samples, name="name") => {
@@ -38,16 +36,16 @@ export const Plot = ({ data, height, lineWidth=1 }) => {
             stacked: true,
             reverse: false
         }}
-        // xScale={{
-        //     type: 'log',
-        //     base: 2,
-        //     max: 'auto',
-        // }}
-        // yScale={{
-        //     type: 'log',
-        //     base: 2,
-        //     max: 'auto',
-        // }}
+        xScale={{
+            type: 'log',
+            base: 2,
+            max: 'auto',
+        }}
+        yScale={{
+            type: 'log',
+            base: 2,
+            max: 'auto',
+        }}
         yFormat=" >-.2f"
         axisTop={null}
         axisRight={null}
