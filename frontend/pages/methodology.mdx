@@ -57,7 +57,7 @@ However, there are also more complicated operations like MSMs which are amortize
 
 <Plot data={
     [
-        samplesToPlotData(estimates["msm_G1"]),
+        samplesToPlotData(estimates["msm_G1"], "msm on M1 2021"),
     ]
     } height={400} lineWidth={0} />
 
@@ -67,10 +67,10 @@ For these operations, we [collect benchmark data](https://github.com/asn-d6/zkal
 
 <Plot data={
     [
-        samplesToPlotData(estimates["msm_G1"]),
-        functionToPlotData(estimates["msm_G1"].range, (n) => estimator(estimates["msm_G1"], n))
+        functionToPlotData(estimates["msm_G1"].range, (n) => estimator(estimates["msm_G1"], n), "estimated"),
+        samplesToPlotData(estimates["msm_G1"], "real"),
     ]
-    } height={400} lineWidth={3} />
+    } height={400} lineWidth={1} />
 
 That is, for each pair of benchmark data <InlineMath math="(x_i, f(x_i))" /> and <InlineMath math="(x_{i+1}, f(x_{i+1}))" /> we interpolate a linear polynomial [that goes through both points](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py). After we interpolate all pairs of points, we end up with a bunch of polynomials. We can then approximate <InlineMath math="f(n)" /> by evaluating the right polynomial at <InlineMath math="n" /> and as long as <InlineMath math="min(x_i) \le n \le max(x_i)" /> the interpolated polynomial will evaluate to a value close to <InlineMath math="f(n)" />.
 

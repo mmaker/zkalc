@@ -1,8 +1,8 @@
 import { ResponsiveLine } from '@nivo/line'
 
-export const samplesToPlotData = (samples, name="name") => {
+export const samplesToPlotData = (samples, id="name") => {
     const xys = samples.range.map((x, i) => ({ "x": x, "y": samples.results[i]}));
-    return {"id": name, "data": [... xys]};
+    return {id, "data": [... xys]};
 }
 
 const linspace = (start, stop, num) => {
@@ -10,22 +10,36 @@ const linspace = (start, stop, num) => {
     return Array.from({length: num}, (_, i) => start + step * i);
 }
 
-export const functionToPlotData = (range, f, name="foo") => {
-    // enhance resolution for the xs
-    const xs = range; // linspace(range[0], range[range.length-1], range.length*2);
-    const xys = xs.map((x) => ({ "x": x, "y": f(x)}));
-    return {"id": name, "data": [... xys]};
+/// increase the density of the array by adding the middle ements
+const denser = (xs) => {
+    // get the middle elements
+    var ys = xs.map((x, i) => {
+        if (i === 0) {
+            return x;
+        } else {
+            return (x + xs[i-1]) / 2;
+        }
+    });
+    ys.shift();
+    // concat and sort
+    return [...xs, ...ys].sort((a, b) => a - b);
 }
 
-// make sure parent container have a defined height when using
-// responsive component, otherwise height will be 0 and
-// no chart will be rendered.
-// website examples showcase many properties,
-// you'll often use just a few of them.
-export const Plot = ({ data, height, lineWidth=1 }) => {
+export const functionToPlotData = (range, f, id="foo") => {
+    // enhance resolution for the xs
+    const xs = denser(range); //  linspace(range[0], range[range.length-1], range.length*100);
+    const xys = xs.map((x) => ({ "x": x, "y": f(x)}));
+    return {id, "data": [... xys]};
+}
+
+export const Plot = ({ data, height, ...kwargs }) => {
     return (
+    // we must make sure parent container have a defined height when using
+    // responsive component, otherwise height will be 0 and
+    // no chart will be rendered.
     <div style={{height: height}}>
     <ResponsiveLine
+        {...kwargs}
         data={data}
         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
         xScale={{ type: 'point' }}
@@ -49,7 +63,6 @@ export const Plot = ({ data, height, lineWidth=1 }) => {
         yFormat=" >-.2f"
         axisTop={null}
         axisRight={null}
-        lineWidth={lineWidth}
         axisBottom={{
             orient: 'bottom',
             tickSize: 5,
