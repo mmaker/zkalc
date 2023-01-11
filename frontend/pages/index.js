@@ -46,9 +46,9 @@ import estimates_blstrs_macbookpro2021 from "../data/results_blstrs_macbookpro20
 import estimates_arkworks_t450 from "../data/results_arkworks_t450.json";
 import estimates_blstrs_t450 from "../data/results_blstrs_t450.json";
 
-import curves from "../data/curves.json"
-import libraries from "../data/libraries.json"
-import machines from "../data/machines.json"
+import curves from "../data/curves.json";
+import libraries from "../data/libraries.json";
+import machines from "../data/machines.json";
 
 const estimates = {
   blstrs: {
@@ -66,7 +66,6 @@ const estimates = {
 };
 
 const { Title, Text } = Typography;
-
 
 const operations = {
   msm_G1: {
@@ -341,14 +340,55 @@ const Home = () => {
     }
   };
 
+  // find the line passing through points p and q
+  const line = ([x1, y1], [x2, y2]) => {
+    const m = (y2 - y1) / (x2 - x1);
+    const b = y1 - m * x1;
+    return [m, b];
+  };
+
+  const interval = (samples, x) => {
+    var smaller = null;
+    var larger = null;
+    var i = null;
+    let range = samples.range;
+
+    if (range[0] > x) {
+      [smaller, larger] = [0, 1];
+    } else if (range[range.length - 1] < x) {
+      [smaller, larger] = [range.length - 2, range.length - 1];
+    } else {
+      for (i = 0; i < range.length && range[i] < x; i++) {
+          smaller = i;
+      }
+      larger = i+1;
+    }
+    return [
+      [samples.range[smaller], samples.results[smaller]],
+      [samples.range[larger], samples.results[larger]],
+    ];
+  };
+
+  const linearEstimator = (samples, n) => {
+    const [p, q] = interval(samples, n);
+    const [m, b] = line(p, q);
+    console.log(p, q);
+    return m * n + b;
+  };
+
+  const estimator = (samples, n) => {
+    if (samples.range.length === 1) {
+      return n * samples.results[0];
+    } else {
+      return linearEstimator(samples, n);
+    }
+  };
+
   const estimatedTime = (item) => {
     if (item.op in estimates[lib][curve][machine]) {
-      var f = new Function(
-        estimates[lib][curve][machine][item.op].arguments,
-        estimates[lib][curve][machine][item.op].body
-      );
       // XXX bad evaluate
-      return f(item.quantity.evaluate());
+      const samples = estimates[lib][curve][machine][item.op];
+      return estimator(samples, item.quantity.evaluate());
     } else {
       return null;
     }
@@ -387,9 +427,6 @@ const Home = () => {
       throw new Error("Missing quantity");
     } else {
       const evaluated = parse(value).evaluate();
-
-      console.log(evaluated);
-
       if (evaluated instanceof ResultSet) {
         throw new Error("Only single expressions are supported");
       }

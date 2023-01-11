@@ -70,10 +70,10 @@ fn bench_msm<P: Pairing>(c: &mut Criterion) {
             .map(|_| P::G2::rand(rng).into_affine())
             .collect::<Vec<_>>();
 
-        group.bench_with_input(BenchmarkId::new("G1", size), &d, |b, _| {
+        group.bench_with_input(BenchmarkId::new("G1", size), &logsize, |b, _| {
             b.iter(|| P::G1::msm(&g1s, &scalars))
         });
-        group.bench_with_input(BenchmarkId::new("G2", size), &d, |b, _| {
+        group.bench_with_input(BenchmarkId::new("G2", size), &logsize, |b, _| {
             b.iter(|| P::G2::msm(&g2s, &scalars))
         });
     }

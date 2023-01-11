@@ -1,4 +1,4 @@
-OUTDIR=../frontend/src/
+OUTDIR=../frontend/data/
 
 all: blstrs arkworks
 
