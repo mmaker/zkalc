@@ -1,17 +1,17 @@
 {
     "arkworks": {
         "label": "arkworks-rs",
-        "version": "rustc: 1.68.0-nightly ark-algebra: 4d01c84e500dbe1491",
+        "version": "0.3 (4d01c84e500dbe1491, rustc: 1.68.0-nightly) ",
         "url": "https://arkworks.rs/"
     },
     "blstrs": {
         "label": "blstrs",
-        "version": "rustc: 1.68.0-nightly blstrs: 0.6.1",
+        "version": "0.6.1 (rustc: 1.68.0-nightly)",
         "url": "https://github.com/filecoin-project/blstrs"
     },
     "dalek": {
-        "label": "dalek",
-        "version": "0.1",
+        "label": "curve25519-dalek-ng",
+        "version": "4 (rustc: 1.68.0-nightly)",
         "url": "dalek.rs",
         "disabled": true
     }

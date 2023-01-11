@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 
 import "katex/dist/katex.min.css";
 
-// import renderMathInElement from "katex/contrib/auto-render";
-
 import { InlineMath, BlockMath } from "react-katex";
 import {
   MinusCircleOutlined,
@@ -13,7 +11,6 @@ import {
   ExperimentOutlined,
   GithubOutlined,
 } from "@ant-design/icons";
-
 import {
   Alert,
   Button,
@@ -36,38 +33,38 @@ import { parse, ResultSet } from "mathjs";
 import { Footer } from "../components/footer";
 import { Layout } from "../components/layout";
 import { Recipe } from "../components/recipe";
-
 import { estimator } from "../lib/estimates";
 
+// import renderMathInElement from "katex/contrib/auto-render";
+
+const { Title, Text } = Typography;
 
 ///////////////////// Add your benchmarks here /////////////////////
-
-// Import our benchmark results
-import estimates_arkworks_macbookpro2021 from "../data/results_arkworks_macbookpro2021.json";
-import estimates_blstrs_macbookpro2021 from "../data/results_blstrs_macbookpro2021.json";
-import estimates_arkworks_t450 from "../data/results_arkworks_t450.json";
-import estimates_blstrs_t450 from "../data/results_blstrs_t450.json";
 
 import curves from "../data/curves.json";
 import libraries from "../data/libraries.json";
 import machines from "../data/machines.json";
 
+// Import our benchmark results
+import estBls12381ArkM1 from "../data/bls12-381/arkworks/m1pro.json";
+import estBls12381ArkT450 from "../data/bls12-381/arkworks/t450.json";
+import estBls12381BlstM1 from "../data/bls12-381/blstrs/m1pro.json";
+import estBls12381BlstT450 from "../data/bls12-381/blstrs/t450.json";
+
 const estimates = {
   blstrs: {
     bls12_381: {
-      thinkpad_t450: estimates_blstrs_t450,
-      m1pro: estimates_blstrs_macbookpro2021,
+      thinkpad_t450: estBls12381BlstT450,
+      m1pro: estBls12381BlstM1,
     },
   },
   arkworks: {
     bls12_381: {
-      thinkpad_t450: estimates_arkworks_t450,
-      m1pro: estimates_arkworks_macbookpro2021,
+      thinkpad_t450: estBls12381ArkT450,
+      m1pro: estBls12381ArkM1,
     },
   },
 };
-
-const { Title, Text } = Typography;
 
 const operations = {
   msm_G1: {

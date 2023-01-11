@@ -3,24 +3,15 @@ import "katex/dist/katex.min.css";
 import { Col } from "antd";
 import { Layout } from "../components/layout";
 import {Plot, samplesToPlotData, functionToPlotData} from "../components/plot";
-
 import { InlineMath } from "react-katex";
+import {Line} from "@nivo/line";
 
 import Link from "next/link";
 import Image from "next/image";
 
 import logo from "../public/logo.png";
-import benchmark_data from "../public/methodology_benchmark_data.png";
-import interpolation from "../public/methodology_interpolation.png";
-import extrapolation from "../public/methodology_extrapolation.png";
-
-
 import { estimator } from "../lib/estimates";
-
-
-
-import {Line} from "@nivo/line";
-import estimates from "../data/results_arkworks_macbookpro2021";
+import estimates from "../data/bls12-381/arkworks/m1pro.json";
 
 <Col span={16} offset={4}>
 
@@ -75,12 +66,11 @@ That is, for each pair of benchmark data <InlineMath math="(x_i, f(x_i))" /> and
 
 However, if a user asks for <InlineMath math="f(n)" /> where <InlineMath math="n" /> is bigger than <InlineMath math="max(x_i)" /> we need to extrapolate. In this case, we take the rightmost polynomial and use that to evaluate <InlineMath math="f(n)" /> as we do in the figure below.
 
-<br />
-<center>
-<Image src={extrapolation} width={1280} alt="" />
-</center>
-<br />
-
+<Plot data={
+    [
+        functionToPlotData(estimates["msm_G1"].range, (n) => estimator(estimates["msm_G1"], n), "estimated"),
+    ]
+    } height={400} lineWidth={1} />
 
 Observe that the rightmost polynomial is linear and hence it's not able to faithfully follow the non-linear <InlineMath math="f(x)" />. Hence zkalc will get more and more inaccurate the bigger <InlineMath math="n" /> is. See our [TODO document](https://github.com/asn-d6/zkalc/blob/main/TODO.md) for possible improvements here.
 
