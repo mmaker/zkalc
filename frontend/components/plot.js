@@ -27,7 +27,7 @@ const denser = (xs) => {
 
 export const functionToPlotData = (range, f, id="foo") => {
     // enhance resolution for the xs
-    const xs = denser(range); //  linspace(range[0], range[range.length-1], range.length*100);
+    const xs = range.map(x => x + x/2); //  linspace(range[0], range[range.length-1], range.length*100);
     const xys = xs.map((x) => ({ "x": x, "y": f(x)}));
     return {id, "data": [... xys]};
 }
@@ -50,16 +50,16 @@ export const Plot = ({ data, height, ...kwargs }) => {
             stacked: true,
             reverse: false
         }}
-        xScale={{
-            type: 'log',
-            base: 2,
-            max: 'auto',
-        }}
-        yScale={{
-            type: 'log',
-            base: 2,
-            max: 'auto',
-        }}
+        // xScale={{
+        //     type: 'log',
+        //     base: 2,
+        //     max: 'auto',
+        // }}
+        // yScale={{
+        //     type: 'log',
+        //     base: 2,
+        //     max: 'auto',
+        // }}
         yFormat=" >-.2f"
         axisTop={null}
         axisRight={null}
