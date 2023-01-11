@@ -2,8 +2,6 @@ import React, { useEffect } from "react";
 
 import "katex/dist/katex.min.css";
 
-import Link from "next/link";
-import Image from "next/image";
 // import renderMathInElement from "katex/contrib/auto-render";
 
 import { InlineMath, BlockMath } from "react-katex";
@@ -15,6 +13,7 @@ import {
   ExperimentOutlined,
   GithubOutlined,
 } from "@ant-design/icons";
+
 import {
   Alert,
   Button,
@@ -37,6 +36,9 @@ import { parse, ResultSet } from "mathjs";
 import { Footer } from "../components/footer";
 import { Layout } from "../components/layout";
 import { Recipe } from "../components/recipe";
+
+import { estimator } from "../lib/estimates";
+
 
 ///////////////////// Add your benchmarks here /////////////////////
 
@@ -340,50 +342,6 @@ const Home = () => {
     }
   };
 
-  // find the line passing through points p and q
-  const line = ([x1, y1], [x2, y2]) => {
-    const m = (y2 - y1) / (x2 - x1);
-    const b = y1 - m * x1;
-    return [m, b];
-  };
-
-  const interval = (samples, x) => {
-    var smaller = null;
-    var larger = null;
-    var i = null;
-    let range = samples.range;
-
-    if (range[0] > x) {
-      [smaller, larger] = [0, 1];
-    } else if (range[range.length - 1] < x) {
-      [smaller, larger] = [range.length - 2, range.length - 1];
-    } else {
-      for (i = 0; i < range.length && range[i] < x; i++) {
-          smaller = i;
-      }
-      larger = i+1;
-    }
-    return [
-      [samples.range[smaller], samples.results[smaller]],
-      [samples.range[larger], samples.results[larger]],
-    ];
-  };
-
-  const linearEstimator = (samples, n) => {
-    const [p, q] = interval(samples, n);
-    const [m, b] = line(p, q);
-    console.log(p, q);
-    return m * n + b;
-  };
-
-  const estimator = (samples, n) => {
-    if (samples.range.length === 1) {
-      return n * samples.results[0];
-    } else {
-      return linearEstimator(samples, n);
-    }
-  };
-
   const estimatedTime = (item) => {
     if (item.op in estimates[lib][curve][machine]) {
       // XXX bad evaluate
@@ -497,7 +455,6 @@ const Home = () => {
       </>
     );
   };
-
   return (
     <Layout>
       <Row align="center">
