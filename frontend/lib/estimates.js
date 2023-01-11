@@ -53,6 +53,7 @@
     if (samples.range.length === 1) {
         return n * samples.results[0];
     } else {
+      // linearEstimator(samples, n);
     let xs = samples.range;
     let ys = samples.range.map((x, i) => samples.results[i] * Math.log2(x));
     return linearRegression(xs, ys)(n);
