@@ -40,7 +40,7 @@ Now we have benchmark data for every operation in the `perf/` directory. The nex
 
 ## Fitting simple operations
 
-For simple operations like basic scalar multiplication and field addition which are not amortized we use the benchmark results in a linear fashion. That is, if a single scalar multiplication takes <InlineMath math="x" /> seconds on average, <InlineMath math="n" /> such operations will take <InlineMath math="n*x" /> seconds. That results in a linear function <InlineMath math="f(x) = n*x" /> that can easily be exported to the zkalc website.
+For simple operations like basic scalar multiplication and field addition which are not amortized we use the benchmark results in a linear fashion. That is, if a single scalar multiplication takes <InlineMath math="x" /> seconds on average, <InlineMath math="n" /> such operations will take <InlineMath math="n \cdot x" /> seconds. That results in a linear function <InlineMath math="f(x) = n \cdot x" /> that can easily be exported to the zkalc website.
 
 ## Fitting amortized operations
 
@@ -62,9 +62,9 @@ For these operations, we [collect benchmark data](https://github.com/asn-d6/zkal
     ]
     } height={400} lineWidth={1} />
 
-That is, for each pair of benchmark data <InlineMath math="(x_i, f(x_i))" /> and <InlineMath math="(x_{i+1}, f(x_{i+1}))" /> we interpolate a linear polynomial [that goes through both points](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py). After we interpolate all pairs of points, we end up with a bunch of polynomials. We can then approximate <InlineMath math="f(n)" /> by evaluating the right polynomial at <InlineMath math="n" /> and as long as <InlineMath math="min(x_i) \le n \le max(x_i)" /> the interpolated polynomial will evaluate to a value close to <InlineMath math="f(n)" />.
+That is, for each pair of benchmark data <InlineMath math="(x_i, f(x_i))" /> and <InlineMath math="(x_{i+1}, f(x_{i+1}))" /> we interpolate a linear polynomial [that goes through both points](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py). After we interpolate all pairs of points, we end up with a bunch of polynomials. We can then approximate <InlineMath math="f(n)" /> by evaluating the right polynomial at <InlineMath math="n" /> and as long as <InlineMath math="\min(x_i) \le n \le \max(x_i)" /> the interpolated polynomial will evaluate to a value close to <InlineMath math="f(n)" />.
 
-However, if a user asks for <InlineMath math="f(n)" /> where <InlineMath math="n" /> is bigger than <InlineMath math="max(x_i)" /> we need to extrapolate. In this case, we take the rightmost polynomial and use that to evaluate <InlineMath math="f(n)" /> as we do in the figure below.
+However, if a user asks for <InlineMath math="f(n)" /> where <InlineMath math="n" /> is bigger than <InlineMath math="\max(x_i)" /> we need to extrapolate. In this case, we take the rightmost polynomial and use that to evaluate <InlineMath math="f(n)" /> as we do in the figure below.
 
 <Plot data={
     [
