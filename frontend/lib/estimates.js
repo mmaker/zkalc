@@ -6,17 +6,6 @@
     return [m, b];
   };
 
-  const interval = (samples, x) => {
-    var i = 2;
-    let range = samples.range;
-    while (i < range.length && range[i] <= x) { i++; }
-    const larger = i-1;
-    const smaller = larger-1;
-    return [
-      [samples.range[smaller], samples.results[smaller]],
-      [samples.range[larger], samples.results[larger]],
-    ];
-  };
 
   const linearEstimator = (samples, n) => {
     const [p, q] = interval(samples, n);
@@ -50,12 +39,24 @@
   }
 
   export const estimator = (samples, n) => {
-    if (samples.range.length === 1) {
+    let range = samples.range;
+
+    if (range.length === 1) {
         return n * samples.results[0];
+    } else if (range[0] > n || range[range.length-1] < n) {
+      const xs = range;
+      const ys = range.map((x, i) => samples.results[i] * Math.log2(x));
+      const extrapolate = linearRegression(xs, ys)
+      return extrapolate(n)
     } else {
-      // linearEstimator(samples, n);
-    let xs = samples.range;
-    let ys = samples.range.map((x, i) => samples.results[i] * Math.log2(x));
-    return linearRegression(xs, ys)(n);
+      let i = 0;
+      while (range[i] <= x && i < range.length-1) {i++; }
+      let interval = interval(range, n);
+      let [p, q] = [
+        [samples.range[i], samples.results[i+1]],
+        [samples.range[i], samples.results[i+1]],
+      ];
+      const [m, b] = line(p, q);
+      return m * n + b;
     }
   };
