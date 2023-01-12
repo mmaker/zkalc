@@ -43,7 +43,7 @@
       return extrapolate(n)
     } else {
       let i = 0;
-      while (range[i] <= x && i < range.length-1) {i++; }
+      while (range[i] <= n && i < range.length-1) {i++; }
       let interval = interval(range, n);
       let [p, q] = [
         [samples.range[i], samples.results[i+1]],
