@@ -1,16 +1,22 @@
 {
     "m1pro": {
         "label": "M1 Pro 2021",
-        "description": "Macbook Pro 2022 14\" (M1 Pro // 16GB RAM)",
-        "tooltip_width": 250
+        "description": "Macbook Pro 2022 14\"",
+        "cpu": "Apple M1 Pro",
+        "ram": "16GB",
+        "os": "MacOS 13.1 (Ventura)"
     },
     "thinkpad_t450": {
         "label": "ThinkPad T450",
         "description": "ThinkPad T450 (4-core i7-5600U CPU @ 2.6 GHz // 8GB RAM)",
-        "tooltip_width": 400
+        "cpu": "4-core i7-5600U CPU @ 2.6 GHz",
+        "ram": "8GB"
     },
     "ec2c59xlarge": {
-        "label": "AWS EC2 c5.9xlarge (36-core // 72GB RAM)",
+        "label": "AWS EC2 c5.9xlarge",
+        "cpu": "36-core",
+        "ram": "72GB",
+        "os": "Ubuntu 18.04.6 LTS (Bionic Beaver)",
         "disabled": true
     }
 }
