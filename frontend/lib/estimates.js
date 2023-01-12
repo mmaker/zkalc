@@ -6,13 +6,6 @@
     return [m, b];
   };
 
-
-  const linearEstimator = (samples, n) => {
-    const [p, q] = interval(samples, n);
-    const [m, b] = line(p, q);
-    return m * n + b;
-  };
-
   function linearRegression(x, y) {
     const avgX = x.reduce((prev, curr) => prev + curr, 0) / x.length;
     const xDifferencesToAverage = x.map((value) => avgX - value);
