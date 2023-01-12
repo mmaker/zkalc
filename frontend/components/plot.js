@@ -182,7 +182,9 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
         }}
         axisBottom={{
           orient: "bottom",
-          tickValues: [],
+          tickSize: 5,
+          tickPadding: 5,
+          tickRotation: 0,
           legend: "MSM size (log2)",
           format: formatSizeTick,
           legendOffset: 36,
