@@ -8,13 +8,13 @@
     },
     "thinkpad_t450": {
         "label": "ThinkPad T450",
-        "description": "ThinkPad T450 (4-core i7-5600U CPU @ 2.6 GHz // 8GB RAM)",
+        "description": "ThinkPad T450",
         "cpu": "4-core i7-5600U CPU @ 2.6 GHz",
         "ram": "8GB"
     },
     "ec2c59xlarge": {
         "label": "AWS EC2 c5.9xlarge",
-        "cpu": "36-core",
+        "cpu": "36-core Intel(R) Xeon(R) Platinum 8124M CPU @ 3.00GHz",
         "ram": "72GB",
         "os": "Ubuntu 18.04.6 LTS (Bionic Beaver)",
         "disabled": true

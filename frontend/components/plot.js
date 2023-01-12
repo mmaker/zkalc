@@ -1,6 +1,8 @@
 import { ResponsiveLine } from '@nivo/line'
 import { InlineMath } from 'react-katex';
 import { humanTime } from '../lib/time';
+import { area, curveMonotoneX } from 'd3-shape'
+
 export const samplesToPlotData = (samples, id="name") => {
     const xys = samples.range.filter(x => x> 16).map((x, i) => ({ "x": x, "y": samples.results[i]}));
     return {id, "data": [... xys],         "pointSize": 10};
@@ -57,6 +59,48 @@ const tooltipElement = (props) => {
         MSM of size <InlineMath math={`2^{${Math.log2(props.point.data.x).toFixed(0)}}`} /> run in {time}
     </div>
 };
+
+
+const LinePlot = ({ series, lineGenerator, xScale, yScale }) => {
+    return series.map(({ id, data, color }) => (
+        <path
+            key={id}
+            d={lineGenerator(
+                data.map(d => ({
+                    x: xScale(d.data.x),
+                    y: yScale(d.data.y),
+                }))
+            )}
+            fill="none"
+            stroke={color}
+            style={styleById[id] || styleById.default}
+        />
+    ))
+}
+
+const styleById = {
+   estimated: {
+        strokeWidth: 1,
+    },
+    none: {
+    },
+    default: {
+        strokeDasharray: '12, 6',
+        strokeWidth: 1,
+    },
+}
+
+
+// const AreaLayer = ({ points, xScale, yScale }) => {
+//     const areaGenerator = area()
+//       .x(d => xScale(d.data.x))
+//       .y0(d => yScale(d.data.low))
+//       .y1(d => yScale(d.data.high))
+//       .curve(curveMonotoneX);
+
+//     return <path d={areaGenerator(points)} fill="rgba(140, 219, 243, .5)" />;
+//   };
+
 
 export const Plot = ({ data, height, ...kwargs }) => {
     return (
@@ -115,6 +159,15 @@ export const Plot = ({ data, height, ...kwargs }) => {
         pointLabelYOffset={-12}
         useMesh={true}
         tooltip={tooltipElement}
+        layers={[
+            "grid",
+            "axes",
+            LinePlot,
+            "points",
+            "markers",
+            "mesh",
+            "legends"
+          ]}
         // legends={[
         //     {
         //         anchor: 'bottom-right',
