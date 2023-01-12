@@ -261,6 +261,7 @@ const Home = () => {
   let ingredientsList = React.useRef(null);
 
   // useEffect(() => {
+  //   document.getElementById("title").setAttribute('onClick', "resetRecipe");
   //   renderMathInElement(ingredientsList.current, katex_settings);
   // });
   const [ingredientForm] = Form.useForm();
@@ -373,7 +374,7 @@ const Home = () => {
         using &nbsp;
         <Tooltip
           placement="top"
-          title={`${machines[machine].description}`}
+          title={` ${machines[machine].os} ${machines[machine].cpu}, ${machines[machine].ram}`}
           overlayInnerStyle={{
             width: machines[machine].tooltip_width,
           }}

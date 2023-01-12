@@ -22,7 +22,7 @@ export const Header = () => {
         </Link>
       </Col>
       <Col span={10} offset={4}>
-        <Link href="/">
+        <Link href="/" id="title">
           <Title align="center" italic>
             zkalc
           </Title>

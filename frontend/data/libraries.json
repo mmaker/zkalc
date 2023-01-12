@@ -1,7 +1,7 @@
 {
     "arkworks": {
         "label": "arkworks-rs",
-        "version": "0.3 (4d01c84e500dbe1491, rustc: 1.68.0-nightly) ",
+        "version": "0.3 (4d01c84e, rustc: 1.68.0-nightly) ",
         "url": "https://arkworks.rs/"
     },
     "blstrs": {

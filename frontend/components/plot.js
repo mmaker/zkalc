@@ -65,8 +65,8 @@ const tooltipElement = (props) => {
   return (
     <div style={tooltipStyle}>
       MSM of size{" "}
-      <InlineMath math={`2^{${Math.log2(props.point.data.x).toFixed(0)}}`} />{" "}
-      run in {time}
+      <InlineMath math={`2^{${Math.log2(props.point.data.x).toFixed(0)}}`} />{": "}
+      {time}
     </div>
   );
 };

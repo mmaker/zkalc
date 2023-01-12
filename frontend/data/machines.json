@@ -10,7 +10,8 @@
         "label": "ThinkPad T450",
         "description": "ThinkPad T450",
         "cpu": "4-core i7-5600U CPU @ 2.6 GHz",
-        "ram": "8GB"
+        "ram": "8GB",
+        "os": "Debian bookworm/sid"
     },
     "ec2c59xlarge": {
         "label": "AWS EC2 c5.9xlarge",
