@@ -1,0 +1,175 @@
+.lds-ring {
+  margin: 3rem auto;
+  position: relative;
+  width: 60px;
+  height: 60px;
+}
+
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  margin: 6px;
+  border: 6px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #888 transparent transparent transparent;
+}
+
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.emgithub-file {
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 1em 0;
+}
+
+.emgithub-file-light {
+  border: 1px solid #ccc;
+}
+
+
+.emgithub-file .file-meta {
+  padding: 10px;
+  font-size: 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial,
+    sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  display: flex;
+}
+.emgithub-file .file-meta > a:first-child {
+  margin-right: auto;
+}
+
+.emgithub-file .file-meta-light {
+  color: #586069;
+  background-color: #f7f7f7;
+  border-top: 1px solid #ccc;
+}
+
+.emgithub-file .file-meta a {
+  font-weight: 600;
+  text-decoration: none;
+  border: 0;
+}
+
+.emgithub-file .file-meta-light a {
+  color: #666;
+}
+
+
+.emgithub-file .code-area {
+  position: relative;
+}
+
+.emgithub-file .code-area pre {
+  margin: 0;
+  padding: 0;
+  tab-size: 4;
+}
+
+.emgithub-file .code-area .hljs-ln-numbers {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  text-align: right;
+  color: #aaa;
+  vertical-align: top;
+}
+
+.emgithub-file .code-area td.hljs-ln-numbers {
+  padding-right: 1rem;
+}
+
+.emgithub-file .code-area td.hljs-ln-line {
+  line-height: 21px;
+  font-size: 12px;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+    Liberation Mono, monospace;
+  border: 0;
+}
+
+.emgithub-file .code-area table.hljs-ln {
+  border: 0;
+  margin: 0;
+}
+
+.emgithub-file .code-area pre code.hljs {
+  padding: 0.8em;
+}
+
+.emgithub-file .code-area .hide-line-numbers .hljs-ln-numbers {
+  display: none;
+}
+
+.emgithub-file .html-area pre {
+  padding: 0;
+  background-color: #fff;
+}
+
+.emgithub-file .html-area .nb-cell {
+  position: relative;
+}
+
+.emgithub-file .html-area .nb-output:before,
+.emgithub-file .html-area .nb-input:before {
+  position: absolute;
+  font-family: monospace;
+  color: #999;
+  left: -7.5em;
+  width: 7em;
+  text-align: right;
+  font-size: 13px;
+}
+
+.emgithub-file .html-area .nb-input:before {
+  content: "In [" attr(data-prompt-number) "]:";
+}
+
+.emgithub-file .html-area .nb-output:before {
+  content: "Out [" attr(data-prompt-number) "]:";
+}
+
+.emgithub-file .html-area.markdown-body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 45px;
+}
+
+/* Reserve space for "In [1]", "Out [1]" */
+.emgithub-file .html-area.markdown-body .nb-notebook {
+  padding-left: 65px;
+}
+
+@media (max-width: 767px) {
+  .emgithub-file .html-area.markdown-body {
+    padding: 15px;
+  }
+}

@@ -39,6 +39,8 @@ import { estimator } from "../lib/estimates";
 
 const { Title, Text } = Typography;
 
+import dynamic from "next/dynamic";
+
 ///////////////////// Add your benchmarks here /////////////////////
 
 import curves from "../data/curves.json";

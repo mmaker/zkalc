@@ -6,6 +6,8 @@ import {Plot, samplesToPlotData, functionToPlotData} from "../components/plot";
 import { InlineMath } from "react-katex";
 import {Line} from "@nivo/line";
 
+import { GitHubFile } from "../components/github-file";
+
 import Link from "next/link";
 import Image from "next/image";
 
@@ -53,6 +55,7 @@ However, there are also more complicated operations like MSMs which are amortize
     } height={400} lineWidth={0} />
 
 
+<GitHubFile url="https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs#L24-L31" />
 
 For these operations, we [collect benchmark data](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs#L52) for various sizes and then perform [polynomial interpolation](https://www.youtube.com/watch?v=yQsDxOdn1hk) over the entire dataset as can be seen on the figure below.
 
