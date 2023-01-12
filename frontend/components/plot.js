@@ -117,7 +117,7 @@ export const PlotPointsAndEstimates = ({ ...kwargs }) => {
   let op = "msm_G1";
   let samples = estimates[lib][curve][machine][op];
 
-  let smaller_samples = filterSamples(samples, ([i, x, y]) => (x > 2 && x < (1 << 20)));
+  let smaller_samples = filterSamples(samples, ([i, x, y]) => (x > 2 && x < (1 << 22)));
   let points = samplesToPlotData(smaller_samples, "data");
   let estimator_f = estimator(curve, lib, machine, op);
   let estimations = functionToPlotData(smaller_samples.range, estimator_f, "estimated");
