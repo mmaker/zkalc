@@ -50,6 +50,6 @@
         [samples.range[i+1], samples.results[i+1]],
       ];
       const [m, b] = line(p, q);
-      return m * n + b;
+      return (m * n + b) / Math.log2(n);
     }
   };
