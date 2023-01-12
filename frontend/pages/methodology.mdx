@@ -38,8 +38,11 @@ Inside [`backend/`](https://github.com/asn-d6/zkalc/blob/main/backend/) we colle
 
 Running `make` inside `backend/` will run every benchmark, storing results inside `perf/`, where they are post-processed and collected in our API format.
 
-## API Format
+## Collecting benchmarks
 
+We store in json format benchmarking results inside [`frontend/data`](https://github.com/asn-d6/zkalc/tree/main/frontend/data) and they are free for everyone to use. Given a curve key `curve` (available in `curves.json`), a library key `lib` that supports the given curve (available in `libraries.json`) and a machine key `machine` (available in `machines.json`), it is possible to fetch the samples in the file `data/{curve}/{library}/{machine}.json`. For instance, this is the file reporting the microbenchmarks for curve BLS12-381 using arkworks on a M1 Pro 2021.
+
+<GitHubFile url="https://github.com/asn-d6/zkalc/blob/main/frontend/data/bls12-381/arkworks/m1pro.json" />
 
 
 ## Estimating the running time
@@ -81,17 +84,8 @@ However, if a user asks for <InlineMath math="f(n)" /> where <InlineMath math="n
 
 Observe that the rightmost polynomial is linear and hence it's not able to faithfully follow the non-linear <InlineMath math="f(x)" />. Hence zkalc will get more and more inaccurate the bigger <InlineMath math="n" /> is. See our [TODO document](https://github.com/asn-d6/zkalc/blob/main/TODO.md) for possible improvements here.
 
-<br />
 
-## Moving the fitted functions to zkalc
-
-Finally, after all operations have been fitted to functions, we [export the functions to Javascript](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py#L60) and [dump them](https://github.com/asn-d6/zkalc/blob/main/frontend/data/results_arkworks_macbookpro2021.json) on the `frontend/` directory to be used by the zkalc website.
-
-<br />
-
-----
-
-<br />
+## Contributing
 
 There is still lots of ways we can improve zkalc. Please check [the TODO file](https://github.com/asn-d6/zkalc/blob/main/TODO.md) to see how you can also help!
 

@@ -68,7 +68,6 @@ export const Plot = ({ data, height, ...kwargs }) => {
         {...kwargs}
         data={data}
         margin={{ top: 30, right: 110, bottom: 70, left: 60 }}
-        xScale={{ type: 'point' }}
         xMin={16}
         yMin={16}
         yScale={{
@@ -79,7 +78,7 @@ export const Plot = ({ data, height, ...kwargs }) => {
             reverse: false
         }}
         xScale={{
-            type: 'log',
+            type: 'point',
             base: 2,
             min: 'auto',
             max: 'auto',
