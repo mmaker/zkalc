@@ -23,7 +23,7 @@ In this page, we describe our benchmarking pipeline and how we derive our result
     We use [`criterion.rs`](https://criterion.rs), to take at least 10 samples, and then select the median.
 1. We collect the data inside `frontend/data/` and make it freely available.
 1. We extrapolate a curve linking the aboves samples, using linear interpolation inside the curve and curve fitting with least squares outside the benchmarking bounds.
-1. When a user queries zkalc for an operation of size <InlineMath math="n" />, we estimate the its running time using the produced function <InlineMath math="n" />.
+1. When a user queries zkalc for an operation of size <InlineMath math="n" />, we estimate the its running time using the produced function.
 
 We will now go deeper into the above process, also linking to the relevant places in the codebase.
 
@@ -70,14 +70,17 @@ For numbers outside the benchmarking range, we [extrapolate](https://en.wikipedi
 
 In the specific case of MSMs, Pippenger's complexity is [well known](https://jbootle.github.io/Misc/pippenger.pdf) to behave like <InlineMath math="\frac{n}{\log n}" />. we fit the data set to a function <InlineMath math="h(x) = \frac{ax + b}{logx}" /> and we evaluate it at <InlineMath math="h(n)" />.
 
-We do not expect extrapolation to faithfully follow the benchmarks. For instance, in the case of multi-scalar multiplications as above, we record an error of XXX for the size YYY. We believe however that the estimates provide a rough idea of how long an algorithm will take.
-In addition, it's worth pointing out while we try to provide useful results for arbitrary operation sizes, we cannot guarantee that the requested machine will be able to handle the requested size. For example, a commodity laptop will likely run out of memory before it computes an MSM of size <InlineMath math="2^{28}" />, unless the user resorts to streaming algorithms.
+We do not expect extrapolation to faithfully follow the benchmarks.
+`{* For instance, in the case of multi-scalar multiplications as above, we record an error of XXX for the size YYY. *}`
+We believe however that the estimates provide a rough idea of how long an algorithm will take.
+In addition, it's worth pointing out while we try to provide useful results for arbitrary operation sizes, we cannot guarantee that the requested machine will be able to handle the requested size. For example, a commodity laptop will likely run out of memory before it computes an MSM of size <InlineMath math="2^{28}" />.
 
-## Hazard zone
+## Hazmat
 
-If you open the code
+We provide an estimator function for everyone to use inside the browser's console. Just open _Developer Tools_,
+and check out the function `estimator`.
 
-There is still lots of ways we can improve zkalc. Please check [the TODO file](https://github.com/asn-d6/zkalc/blob/main/TODO.md) to see how you can also help!
+There is still lots of ways we can improve zkalc. If you want to hack around, and you don't generally like to open the browser console when a stranger says so, check [the TODO file](https://github.com/asn-d6/zkalc/blob/main/TODO.md) to see how you can also help!
 
 </Col>
 
