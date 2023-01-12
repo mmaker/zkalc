@@ -18,11 +18,11 @@ import * as antd from "antd";
 const { Row, Col, Tooltip, Typography } = antd;
 const { Title } = Typography;
 
-export const Layout = ({ children }) => {
+export const Layout = ({ children, onClickTitle=(()=>{}) }) => {
   return (
     <antd.Layout style={{ minHeight: "100vh" }}>
       <antd.Layout.Content id="content">
-        <Header />
+        <Header onClickTitle={onClickTitle}/>
 
         {children}
 

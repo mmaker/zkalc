@@ -400,7 +400,7 @@ const Home = () => {
     );
   };
   return (
-    <Layout>
+    <Layout onClickTitle={resetRecipe}>
       <Row align="center">
         <Text align="center" fontSize={20} color="#999">
           <BackendSelection />
