@@ -34,6 +34,7 @@ import { Footer } from "../components/footer";
 import { Layout } from "../components/layout";
 import { Recipe } from "../components/recipe";
 import { estimator } from "../lib/estimates";
+import { humanTime, siTime } from "../lib/time";
 
 // import renderMathInElement from "katex/contrib/auto-render";
 
@@ -48,10 +49,10 @@ import libraries from "../data/libraries.json";
 import machines from "../data/machines.json";
 
 // Import our benchmark results
-import estBls12381ArkM1 from "../data/bls12-381/arkworks/m1pro.json";
-import estBls12381ArkT450 from "../data/bls12-381/arkworks/t450.json";
-import estBls12381BlstM1 from "../data/bls12-381/blstrs/m1pro.json";
-import estBls12381BlstT450 from "../data/bls12-381/blstrs/t450.json";
+import estBls12381ArkM1 from "../public/bls12-381/arkworks/m1pro.json";
+import estBls12381ArkT450 from "../public/bls12-381/arkworks/t450.json";
+import estBls12381BlstM1 from "../public/bls12-381/blstrs/m1pro.json";
+import estBls12381BlstT450 from "../public/bls12-381/blstrs/t450.json";
 
 const estimates = {
   blstrs: {
@@ -296,41 +297,6 @@ const Home = () => {
     // changing this to [item, ... recipe] will conflict with katex, which will
     // cache some of the rendering and thus fuck up our quantities
     setRecipe((recipe) => [item, ...recipe]);
-  };
-
-  const humanTime = (nanoseconds) => {
-    const units = ["ns", "μs", "ms", "s", "min", "hr", "day"];
-    const conversions = [1, 1000, 1000, 1000, 60, 60, 24];
-
-    let value = Number(nanoseconds);
-    let unitIndex = 0;
-    let remainder = 0;
-    while (value >= conversions[unitIndex] && unitIndex < conversions.length) {
-      remainder = value % conversions[unitIndex];
-      value = Math.floor(value / conversions[unitIndex]);
-      unitIndex += 1;
-    }
-
-    if (remainder !== 0) {
-      return `${value.toFixed(1)} ${units[unitIndex - 1]} ${remainder.toFixed(
-        2
-      )} ${units[unitIndex - 2]}`;
-    } else {
-      return `${value.toFixed(1)} ${units[unitIndex]}`;
-    }
-  };
-
-  const siTime = (num) => {
-    if (num !== 0) {
-      const exponent = Math.floor(Math.log10(num));
-      const float = num / Math.pow(10, exponent);
-      const decimals = Number(float.toFixed(3));
-
-      // time is expressed in nanoseconds, change this to seconds
-      return `${decimals}e${exponent - 9} s`;
-    } else {
-      return "0s";
-    }
   };
 
   const formatTime = (num) => {

@@ -17,15 +17,13 @@ import estimates from "../data/bls12-381/arkworks/m1pro.json";
 
 <Col span={16} offset={4}>
 
-<center>
+## Methodology
 
-#  zkalc scientific methodology
+_**Disclaimer:** zkalc aims to provide adequate results while being easy to use.
+Results might be different from our estimates or the obtained samples.
+In this page, we describe how samples were obtained and how estimates are being computed._
 
-</center>
 
-**Disclaimer** zkalc aims to provide adequate results while being easy to use. Estimates might not be actual tests.
-
-Our *scientific methodology* is simple:
 1. For each supported operation, we run benchmarks that measures its performance.
 2. For each operation, we fit the benchmark data to a function which is then exported to the zkalc website.
 3. When a user queries zkalc for an operation of size <InlineMath math="n" />, we evaluate the exported function at <InlineMath math="n" />.
@@ -34,13 +32,19 @@ We will now go deeper into the above, also linking to the relevant places in the
 
 ## Running benchmarks
 
-The [`backend/` directory](https://github.com/asn-d6/zkalc/blob/main/backend/) contains benchmarks for all the crypto libraries and operations we support. [Consider for example](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs) the benchmarks for the `arkworks` library.
+Inside [`backend/`](https://github.com/asn-d6/zkalc/blob/main/backend/) we collect benchmarks for all the crypto libraries and operations we support. [Consider for example](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs) the benchmarks for the `arkworks` library.
 
-Running `make` on the `backend/` directory will run every benchmark and move the results to the `perf/` directory where they will get fitted to functions.
+<GitHubFile url="https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs#L24-L31" />
 
-Now we have benchmark data for every operation in the `perf/` directory. The next step is to fit a function <InlineMath math="f(x)" /> to every operation, and then export <InlineMath math="f(x)" /> to Javascript and call it from the zkalc website.
+Running `make` inside `backend/` will run every benchmark, storing results inside `perf/`, where they are post-processed and collected in our API format.
 
-## Fitting simple operations
+## API Format
+
+
+
+## Estimating the running time
+
+Now we have benchmark data for every operation in the `perf/` directory. The next step is to fit a function <InlineMath math="f(x)" /> to every operation.
 
 For simple operations like basic scalar multiplication and field addition which are not amortized we use the benchmark results in a linear fashion. That is, if a single scalar multiplication takes <InlineMath math="x" /> seconds on average, <InlineMath math="n" /> such operations will take <InlineMath math="n \cdot x" /> seconds. That results in a linear function <InlineMath math="f(x) = n \cdot x" /> that can easily be exported to the zkalc website.
 
@@ -55,12 +59,12 @@ However, there are also more complicated operations like MSMs which are amortize
     } height={400} lineWidth={0} />
 
 
-<GitHubFile url="https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs#L24-L31" />
 
 For these operations, we [collect benchmark data](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs#L52) for various sizes and then perform [polynomial interpolation](https://www.youtube.com/watch?v=yQsDxOdn1hk) over the entire dataset as can be seen on the figure below.
 
 <Plot data={
     [
+        samplesToPlotData(estimates["msm_G1"], "msm on M1 2021"),
         functionToPlotData(estimates["msm_G1"].range, (n) => estimator(estimates["msm_G1"], n), "estimated"),
     ]
     } height={400} lineWidth={1} />
