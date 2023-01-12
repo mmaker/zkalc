@@ -329,6 +329,8 @@ const Home = () => {
       const evaluated = parse(value).evaluate();
       if (evaluated instanceof ResultSet) {
         throw new Error("Only single expressions are supported");
+      } else if (evaluated > Math.pow(2, 40)) {
+        throw new Error("Digit too large")
       }
     }
   };
