@@ -13,20 +13,22 @@ import Image from "next/image";
 
 import logo from "../public/logo.png";
 
-<Col span={16} offset={4}>
+<Col span={16} offset={4} style={{ fontSize: "17px"}}>
 
-## Methodology
+<center>
+# Methodology
+<br/>
+</center>
 
-_**Disclaimer:** zkalc aims to provide adequate results while being easy to use.
-Results might be different from our estimates or the obtained samples.
-In this page, we describe how samples were obtained and how estimates are being computed._
+**Disclaimer:** zkalc aims to provide adequate results while being easy to use. Actual results will be different from our estimates.
 
+In this page, we describe our benchmarking pipeline and how we derive our results. In short:
 
 1. For each supported operation, we run benchmarks that measures its performance.
 2. For each operation, we fit the benchmark data to a function which is then exported to the zkalc website.
 3. When a user queries zkalc for an operation of size <InlineMath math="n" />, we evaluate the exported function at <InlineMath math="n" />.
 
-We will now go deeper into the above, also linking to the relevant places in the codebase.
+We will now go deeper into the above process, also linking to the relevant places in the codebase.
 
 ## Running benchmarks
 
@@ -40,7 +42,9 @@ Running `make` inside `backend/` will run every benchmark, storing results insid
 
 We store our benchmarking results in JSON inside [`frontend/data`](https://github.com/asn-d6/zkalc/tree/main/frontend/data) and they are free for everyone to use.
 
-Given a curve key `curve` (available in `curves.json`), a library key `lib` that supports the given curve (available in `libraries.json`) and a machine key `machine` (available in `machines.json`), it is possible to fetch the samples in the file `data/{curve}/{library}/{machine}.json`. For instance, this is the file reporting the microbenchmarks for curve BLS12-381 using arkworks on a M1 Pro 2021.
+Given a curve key `curve` (available in `curves.json`), a library key `lib` that supports the given curve (available in `libraries.json`) and a machine key `machine` (available in `machines.json`), it is possible to fetch the samples in the file `data/{curve}/{library}/{machine}.json`.
+
+For instance, this is the file reporting the benchmarks for curve BLS12-381 using arkworks on an M1 Pro 2021:
 
 <GitHubFile url="https://github.com/asn-d6/zkalc/blob/main/frontend/data/bls12-381/arkworks/m1pro.json" />
 
