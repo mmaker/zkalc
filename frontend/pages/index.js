@@ -260,10 +260,11 @@ const katexSettings = {
 const Home = () => {
   let ingredientsList = React.useRef(null);
 
-  // useEffect(() => {
+  useEffect(() => {
   //   document.getElementById("title").setAttribute('onClick', "resetRecipe");
   //   renderMathInElement(ingredientsList.current, katex_settings);
-  // });
+    window.estimator = estimator;
+  });
   const [ingredientForm] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("arkworks");
