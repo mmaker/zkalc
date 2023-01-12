@@ -44,10 +44,10 @@
     } else {
       let i = 0;
       while (range[i] <= n && i < range.length-1) {i++; }
-      let interval = interval(range, n);
+      i--;
       let [p, q] = [
-        [samples.range[i], samples.results[i+1]],
-        [samples.range[i], samples.results[i+1]],
+        [samples.range[i], samples.results[i]],
+        [samples.range[i+1], samples.results[i+1]],
       ];
       const [m, b] = line(p, q);
       return m * n + b;
