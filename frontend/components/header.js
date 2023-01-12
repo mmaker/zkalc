@@ -38,7 +38,7 @@ export const Header = () => {
         </Link>
         &nbsp;&nbsp;&nbsp;
         <Link href="/methodology">
-          <Tooltip title="zkalc scientific methodology">
+          <Tooltip title="methodology">
             <ExperimentOutlined style={{ fontSize: "25px", color: "black" }} />
           </Tooltip>
         </Link>
