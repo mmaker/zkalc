@@ -2,7 +2,7 @@ import "katex/dist/katex.min.css";
 
 import { Col } from "antd";
 import { Layout } from "../components/layout";
-import {Plot, samplesToPlotData, functionToPlotData} from "../components/plot";
+import {PlotPoints, PlotPointsAndEstimates, PlotExtrapolation} from "../components/plot";
 import { InlineMath } from "react-katex";
 import {Line} from "@nivo/line";
 
@@ -12,8 +12,6 @@ import Link from "next/link";
 import Image from "next/image";
 
 import logo from "../public/logo.png";
-import { estimator } from "../lib/estimates";
-import estimates from "../data/bls12-381/arkworks/m1pro.json";
 
 <Col span={16} offset={4}>
 
@@ -55,32 +53,19 @@ For simple operations like basic scalar multiplication and field addition which 
 
 However, there are also more complicated operations like MSMs which are amortized and their performance doesn't follow a simple linear curve. For example, consider the figure below which displays the benchmark data from a <InlineMath>\mathbb G_1</InlineMath> MSM operation (the x-axis is in log scale):
 
-<Plot data={
-    [
-        samplesToPlotData(estimates["msm_G1"], "msm on M1 2021"),
-    ]
-    } height={400} lineWidth={0} />
+<PlotPoints />
 
 
 
 For these operations, we [collect benchmark data](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs#L52) for various sizes and then perform [polynomial interpolation](https://www.youtube.com/watch?v=yQsDxOdn1hk) over the entire dataset as can be seen on the figure below.
 
-<Plot data={
-    [
-        samplesToPlotData(estimates["msm_G1"], "msm on M1 2021"),
-        functionToPlotData(estimates["msm_G1"].range, (n) => estimator(estimates["msm_G1"], n), "estimated"),
-    ]
-    } height={400} lineWidth={1} />
+<PlotPointsAndEstimates />
 
 That is, for each pair of benchmark data <InlineMath math="(x_i, f(x_i))" /> and <InlineMath math="(x_{i+1}, f(x_{i+1}))" /> we interpolate a linear polynomial [that goes through both points](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py). After we interpolate all pairs of points, we end up with a bunch of polynomials. We can then approximate <InlineMath math="f(n)" /> by evaluating the right polynomial at <InlineMath math="n" /> and as long as <InlineMath math="\min(x_i) \le n \le \max(x_i)" /> the interpolated polynomial will evaluate to a value close to <InlineMath math="f(n)" />.
 
 However, if a user asks for <InlineMath math="f(n)" /> where <InlineMath math="n" /> is bigger than <InlineMath math="\max(x_i)" /> we need to extrapolate. In this case, we take the rightmost polynomial and use that to evaluate <InlineMath math="f(n)" /> as we do in the figure below.
 
-<Plot data={
-    [
-        functionToPlotData(estimates["msm_G1"].range, (n) => estimator(estimates["msm_G1"], n), "estimated"),
-    ]
-    } height={400} lineWidth={1} />
+<PlotExtrapolation />
 
 Observe that the rightmost polynomial is linear and hence it's not able to faithfully follow the non-linear <InlineMath math="f(x)" />. Hence zkalc will get more and more inaccurate the bigger <InlineMath math="n" /> is. See our [TODO document](https://github.com/asn-d6/zkalc/blob/main/TODO.md) for possible improvements here.
 
