@@ -205,6 +205,12 @@ export const PlotPoints = ({ ...kwargs }) => {
       lineWidth={0}
       pointBorderWidth={2}
       pointBorderColor={{ from: "serieColor" }}
+      yScale={{
+          type: 'log',
+          base: 2,
+          min: 'auto',
+          max: 'auto',
+        }}
       axisBottom={{
         orient: "bottom",
         tickSize: 5,
