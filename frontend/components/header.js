@@ -13,17 +13,17 @@ import {
   GithubOutlined,
 } from "@ant-design/icons";
 
-export const Header = ({onClickTitle}) => {
+export const Header = ({onClickTitle, title="zkalc"}) => {
   return (
     <Row align="center" span={24} id="header">
       <Col span={2}>
         <Link href="/">
-          <Image src={logo} width={80} alt="" />
+          <Image priority src={logo} width={80} alt="" />
         </Link>
       </Col>
       <Col span={10} offset={4}>
           <Title align="center" onClick={onClickTitle}  italic>
-            zkalc
+            {title}
           </Title>
       </Col>
       <Col span={3} offset={3}>

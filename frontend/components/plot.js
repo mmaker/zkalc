@@ -103,7 +103,6 @@ const msmStyleById = {
 
 const filterSamples = (samples, f) => {
   let xy = samples.range.map((x, i) => [i, x, samples.results[i]]).filter(f);
-  console.log(xy);
   return {
     range: xy.map((x) => x[1]),
     results: xy.map((x) => x[2]),
@@ -162,7 +161,6 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
   let range = geomspace(start, end, 20);
   let points = samplesToPlotData(smaller_samples, "data");
   let estimator_f = estimator(curve, lib, machine, op);
-  console.log(range);
   let estimations = functionToPlotData(range, estimator_f, "estimated");
 
   let data = [points, estimations];

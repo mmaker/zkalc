@@ -40,8 +40,6 @@ import { humanTime, siTime } from "../lib/time";
 
 const { Title, Text } = Typography;
 
-import dynamic from "next/dynamic";
-
 ///////////////////// Add your benchmarks here /////////////////////
 
 import curves from "../data/curves.json";
@@ -319,7 +317,7 @@ const Home = () => {
     if (lib in estimates) {
       setLib(e.target.value);
     } else {
-      console.error("library not found in estimates");
+      throw new Error("library not found in estimates");
     }
   };
 

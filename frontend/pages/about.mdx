@@ -8,7 +8,7 @@ import Link from "next/link";
 import Image from "next/image";
 import logo from "../public/logo.png";
 
-<Col span={16} offset={4}>
+<Col span={16} offset={4} style={{ fontSize: "15px"}}>
 
 <center>
 
@@ -113,4 +113,4 @@ and we will take care of the rest!
 Please follow the same process as adding a different elliptic curve.
 </Col>
 
-export default ({ children }) => <Layout>{children}</Layout>;
+export default ({ children }) => <Layout title="About zkalc">{children}</Layout>;

@@ -13,12 +13,7 @@ import Image from "next/image";
 
 import logo from "../public/logo.png";
 
-<Col span={16} offset={4} style={{ fontSize: "17px"}}>
-
-<center>
-# Methodology
-<br/>
-</center>
+<Col span={16} offset={4} style={{ fontSize: "15px"}}>
 
 **Disclaimer:** zkalc aims to provide adequate results while being easy to use. Actual results will be different from our estimates.
 
@@ -55,44 +50,35 @@ For instance, this is the file reporting the benchmarks for curve BLS12-381 usin
 
 Now we have benchmark data for every operation in the `perf/` directory. The next step is to fit a function <InlineMath math="f(x)" /> to every operation, so that when a user queries us for an operation with arbitrary size <InlineMath math="n" />, we can answer it by evaluating  <InlineMath math="f(n)" />.
 
-For simple operations like basic scalar multiplication and field addition which are not amortized we use the benchmark results in a linear fashion. That is, if a single scalar multiplication takes <InlineMath math="x" /> seconds on average, <InlineMath math="n" /> such operations will take <InlineMath math="n \cdot x" /> seconds. That results in a linear function <InlineMath math="f(x) = n \cdot x" /> that can easily be exported to the zkalc website.
+For simple operations like basic scalar multiplication and field addition (which are not amortized) we consider they are computed sequentially. That is, if a single scalar multiplication takes <InlineMath math="x" /> seconds, <InlineMath math="n" /> such operations will take <InlineMath math="n \cdot x" /> seconds. That results in a linear function <InlineMath math="f(x) = n \cdot x" /> that can easily be exported to the zkalc website.
 
-## Fitting amortized operations
-
-However, there are also more complicated operations like MSMs and pairing products which are amortized and their performance doesn't follow a simple linear curve.
-
+More complicated operations like MSMs and pairing products are amortized and their performance doesn't follow a simple linear curve.
 For such operations, we [collect benchmark data](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs#L52) for various sizes. For example, consider the figure below which displays the benchmark data from a <InlineMath>\mathbb G_1</InlineMath> MSM operation (both axis are in log scale):
 
 <PlotPoints />
 
 We then perform [polynomial interpolation](https://www.youtube.com/watch?v=yQsDxOdn1hk) over the entire dataset.
 
-That is, for each pair of benchmark data <InlineMath math="(x_i, f(x_i))" /> and <InlineMath math="(x_{i+1}, f(x_{i+1}))" /> we interpolate a linear polynomial [that goes through both points](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py). After we interpolate all pairs of points, we end up with a bunch of polynomials. We can then approximate <InlineMath math="f(n)" /> by evaluating the right polynomial at <InlineMath math="n" />. As long as <InlineMath math="\min(x_i) \le n \le \max(x_i)" /> the interpolated polynomial will evaluate to a value close to <InlineMath math="f(n)" />.
-
-The interpolated polynomials can be seen in the figure below:
+That is, for each pair of benchmark data <InlineMath math="(x_i, f(x_i))" /> and <InlineMath math="(x_{i+1}, f(x_{i+1}))" /> we trace the line [that goes through both points](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py).
+We end up with a piecewise function that covers the entire benchmark range, as we can see in the figure below:
 
 <PlotPointsAndEstimates />
 
-However, if a user asks for <InlineMath math="f(n)" /> where <InlineMath math="n" /> is bigger than <InlineMath math="\max(x_i)" /> we need to [extrapolate](https://en.wikipedia.org/wiki/Extrapolation).
-
-To handle extrapolation, we perform linear regression over the entire data set to get a linear function that describes the operation's overall behavior and then evaluate the linear function at <InlineMath math="n" /> to answer the user's query, as can be seen in the figure below:
+For numbers outside the benchmarking range, we [extrapolate](https://en.wikipedia.org/wiki/Extrapolation) via non-linear curve fitting with least squares, which to our surprise, given the simple asymptotic can also be done in [javascript](https://github.com/asn-d6/zkalc/blob/main/frontend/lib/estimates.js). Here is an example of the behavior of the MSM estimations outside of the benchmarking range.
 
 <PlotExtrapolation />
 
-However, the result of linear regression is a linear function and hence our extrapolation cannot faithfully follow a non-linear <InlineMath math="f(x)" />. This would cause inaccurate results for users who query for large values of <InlineMath math="n" />: for example querying for big MSMs which are quite common in SNARKs.
+In the specific case of MSMs, Pippenger's complexity is [well known](https://jbootle.github.io/Misc/pippenger.pdf) to behave like <InlineMath math="\frac{n}{\log n}" />. we fit the data set to a function <InlineMath math="h(x) = \frac{ax + b}{logx}" /> and we evaluate it at <InlineMath math="h(n)" />.
 
-For this reason we **handle MSMs in a special manner**: Pippenger's complexity is non-linear but [well known](https://jbootle.github.io/Misc/pippenger.pdf) and generally behaves like <InlineMath math="\frac{p(x)}{logx}" />. In this case, instead of using linear regression, we fit the data set to a function <InlineMath math="h(x) = \frac{ax + b}{logx}" /> and we evaluate it at <InlineMath math="h(n)" />.
+We do not expect extrapolation to faithfully follow the benchmarks. For instance, in the case of multi-scalar multiplications as above, we record an error of XXX for the size YYY. We believe however that the estimates provide a rough idea of how long an algorithm will take.
+In addition, it's worth pointing out while we try to provide useful results for arbitrary operation sizes, we cannot guarantee that the requested machine will be able to handle the requested size. For example, a commodity laptop will likely run out of memory before it computes an MSM of size <InlineMath math="2^{28}" />, unless the user resorts to streaming algorithms.
 
-By fitting the data to a function of this form we provide more accurate results for really big values of <InlineMath math="n" />. However, it's worth pointing out while we try to provide useful results for arbitrary operation sizes, we cannot guarantee that the requested machine will be able to handle the requested size. For example, a commodity laptop will likely run out of memory before it computes an MSM of size <InlineMath math="2^{28}" />.
+## Hazard zone
 
-<br />
-
-----
-
-## Contributing
+If you open the code
 
 There is still lots of ways we can improve zkalc. Please check [the TODO file](https://github.com/asn-d6/zkalc/blob/main/TODO.md) to see how you can also help!
 
 </Col>
 
-export default ({ children }) => <Layout>{children}</Layout>
+export default ({ children }) => <Layout title="zkalc's methodology">{children}</Layout>
