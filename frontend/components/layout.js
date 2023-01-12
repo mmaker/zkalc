@@ -18,7 +18,7 @@ import * as antd from "antd";
 const { Row, Col, Tooltip, Typography } = antd;
 const { Title } = Typography;
 
-export const Layout = ({ children, onClickTitle=(()=>{}) }) => {
+export const Layout = ({ children, onClickTitle=(()=>{window.location.href = '/'}) }) => {
   return (
     <antd.Layout style={{ minHeight: "100vh" }}>
       <antd.Layout.Content id="content">
