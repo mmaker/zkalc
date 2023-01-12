@@ -18,7 +18,6 @@ export const estimates = {
   },
 };
 
-
 // find the line passing through points p and q
 const line = ([x1, y1], [x2, y2]) => {
   const m = (y2 - y1) / (x2 - x1);
@@ -48,30 +47,80 @@ function linearRegression(x, y) {
   );
   const slope = SSxy / SSxx;
   const intercept = avgY - slope * avgX;
-  return (x) => (intercept + slope * x);
+  return (x) => intercept + slope * x;
 }
 
-export const estimator = (samples, n) => {
-  let range = samples.range;
+const simpleEstimation = (samples) => {
+  return (n) => n * samples.results[0];
+};
 
-  if (range.length === 1) {
-    return n * samples.results[0];
-  } else if (n < range[0] || range[range.length - 1] < n) {
-    const xs = range;
-    const ys = range.map((x, i) => samples.results[i] * Math.log2(x));
-    const extrapolate = linearRegression(xs, ys);
-    return extrapolate(n) / Math.log2(n);
-  } else {
-    let i = 0;
-    while (range[i] <= n && i < range.length - 1) {
-      i++;
+const nLognEstimation = (samples) => {
+  return (n) => {
+    let {range, results} = samples;
+    if (n < range[0] || range[range.length - 1] < n) {
+      const xs = range;
+      const ys = range.map((x, i) => results[i] * Math.log2(x));
+      const extrapolate = linearRegression(xs, ys);
+      return extrapolate(n) / Math.log2(n);
+    } else {
+      let i = 0;
+      while (range[i] <= n && i < range.length - 1) {
+        i++;
+      }
+      i--;
+      let [p, q] = [
+        [range[i], results[i]],
+        [range[i + 1], results[i + 1]],
+      ];
+      const [m, b] = line(p, q);
+      return m * n + b;
     }
-    i--;
-    let [p, q] = [
-      [samples.range[i], samples.results[i]],
-      [samples.range[i + 1], samples.results[i + 1]],
-    ];
-    const [m, b] = line(p, q);
-    return (m * n + b);
+  };
+};
+
+const linearEstimation = (samples) => {
+  return (n) => {
+    let {range, results} = samples;
+    if (n < range[0] || range[range.length - 1] < n) {
+      const xs = range;
+      const ys = range.map((x, i) => results[i]);
+      const extrapolate = linearRegression(xs, ys);
+      return extrapolate(n);
+    } else {
+      let i = 0;
+      while (range[i] <= n && i < range.length - 1) {
+        i++;
+      }
+      i--;
+      let [p, q] = [
+        [samples.range[i], results[i]],
+        [samples.range[i + 1], results[i + 1]],
+      ];
+      const [m, b] = line(p, q);
+      return m * n + b;
+    }
+  };
+};
+
+const estimating_functions = {
+  default: simpleEstimation,
+  msm_G1: nLognEstimation,
+  msm_G2: nLognEstimation,
+  pairing_product: linearEstimation,
+};
+
+export const estimator = (curve, lib, machine, op) => {
+  if (!(lib in estimates)) {
+    throw new Error(`Library ${lib} not found`);
+  } else if (!(curve in estimates[lib])) {
+    throw new Error(`Curve ${curve} not found`);
+  } else if (!(machine in estimates[lib][curve])) {
+    throw new Error(`Machine ${machine} not found`);
+  } else if (op in estimates[lib][curve][machine]) {
+    let samples = estimates[lib][curve][machine][op];
+    let f = estimating_functions[op] || estimating_functions["default"];
+    return f(samples);
+  } else {
+    return (n) => null;
   }
 };

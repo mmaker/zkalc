@@ -111,11 +111,15 @@ const filterSamples = (samples, f) => {
 }
 
 export const PlotPointsAndEstimates = ({ ...kwargs }) => {
-  let samples = estimates["arkworks"]["bls12_381"]["m1pro"]["msm_G1"];
+  let lib = "arkworks";
+  let curve = "bls12_381";
+  let machine = "m1pro";
+  let op = "msm_G1";
+  let samples = estimates[lib][curve][machine][op];
 
   let smaller_samples = filterSamples(samples, ([i, x, y]) => (x > 2 && x < (1 << 20)));
   let points = samplesToPlotData(smaller_samples, "data");
-  let estimator_f = (x) => estimator(samples, x);
+  let estimator_f = estimator(curve, lib, machine, op);
   let estimations = functionToPlotData(smaller_samples.range, estimator_f, "estimated");
 
   let data = [points, estimations];
@@ -147,14 +151,17 @@ export const PlotPointsAndEstimates = ({ ...kwargs }) => {
 };
 
 export const PlotExtrapolation = ({ ...kwargs }) => {
-  let samples = estimates["arkworks"]["bls12_381"]["m1pro"]["msm_G1"];
-  const start = 1 << 16;
+  let lib = "arkworks";
+  let curve = "bls12_381";
+  let machine = "m1pro";
+  let op = "msm_G1";
+  let samples = estimates[lib][curve][machine][op];  const start = 1 << 16;
   const end = 1 << 25;
 
   let smaller_samples = filterSamples(samples, ([i, x, y]) => (x >= start));
   let range = geomspace(start, end, 20);
   let points = samplesToPlotData(smaller_samples, "data");
-  let estimator_f = (x) => estimator(samples, x);
+  let estimator_f = estimator(curve, lib, machine, op);
   console.log(range);
   let estimations = functionToPlotData(range, estimator_f, "estimated");
 

@@ -290,13 +290,7 @@ const Home = () => {
   };
 
   const estimatedTime = (item) => {
-    if (item.op in estimates[lib][curve][machine]) {
-      // XXX bad evaluate
-      const samples = estimates[lib][curve][machine][item.op];
-      return estimator(samples, item.quantity.evaluate());
-    } else {
-      return null;
-    }
+      return estimator(curve, lib, machine, item.op)(item.quantity.evaluate());
   };
 
   const estimatedTimeForRecipe = (recipe) => {
