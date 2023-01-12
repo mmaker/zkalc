@@ -48,7 +48,7 @@ function linearRegression(x, y) {
   );
   const slope = SSxy / SSxx;
   const intercept = avgY - slope * avgX;
-  return (x) => intercept + slope * x;
+  return (x) => (intercept + slope * x);
 }
 
 export const estimator = (samples, n) => {
@@ -56,11 +56,11 @@ export const estimator = (samples, n) => {
 
   if (range.length === 1) {
     return n * samples.results[0];
-  } else if (range[0] > n || range[range.length - 1] < n) {
+  } else if (n < range[0] || range[range.length - 1] < n) {
     const xs = range;
     const ys = range.map((x, i) => samples.results[i] * Math.log2(x));
     const extrapolate = linearRegression(xs, ys);
-    return extrapolate(n);
+    return extrapolate(n) / Math.log2(n);
   } else {
     let i = 0;
     while (range[i] <= n && i < range.length - 1) {

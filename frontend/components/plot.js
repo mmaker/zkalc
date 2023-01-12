@@ -25,6 +25,11 @@ const linspace = (start, stop, num) => {
   return Array.from({ length: num }, (_, i) => start + step * i);
 };
 
+const geomspace = (start, stop, num) => {
+  const step = (Math.log(stop) - Math.log(start)) / num;
+  return Array.from({ length: num }, (_, i) => Math.exp(Math.log(start) + step * i));
+}
+
 
 const formatTimeTick = (v) => {
   return `${v / 1e9} s`;
@@ -52,7 +57,7 @@ const denser = (xs) => {
 export const functionToPlotData = (range, f, id = "foo") => {
   const xs = range;
   const xys = xs.map((x) => ({ x: x, y: f(x) }));
-  return { id, enablePoints: false, data: [...xys] };
+  return { id, data: [...xys] };
 };
 
 const tooltipElement = (props) => {
@@ -144,8 +149,8 @@ export const PlotPointsAndEstimates = ({ ...kwargs }) => {
 export const PlotExtrapolation = ({ ...kwargs }) => {
   let samples = estimates["arkworks"]["bls12_381"]["m1pro"]["msm_G1"];
 
-  let smaller_samples = filterSamples(samples, ([i, x, y]) => (x > (1 << 15)));
-  let range = linspace(1 << 16, 1 << 22, 1e3);
+  let smaller_samples = filterSamples(samples, ([i, x, y]) => (x > (1 << 12)));
+  let range = geomspace(1 << 12, 1 << 22, 50);
   let points = samplesToPlotData(smaller_samples, "data");
   let estimator_f = (x) => estimator(samples, x);
   console.log(range);
@@ -157,6 +162,8 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
       {...kwargs}
       data={data}
       height={400}
+      pointBorderWidth={1}
+      pointBorderColor={{ from: "serieColor" }}
       yScale={{
           type: 'log',
           base: 2,
