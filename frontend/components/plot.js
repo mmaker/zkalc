@@ -17,7 +17,7 @@ const tooltipStyle = {
 
 export const samplesToPlotData = (samples, id = "data") => {
   const xys = samples.range.map((x, i) => ({ x: x, y: samples.results[i] }));
-  return { id, data: [...xys] };
+  return { id, data: [...xys]};  // , color: "#e8c1a0"
 };
 
 const linspace = (start, stop, num) => {
@@ -57,7 +57,7 @@ const denser = (xs) => {
 export const functionToPlotData = (range, f, id = "foo") => {
   const xs = range;
   const xys = xs.map((x) => ({ x: x, y: f(x) }));
-  return { id, data: [...xys] };
+  return { id, data: [...xys]};  // , color: "#f47560"
 };
 
 const tooltipElement = (props) => {
@@ -83,6 +83,7 @@ const SamplesPlot = ({ series, lineGenerator, xScale, yScale }) => {
       )}
       fill="none"
       stroke={color}
+      // points={data.map((d) => `${xScale(d.data.x)},${yScale(d.data.y)}`)}
       style={msmStyleById[id] || msmStyleById.default}
     />
   ));
@@ -92,12 +93,15 @@ const msmStyleById = {
   estimated: {
     strokeWidth: 1,
   },
+  estimated_bold: {
+    strokeWidth: 1.5,
+  },
   data: {
     strokeWidth: 0,
   },
   default: {
     strokeDasharray: "12, 6",
-    strokeWidth: 1,
+    strokeWidth: 3,
   },
 };
 
@@ -127,6 +131,8 @@ export const PlotPointsAndEstimates = ({ ...kwargs }) => {
       {...kwargs}
       data={data}
       height={400}
+      pointBorderWidth={1}
+      pointBorderColor={{ from: "serieColor" }}
       yScale={{
           type: 'log',
           base: 2,
@@ -143,8 +149,6 @@ export const PlotPointsAndEstimates = ({ ...kwargs }) => {
           legendOffset: 36,
           legendPosition: "middle",
         }}
-      pointBorderWidth={1}
-      pointBorderColor={{ from: "serieColor" }}
     />
   );
 };
@@ -154,14 +158,15 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
   let curve = "bls12_381";
   let machine = "m1pro";
   let op = "msm_G1";
-  let samples = estimates[lib][curve][machine][op];  const start = 1 << 16;
-  const end = 1 << 25;
+  let samples = estimates[lib][curve][machine][op];
+  const start = 1 << 17;
+  const end = 1 << 28;
 
   let smaller_samples = filterSamples(samples, ([i, x, y]) => (x >= start));
   let range = geomspace(start, end, 20);
-  let points = samplesToPlotData(smaller_samples, "data");
+  let points = samplesToPlotData(smaller_samples, "default");
   let estimator_f = estimator(curve, lib, machine, op);
-  let estimations = functionToPlotData(range, estimator_f, "estimated");
+  let estimations = functionToPlotData(range, estimator_f, "estimated_bold");
 
   let data = [points, estimations];
   return (
@@ -169,8 +174,6 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
       {...kwargs}
       data={data}
       height={400}
-      pointBorderWidth={.5}
-      pointBorderColor={{ from: "serieColor" }}
       yScale={{
           type: 'log',
           base: 2,
@@ -188,21 +191,25 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
           legendOffset: 36,
           legendPosition: "middle",
         }}
+        lineWidth={100}
+        enablePoints={false}
+        pointBorderWidth={2}
+        pointColor={{ theme: 'background' }}
+        pointBorderColor={{ from: "serieColor" }}
     />
   );
 };
 
 export const PlotPoints = ({ ...kwargs }) => {
   let samples = estimates["arkworks"]["bls12_381"]["m1pro"]["msm_G1"];
-  let data = [samplesToPlotData(samples, "data")];
+  let smaller_samples = filterSamples(samples, ([i, x, y]) => (x > 2 && x < (1 << 22)));
+  let points = samplesToPlotData(smaller_samples, "data");
+  let data = [points];
   return (
     <Plot
       {...kwargs}
       data={data}
       height={400}
-      lineWidth={0}
-      pointBorderWidth={2}
-      pointBorderColor={{ from: "serieColor" }}
       yScale={{
           type: 'log',
           base: 2,
@@ -219,6 +226,7 @@ export const PlotPoints = ({ ...kwargs }) => {
         legendOffset: 36,
         legendPosition: "middle",
       }}
+      lineWidth={1}
     />
   );
 };
@@ -255,7 +263,6 @@ export const Plot = ({ data, height, ...kwargs }) => {
           min: "auto",
           max: "auto",
         }}
-        {...kwargs}
         // yScale={{
         //     type: 'log',
         //     base: 2,
@@ -272,9 +279,8 @@ export const Plot = ({ data, height, ...kwargs }) => {
           legendOffset: -40,
           legendPosition: "middle",
         }}
-        pointColor={{ theme: "background" }}
-        pointLabelYOffset={-12}
         useMesh={true}
+        {...kwargs}
         tooltip={tooltipElement}
         layers={[
           "grid",
