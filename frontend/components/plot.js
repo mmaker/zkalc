@@ -32,7 +32,7 @@ const geomspace = (start, stop, num) => {
 
 
 const formatTimeTick = (v) => {
-  return `${v / 1e9} s`;
+  return `${(v / 1e9).toFixed(2)} s`;
 };
 
 const formatSizeTick = (v) => {
