@@ -46,7 +46,7 @@ import libraries from "../data/libraries.json";
 import machines from "../data/machines.json";
 
 // Import our benchmark results
-import {estimates} from "../lib/estimates";
+import { estimates } from "../lib/estimates";
 
 const operations = {
   msm_G1: {
@@ -219,7 +219,6 @@ const operations = {
 
 /// these should be automatically generated from the above constants.
 
-
 const operations_selection = Object.keys(operations).map((operation) => {
   return {
     label: operations[operation].label,
@@ -238,8 +237,8 @@ const Home = () => {
   let ingredientsList = React.useRef(null);
 
   useEffect(() => {
-  //   document.getElementById("title").setAttribute('onClick', "resetRecipe");
-  //   renderMathInElement(ingredientsList.current, katex_settings);
+    //   document.getElementById("title").setAttribute('onClick', "resetRecipe");
+    //   renderMathInElement(ingredientsList.current, katex_settings);
     ingredientForm.getFieldInstance("op").focus();
     window.estimator = estimator;
   });
@@ -250,29 +249,27 @@ const Home = () => {
   const [curve, setCurve] = React.useState("bls12_381");
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
 
+  const libraries_selection = Object.keys(libraries).map((lib) => {
+    return {
+      label: libraries[lib].label,
+      key: lib,
+      disabled: libraries[lib].disabled || false,
+    };
+  });
 
+  const machines_selection = Object.keys(machines).map((machine) => {
+    return {
+      label: machines[machine].label,
+      key: machine,
+      disabled: machines[machine].disabled || false,
+    };
+  });
 
-const libraries_selection = Object.keys(libraries).map((lib) => {
-  return {
-    label: libraries[lib].label,
-    key: lib,
-    disabled: libraries[lib].disabled || false,
+  const curves_selection = {
+    arkworks: [curves.bls12_381],
+    blstrs: [curves.bls12_381],
+    curve25519_dalek: [curves.curve25519],
   };
-});
-
-const machines_selection = Object.keys(machines).map((machine) => {
-  return {
-    label: machines[machine].label,
-    key: machine,
-    disabled: machines[machine].disabled || false,
-  };
-});
-
-const curves_selection = {
-  arkworks: [curves.bls12_381],
-  blstrs: [curves.bls12_381],
-  curve25519_dalek: [curves.curve25519],
-};
 
   const addIngredient = (ingredient) => {
     // by now we assume the formula can be parsed and has been already validated.
@@ -295,7 +292,7 @@ const curves_selection = {
   };
 
   const estimatedTime = (item) => {
-      return estimator(curve, lib, machine, item.op)(item.quantity.evaluate());
+    return estimator(curve, lib, machine, item.op)(item.quantity.evaluate());
   };
 
   const estimatedTimeForRecipe = (recipe) => {
@@ -336,7 +333,7 @@ const curves_selection = {
       if (evaluated instanceof ResultSet) {
         throw new Error("Only single expressions are supported");
       } else if (evaluated > Math.pow(2, 40)) {
-        throw new Error("Digit too large")
+        throw new Error("Digit too large");
       }
     }
   };

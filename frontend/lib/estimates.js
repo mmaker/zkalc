@@ -10,7 +10,7 @@ const regressionSet = 4;
 export const estimates = {
   curve25519: {
     curve25519_dalek: {
-      m1pro: estCurve25519DalekM1
+      m1pro: estCurve25519DalekM1,
     },
   },
   bls12_381: {
@@ -22,7 +22,7 @@ export const estimates = {
       thinkpad_t450: estBls12381ArkT450,
       m1pro: estBls12381ArkM1,
     },
-  }
+  },
 };
 
 // find the line passing through points p and q
@@ -65,9 +65,14 @@ const nLognEstimation = (samples) => {
   return (n) => {
     let { range, results } = samples;
     if (n < range[0] || range[range.length - 1] < n) {
-
-      const xs = n < range[0] ? range.slice(0, regressionSet) : range.slice(-regressionSet);
-      let ys = n < range[0] ? results.slice(0, regressionSet) : results.slice(-regressionSet);
+      const xs =
+        n < range[0]
+          ? range.slice(0, regressionSet)
+          : range.slice(-regressionSet);
+      let ys =
+        n < range[0]
+          ? results.slice(0, regressionSet)
+          : results.slice(-regressionSet);
       ys = ys.map((x) => x * Math.log2(n));
       const extrapolate = linearRegression(xs, ys);
       return extrapolate(n) / Math.log2(n);
@@ -91,8 +96,14 @@ const linearEstimation = (samples) => {
   return (n) => {
     let { range, results } = samples;
     if (n < range[0] || range[range.length - 1] < n) {
-      const xs = n < range[0] ? range.slice(0, regressionSet) : range.slice(-regressionSet);
-      const ys = n < range[0] ? results.slice(0, regressionSet) : results.slice(-regressionSet);
+      const xs =
+        n < range[0]
+          ? range.slice(0, regressionSet)
+          : range.slice(-regressionSet);
+      const ys =
+        n < range[0]
+          ? results.slice(0, regressionSet)
+          : results.slice(-regressionSet);
       const extrapolate = linearRegression(xs, ys);
       return extrapolate(n);
     } else {
@@ -122,7 +133,7 @@ export const estimator = (curve, lib, machine, op) => {
   if (!(curve in estimates)) {
     throw new Error(`Curve ${curve} not found`);
   } else if (!(lib in estimates[curve])) {
-      throw new Error(`Library ${lib} not found`);
+    throw new Error(`Library ${lib} not found`);
   } else if (!(machine in estimates[curve][lib])) {
     throw new Error(`Machine ${machine} not found`);
   } else if (op in estimates[curve][lib][machine]) {

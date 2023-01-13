@@ -17,7 +17,7 @@ const tooltipStyle = {
 
 export const samplesToPlotData = (samples, id = "data") => {
   const xys = samples.range.map((x, i) => ({ x: x, y: samples.results[i] }));
-  return { id, data: [...xys]};  // , color: "#e8c1a0"
+  return { id, data: [...xys] }; // , color: "#e8c1a0"
 };
 
 const linspace = (start, stop, num) => {
@@ -27,9 +27,10 @@ const linspace = (start, stop, num) => {
 
 const geomspace = (start, stop, num) => {
   const step = (Math.log(stop) - Math.log(start)) / num;
-  return Array.from({ length: num }, (_, i) => Math.exp(Math.log(start) + step * i));
-}
-
+  return Array.from({ length: num }, (_, i) =>
+    Math.exp(Math.log(start) + step * i)
+  );
+};
 
 const formatTimeTick = (v) => {
   return `${(v / 1e9).toFixed(2)} s`;
@@ -57,7 +58,7 @@ const denser = (xs) => {
 export const functionToPlotData = (range, f, id = "foo") => {
   const xs = range;
   const xys = xs.map((x) => ({ x: x, y: f(x) }));
-  return { id, data: [...xys]};  // , color: "#f47560"
+  return { id, data: [...xys] }; // , color: "#f47560"
 };
 
 const tooltipElement = (props) => {
@@ -65,7 +66,8 @@ const tooltipElement = (props) => {
   return (
     <div style={tooltipStyle}>
       MSM of size{" "}
-      <InlineMath math={`2^{${Math.log2(props.point.data.x).toFixed(0)}}`} />{": "}
+      <InlineMath math={`2^{${Math.log2(props.point.data.x).toFixed(0)}}`} />
+      {": "}
       {time}
     </div>
   );
@@ -111,7 +113,7 @@ const filterSamples = (samples, f) => {
     range: xy.map((x) => x[1]),
     results: xy.map((x) => x[2]),
   };
-}
+};
 
 export const PlotPointsAndEstimates = ({ ...kwargs }) => {
   let lib = "arkworks";
@@ -120,10 +122,17 @@ export const PlotPointsAndEstimates = ({ ...kwargs }) => {
   let op = "msm_G1";
   let samples = estimates[curve][lib][machine][op];
 
-  let smaller_samples = filterSamples(samples, ([i, x, y]) => (x > 2 && x < (1 << 22)));
+  let smaller_samples = filterSamples(
+    samples,
+    ([i, x, y]) => x > 2 && x < 1 << 22
+  );
   let points = samplesToPlotData(smaller_samples, "data");
   let estimator_f = estimator(curve, lib, machine, op);
-  let estimations = functionToPlotData(smaller_samples.range, estimator_f, "estimated");
+  let estimations = functionToPlotData(
+    smaller_samples.range,
+    estimator_f,
+    "estimated"
+  );
 
   let data = [points, estimations];
   return (
@@ -134,21 +143,21 @@ export const PlotPointsAndEstimates = ({ ...kwargs }) => {
       pointBorderWidth={1}
       pointBorderColor={{ from: "serieColor" }}
       yScale={{
-          type: 'log',
-          base: 2,
-          min: 'auto',
-          max: 'auto',
-        }}
-        axisBottom={{
-          orient: "bottom",
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: "MSM size (log2)",
-          format: formatSizeTick,
-          legendOffset: 36,
-          legendPosition: "middle",
-        }}
+        type: "log",
+        base: 2,
+        min: "auto",
+        max: "auto",
+      }}
+      axisBottom={{
+        orient: "bottom",
+        tickSize: 5,
+        tickPadding: 5,
+        tickRotation: 0,
+        legend: "MSM size (log2)",
+        format: formatSizeTick,
+        legendOffset: 36,
+        legendPosition: "middle",
+      }}
     />
   );
 };
@@ -162,13 +171,17 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
   const start = 1 << 2;
   const end = 1 << 28;
 
-  let smaller_samples = filterSamples(samples, ([i, x, y]) => (x >= start));
+  let smaller_samples = filterSamples(samples, ([i, x, y]) => x >= start);
   let range = geomspace(start, end, 20);
   let points = samplesToPlotData(smaller_samples, "interpolation");
   let estimator_f = estimator(curve, lib, machine, op);
 
-  let extrapolation_range = geomspace(1<<21, 1<<28, 20);
-  let estimations = functionToPlotData(extrapolation_range, estimator_f, "extrapolation");
+  let extrapolation_range = geomspace(1 << 21, 1 << 28, 20);
+  let estimations = functionToPlotData(
+    extrapolation_range,
+    estimator_f,
+    "extrapolation"
+  );
 
   let data = [points, estimations];
   return (
@@ -177,70 +190,78 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
       data={data}
       height={400}
       yScale={{
-          type: 'log',
-          base: 2,
-          stacked: false,
-          min: 'auto',
-          max: 'auto',
-        }}
-        axisBottom={{
-          orient: "bottom",
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: "MSM size (log2)",
-          format: formatSizeTick,
-          legendOffset: 36,
-          legendPosition: "middle",
-        }}
-        lineWidth={100}
-        enablePoints={false}
-        pointBorderWidth={2}
-        pointColor={{ theme: 'background' }}
-        pointBorderColor={{ from: "serieColor" }}
-        markers={[
+        type: "log",
+        base: 2,
+        stacked: false,
+        min: "auto",
+        max: "auto",
+      }}
+      axisBottom={{
+        orient: "bottom",
+        tickSize: 5,
+        tickPadding: 5,
+        tickRotation: 0,
+        legend: "MSM size (log2)",
+        format: formatSizeTick,
+        legendOffset: 36,
+        legendPosition: "middle",
+      }}
+      lineWidth={100}
+      enablePoints={false}
+      pointBorderWidth={2}
+      pointColor={{ theme: "background" }}
+      pointBorderColor={{ from: "serieColor" }}
+      markers={[
+        {
+          axis: "x",
+          value: 2 ** 21,
+          lineStyle: { stroke: "#b0413e", strokeWidth: 2, opacity: 0.5 },
+          textStyle: {
+            fill: "#b0413e",
+            fontWeight: "bold",
+            fontSize: 10,
+            opacity: 0.5,
+          },
+          legendOffsetY: 160,
+          legend: "Extrapolation starts here",
+          legendOrientation: "vertical",
+        },
+      ]}
+      legends={[
+        {
+          anchor: "bottom-right",
+          direction: "column",
+          justify: false,
+          translateY: 0,
+          itemsSpacing: 0,
+          itemDirection: "left-to-right",
+          itemWidth: 80,
+          itemHeight: 20,
+          itemOpacity: 0.75,
+          symbolSize: 12,
+          symbolShape: "circle",
+          symbolBorderColor: "rgba(0, 0, 0, .5)",
+          effects: [
             {
-                axis: 'x',
-                value: 2**21,
-                lineStyle: { stroke: '#b0413e', strokeWidth: 2, opacity :0.5 },
-                textStyle: {fill: '#b0413e', fontWeight: 'bold', fontSize: 10, opacity :0.5},
-                legendOffsetY:     160,
-                legend: 'Extrapolation starts here',
-                legendOrientation: 'vertical',
-            }
-        ]}
-        legends={[
-            {
-                anchor: 'bottom-right',
-                direction: 'column',
-                justify: false,
-                translateY: 0,
-                itemsSpacing: 0,
-                itemDirection: 'left-to-right',
-                itemWidth: 80,
-                itemHeight: 20,
-                itemOpacity: 0.75,
-                symbolSize: 12,
-                symbolShape: 'circle',
-                symbolBorderColor: 'rgba(0, 0, 0, .5)',
-                effects: [
-                    {
-                        on: 'hover',
-                        style: {
-                            itemBackground: 'rgba(0, 0, 0, .03)',
-                            itemOpacity: 1
-                        }
-                    }
-                ]
-            }
-        ]}
+              on: "hover",
+              style: {
+                itemBackground: "rgba(0, 0, 0, .03)",
+                itemOpacity: 1,
+              },
+            },
+          ],
+        },
+      ]}
     />
   );
 };
 
 export const PlotPoints = ({ ...kwargs }) => {
   let samples = estimates["bls12_381"]["arkworks"]["m1pro"]["msm_G1"];
-  let smaller_samples = filterSamples(samples, ([i, x, y]) => (x > 2 && x < (1 << 22)));
+  let smaller_samples = filterSamples(
+    samples,
+    ([i, x, y]) => x > 2 && x < 1 << 22
+  );
   let points = samplesToPlotData(smaller_samples, "data");
   let data = [points];
   return (
@@ -249,11 +270,11 @@ export const PlotPoints = ({ ...kwargs }) => {
       data={data}
       height={400}
       yScale={{
-          type: 'log',
-          base: 2,
-          min: 'auto',
-          max: 'auto',
-        }}
+        type: "log",
+        base: 2,
+        min: "auto",
+        max: "auto",
+      }}
       axisBottom={{
         orient: "bottom",
         tickSize: 5,
