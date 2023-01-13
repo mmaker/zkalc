@@ -434,10 +434,10 @@ const curves_selection = {
           </Form.Item>
           <Form.Item
             name="quantity"
-            style={{ width: 185 }}
+            style={{ width: 140 }}
             rules={[{ validator: validateQuantity }]}
           >
-            <Input placeholder="Size/Quantity (e.g. 2^8+1)" />
+            <Input placeholder="2^64 + log2(100)" />
           </Form.Item>
           <Form.Item>
             <Button
