@@ -55,14 +55,25 @@ const simpleEstimation = (samples) => {
 };
 
 const nLognEstimation = (samples) => {
-  let {range, results} = samples;
-  let resultslog = range.map((x, i) => results[i] * Math.log2(x));
-  const f = linearEstimation({range, results: resultslog});
   return (n) => {
+    let {range, results} = samples;
     if (n < range[0] || range[range.length - 1] < n) {
-      return f(n) / Math.log2(n);
+      const xs = range;
+      const ys = range.map((x, i) => results[i] * Math.log2(x));
+      const extrapolate = linearRegression(xs, ys);
+      return extrapolate(n) / Math.log2(n);
     } else {
-      return f(n);
+      let i = 0;
+      while (range[i] <= n && i < range.length - 1) {
+        i++;
+      }
+      i--;
+      let [p, q] = [
+        [range[i], results[i]],
+        [range[i + 1], results[i + 1]],
+      ];
+      const [m, b] = line(p, q);
+      return m * n + b;
     }
   };
 };
