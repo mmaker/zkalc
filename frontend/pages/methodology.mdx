@@ -60,7 +60,7 @@ For such operations, we [collect benchmark data](https://github.com/asn-d6/zkalc
 
 We then perform [polynomial interpolation](https://www.youtube.com/watch?v=yQsDxOdn1hk) over the entire dataset.
 
-That is, for each pair of benchmark data <InlineMath math="(x_i, f(x_i))" /> and <InlineMath math="(x_{i+1}, f(x_{i+1}))" /> we trace the line [that goes through both points](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py).
+That is, for each pair of benchmark data <InlineMath math="(x_i, f(x_i))" /> and <InlineMath math="(x_{i+1}, f(x_{i+1}))" /> we trace the line [that goes through both points](https://github.com/asn-d6/zkalc/blob/main/frontend/lib/estimates.js#L26).
 We end up with a piecewise function that covers the entire benchmark range, as we can see in the figure below:
 
 <PlotPointsAndEstimates />

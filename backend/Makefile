@@ -20,6 +20,4 @@ curve25519-dalek:
 	mkdir -p $(OUTDIR)/curve25519/curve25519-dalek/
 	mv curve25519-dalek/machine.json $(OUTDIR)/curve25519/curve25519-dalek/
 
-
-
 .PHONY: init blstrs arkworks curve25519-dalek

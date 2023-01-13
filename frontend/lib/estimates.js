@@ -4,6 +4,8 @@ import estBls12381BlstM1 from "../data/bls12-381/blstrs/m1pro.json";
 import estBls12381BlstT450 from "../data/bls12-381/blstrs/thinkpad_t450.json";
 import estCurve25519DalekM1 from "../data/curve25519/curve25519-dalek/m1pro.json";
 
+/// how many elements to keep for regression.
+const regressionSet = 4;
 
 export const estimates = {
   curve25519: {
@@ -63,8 +65,10 @@ const nLognEstimation = (samples) => {
   return (n) => {
     let { range, results } = samples;
     if (n < range[0] || range[range.length - 1] < n) {
-      const xs = range;
-      const ys = range.map((x, i) => results[i] * Math.log2(x));
+
+      const xs = n < range[0] ? range.slice(0, regressionSet) : range.slice(-regressionSet);
+      let ys = n < range[0] ? results.slice(0, regressionSet) : results.slice(-regressionSet);
+      ys = ys.map((x) => x * Math.log2(n));
       const extrapolate = linearRegression(xs, ys);
       return extrapolate(n) / Math.log2(n);
     } else {
@@ -87,8 +91,8 @@ const linearEstimation = (samples) => {
   return (n) => {
     let { range, results } = samples;
     if (n < range[0] || range[range.length - 1] < n) {
-      const xs = range;
-      const ys = range.map((x, i) => results[i]);
+      const xs = n < range[0] ? range.slice(0, regressionSet) : range.slice(-regressionSet);
+      const ys = n < range[0] ? results.slice(0, regressionSet) : results.slice(-regressionSet);
       const extrapolate = linearRegression(xs, ys);
       return extrapolate(n);
     } else {
