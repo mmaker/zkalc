@@ -93,7 +93,7 @@ const msmStyleById = {
   estimated: {
     strokeWidth: 1,
   },
-  estimated_bold: {
+  extrapolation: {
     strokeWidth: 1.5,
   },
   data: {
@@ -159,14 +159,16 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
   let machine = "m1pro";
   let op = "msm_G1";
   let samples = estimates[curve][lib][machine][op];
-  const start = 1 << 17;
+  const start = 1 << 2;
   const end = 1 << 28;
 
   let smaller_samples = filterSamples(samples, ([i, x, y]) => (x >= start));
   let range = geomspace(start, end, 20);
-  let points = samplesToPlotData(smaller_samples, "default");
+  let points = samplesToPlotData(smaller_samples, "interpolation");
   let estimator_f = estimator(curve, lib, machine, op);
-  let estimations = functionToPlotData(range, estimator_f, "estimated_bold");
+
+  let extrapolation_range = geomspace(1<<21, 1<<28, 20);
+  let estimations = functionToPlotData(extrapolation_range, estimator_f, "extrapolation");
 
   let data = [points, estimations];
   return (
@@ -196,6 +198,42 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
         pointBorderWidth={2}
         pointColor={{ theme: 'background' }}
         pointBorderColor={{ from: "serieColor" }}
+        markers={[
+            {
+                axis: 'x',
+                value: 2**21,
+                lineStyle: { stroke: '#b0413e', strokeWidth: 2, opacity :0.5 },
+                textStyle: {fill: '#b0413e', fontWeight: 'bold', fontSize: 10, opacity :0.5},
+                legendOffsetY:     160,
+                legend: 'Extrapolation starts here',
+                legendOrientation: 'vertical',
+            }
+        ]}
+        legends={[
+            {
+                anchor: 'bottom-right',
+                direction: 'column',
+                justify: false,
+                translateY: 0,
+                itemsSpacing: 0,
+                itemDirection: 'left-to-right',
+                itemWidth: 80,
+                itemHeight: 20,
+                itemOpacity: 0.75,
+                symbolSize: 12,
+                symbolShape: 'circle',
+                symbolBorderColor: 'rgba(0, 0, 0, .5)',
+                effects: [
+                    {
+                        on: 'hover',
+                        style: {
+                            itemBackground: 'rgba(0, 0, 0, .03)',
+                            itemOpacity: 1
+                        }
+                    }
+                ]
+            }
+        ]}
     />
   );
 };
