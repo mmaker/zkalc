@@ -240,6 +240,7 @@ const Home = () => {
   useEffect(() => {
   //   document.getElementById("title").setAttribute('onClick', "resetRecipe");
   //   renderMathInElement(ingredientsList.current, katex_settings);
+    ingredientForm.getFieldInstance("op").focus();
     window.estimator = estimator;
   });
   const [ingredientForm] = Form.useForm();
@@ -282,6 +283,7 @@ const curves_selection = {
     // changing this to [item, ... recipe] will conflict with katex, which will
     // cache some of the rendering and thus fuck up our quantities
     setRecipe((recipe) => [item, ...recipe]);
+    ingredientForm.getFieldInstance("op").focus();
   };
 
   const formatTime = (num) => {
