@@ -118,7 +118,7 @@ export const PlotPointsAndEstimates = ({ ...kwargs }) => {
   let curve = "bls12_381";
   let machine = "m1pro";
   let op = "msm_G1";
-  let samples = estimates[lib][curve][machine][op];
+  let samples = estimates[curve][lib][machine][op];
 
   let smaller_samples = filterSamples(samples, ([i, x, y]) => (x > 2 && x < (1 << 22)));
   let points = samplesToPlotData(smaller_samples, "data");
@@ -158,7 +158,7 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
   let curve = "bls12_381";
   let machine = "m1pro";
   let op = "msm_G1";
-  let samples = estimates[lib][curve][machine][op];
+  let samples = estimates[curve][lib][machine][op];
   const start = 1 << 17;
   const end = 1 << 28;
 
@@ -201,7 +201,7 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
 };
 
 export const PlotPoints = ({ ...kwargs }) => {
-  let samples = estimates["arkworks"]["bls12_381"]["m1pro"]["msm_G1"];
+  let samples = estimates["bls12_381"]["arkworks"]["m1pro"]["msm_G1"];
   let smaller_samples = filterSamples(samples, ([i, x, y]) => (x > 2 && x < (1 << 22)));
   let points = samplesToPlotData(smaller_samples, "data");
   let data = [points];

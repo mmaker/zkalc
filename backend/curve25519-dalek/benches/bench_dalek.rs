@@ -38,7 +38,7 @@ fn bench_msm(c: &mut Criterion) {
     let mut rng = OsRng;
     for logsize in 1..=21 {
         let mut group = c.benchmark_group("msm");
-        let size = 1 << d;
+        let size = 1 << logsize;
 
         // Dynamically control sample size so that big MSMs don't bench eternally
         if logsize > 20 {

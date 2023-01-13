@@ -4,14 +4,12 @@ import estBls12381BlstM1 from "../data/bls12-381/blstrs/m1pro.json";
 import estBls12381BlstT450 from "../data/bls12-381/blstrs/t450.json";
 
 export const estimates = {
-  blstrs: {
-    bls12_381: {
+  bls12_381: {
+    blstrs: {
       thinkpad_t450: estBls12381BlstT450,
       m1pro: estBls12381BlstM1,
     },
-  },
-  arkworks: {
-    bls12_381: {
+    arkworks: {
       thinkpad_t450: estBls12381ArkT450,
       m1pro: estBls12381ArkM1,
     },
@@ -56,7 +54,7 @@ const simpleEstimation = (samples) => {
 
 const nLognEstimation = (samples) => {
   return (n) => {
-    let {range, results} = samples;
+    let { range, results } = samples;
     if (n < range[0] || range[range.length - 1] < n) {
       const xs = range;
       const ys = range.map((x, i) => results[i] * Math.log2(x));
@@ -80,7 +78,7 @@ const nLognEstimation = (samples) => {
 
 const linearEstimation = (samples) => {
   return (n) => {
-    let {range, results} = samples;
+    let { range, results } = samples;
     if (n < range[0] || range[range.length - 1] < n) {
       const xs = range;
       const ys = range.map((x, i) => results[i]);
@@ -110,14 +108,14 @@ const estimating_functions = {
 };
 
 export const estimator = (curve, lib, machine, op) => {
-  if (!(lib in estimates)) {
-    throw new Error(`Library ${lib} not found`);
-  } else if (!(curve in estimates[lib])) {
+  if (!(curve in estimates)) {
     throw new Error(`Curve ${curve} not found`);
-  } else if (!(machine in estimates[lib][curve])) {
+  } else if (!(lib in estimates[curve])) {
+      throw new Error(`Library ${lib} not found`);
+  } else if (!(machine in estimates[curve][lib])) {
     throw new Error(`Machine ${machine} not found`);
-  } else if (op in estimates[lib][curve][machine]) {
-    let samples = estimates[lib][curve][machine][op];
+  } else if (op in estimates[curve][lib][machine]) {
+    let samples = estimates[curve][lib][machine][op];
     let f = estimating_functions[op] || estimating_functions["default"];
     return f(samples);
   } else {

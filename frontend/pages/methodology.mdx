@@ -20,7 +20,7 @@ import logo from "../public/logo.png";
 In this page, we describe our benchmarking pipeline and how we derive our results. In short:
 
 1. For each supported operation, we run benchmarks that measures its performance.
-    We use [`criterion.rs`](https://criterion.rs), to take at least 10 samples, and then select the median.
+    We use [`criterion.rs`](https://criterion.rs), to take at least 10 samples, and then select the average.
 1. We collect the data inside `frontend/data/` and make it freely available.
 1. We extrapolate a curve linking the aboves samples, using linear interpolation inside the curve and curve fitting with least squares outside the benchmarking bounds.
 1. When a user queries zkalc for an operation of size <InlineMath math="n" />, we estimate the its running time using the produced function.
