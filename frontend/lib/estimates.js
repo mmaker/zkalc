@@ -1,9 +1,15 @@
 import estBls12381ArkM1 from "../data/bls12-381/arkworks/m1pro.json";
-import estBls12381ArkT450 from "../data/bls12-381/arkworks/t450.json";
+import estBls12381ArkT450 from "../data/bls12-381/arkworks/thinkpad_t450.json";
 import estBls12381BlstM1 from "../data/bls12-381/blstrs/m1pro.json";
-import estBls12381BlstT450 from "../data/bls12-381/blstrs/t450.json";
+import estBls12381BlstT450 from "../data/bls12-381/blstrs/thinkpad_t450.json";
+import estCurve25519DalekM1 from "../data/curve25519/curve25519-dalek/m1.json";
+
 
 export const estimates = {
+  curve25519_dalek: {
+    arkworks: {
+      m1pro: estCurve25519DalekM1
+    },
   bls12_381: {
     blstrs: {
       thinkpad_t450: estBls12381BlstT450,

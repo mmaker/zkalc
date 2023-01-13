@@ -9,7 +9,7 @@
         "version": "0.6.1 (rustc: 1.68.0-nightly)",
         "url": "https://github.com/filecoin-project/blstrs"
     },
-    "dalek": {
+    "curve25519_dalek": {
         "label": "curve25519-dalek-ng",
         "version": "4 (rustc: 1.68.0-nightly)",
         "url": "dalek.rs",
