@@ -32,8 +32,8 @@ def to_nanoseconds(num, unit_str):
     units = {"ns": 1, "µs" : 1e3, "ms": 1e6, "s": 1e9}
     return num * units[unit_str]
 
-def convert_measurement_to_js_function(operation, measurement):
-    """Fit this measurement's data to a function, and export it as Javascript code"""
+def export_measurement_to_json(operation, measurement):
+    """Export this measurement in json"""
 
     # Get the sizes and times from the data
     sizes, times = zip(*measurement.items())
@@ -67,8 +67,8 @@ def extract_measurements(bench_output):
 
     return measurements
 
-def convert_benchmark_to_javascript(bench_output):
-    # Dictionary of results in format: { operation : javascript_function }
+def dump_benchmarks_to_json(bench_output):
+    # Dictionary of results in format: { operation : measurements }
     results = {}
 
     # Extract measurements into a nested dictionary: { operation : {size : time_in_microseconds }}
@@ -76,8 +76,8 @@ def convert_benchmark_to_javascript(bench_output):
 
     # Fit each operation to a Javascript function
     for operation in measurements.keys():
-        js_function = convert_measurement_to_js_function(operation, measurements[operation])
-        results[operation] = js_function
+        measurement_json = export_measurement_to_json(operation, measurements[operation])
+        results[operation] = measurement_json
 
     # Write results to json file
     # Encode the functions as a JSON object
@@ -89,4 +89,4 @@ def convert_benchmark_to_javascript(bench_output):
 
 if __name__ == '__main__':
     bench_output = [json.loads(line) for line in sys.stdin]
-    convert_benchmark_to_javascript(bench_output)
+    dump_benchmarks_to_json(bench_output)
