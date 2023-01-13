@@ -1,4 +1,4 @@
-OUTDIR=../perf/
+OUTDIR=../perf/data/
 
 all: init blstrs arkworks curve25519-dalek
 
