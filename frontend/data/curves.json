@@ -2,5 +2,9 @@
     "bls12_381": {
         "label": "BLS12-381",
         "key": "bls12_381"
+    },
+    "curve25519": {
+        "label": "curve25519",
+        "key": "curve25519"
     }
 }

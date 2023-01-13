@@ -2,14 +2,15 @@ import estBls12381ArkM1 from "../data/bls12-381/arkworks/m1pro.json";
 import estBls12381ArkT450 from "../data/bls12-381/arkworks/thinkpad_t450.json";
 import estBls12381BlstM1 from "../data/bls12-381/blstrs/m1pro.json";
 import estBls12381BlstT450 from "../data/bls12-381/blstrs/thinkpad_t450.json";
-import estCurve25519DalekM1 from "../data/curve25519/curve25519-dalek/m1.json";
+import estCurve25519DalekM1 from "../data/curve25519/curve25519-dalek/m1pro.json";
 
 
 export const estimates = {
-  curve25519_dalek: {
-    arkworks: {
+  curve25519: {
+    curve25519_dalek: {
       m1pro: estCurve25519DalekM1
     },
+  },
   bls12_381: {
     blstrs: {
       thinkpad_t450: estBls12381BlstT450,
@@ -19,7 +20,7 @@ export const estimates = {
       thinkpad_t450: estBls12381ArkT450,
       m1pro: estBls12381ArkM1,
     },
-  },
+  }
 };
 
 // find the line passing through points p and q

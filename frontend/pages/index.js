@@ -30,7 +30,6 @@ import {
 
 import { parse, ResultSet } from "mathjs";
 
-import { Footer } from "../components/footer";
 import { Layout } from "../components/layout";
 import { Recipe } from "../components/recipe";
 import { estimator } from "../lib/estimates";
@@ -220,26 +219,6 @@ const operations = {
 
 /// these should be automatically generated from the above constants.
 
-const libraries_selection = Object.keys(libraries).map((lib) => {
-  return {
-    label: libraries[lib].label,
-    key: lib,
-    disabled: libraries[lib].disabled || false,
-  };
-});
-
-const machines_selection = Object.keys(machines).map((machine) => {
-  return {
-    label: machines[machine].label,
-    key: machine,
-    disabled: machines[machine].disabled || false,
-  };
-});
-
-const curves_selection = {
-  arkworks: [curves.bls12_381],
-  blstrs: [curves.bls12_381],
-};
 
 const operations_selection = Object.keys(operations).map((operation) => {
   return {
@@ -269,6 +248,30 @@ const Home = () => {
   const [machine, setMachine] = React.useState("m1pro");
   const [curve, setCurve] = React.useState("bls12_381");
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
+
+
+
+const libraries_selection = Object.keys(libraries).map((lib) => {
+  return {
+    label: libraries[lib].label,
+    key: lib,
+    disabled: libraries[lib].disabled || false,
+  };
+});
+
+const machines_selection = Object.keys(machines).map((machine) => {
+  return {
+    label: machines[machine].label,
+    key: machine,
+    disabled: machines[machine].disabled || false,
+  };
+});
+
+const curves_selection = {
+  arkworks: [curves.bls12_381],
+  blstrs: [curves.bls12_381],
+  curve25519_dalek: [curves.curve25519],
+};
 
   const addIngredient = (ingredient) => {
     // by now we assume the formula can be parsed and has been already validated.
@@ -310,12 +313,14 @@ const Home = () => {
     setRecipe(recipe.filter((_, i) => index !== i));
   };
 
-  const handleLibChange = (e) => {
+  const handleLibChange = (new_lib) => {
     // UX choice: make it easy to see differences between implementations
     // resetRecipe();
-    const lib = e.target.value;
-    if (lib in estimates) {
-      setLib(e.target.value);
+    if (new_lib in estimates[curve]) {
+      setLib(new_lib);
+    } else if (new_lib in curves_selection) {
+      setCurve(curves_selection[lib][0].key);
+      setLib(new_lib);
     } else {
       throw new Error("library not found in estimates");
     }
@@ -360,7 +365,7 @@ const Home = () => {
           <Dropdown
             menu={{
               items: libraries_selection,
-              onClick: ({ key }) => setLib(key),
+              onClick: ({ key }) => handleLibChange(key),
             }}
           >
             <a onClick={(e) => e.preventDefault()}>
