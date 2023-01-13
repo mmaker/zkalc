@@ -11,16 +11,16 @@ Currently our extrapolation strategy is quite sloppy which results in bad result
 ## Benchmark more operations:
 
 - FFTs
+- Batch inversion
 - Barycentric evaluation
-- IPAs
+- Sumcheck
+- Sum of products
 
 ## Benchmark more libraries:
 
-- halo2 / zkcrypto
 - gnark
+- zkcrypto
 - constantine
-
-## Benchmark more curves
 
 ## Add more features
 - Calculate proof sizes
