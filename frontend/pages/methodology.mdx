@@ -29,7 +29,8 @@ We will now go deeper into the above process, also linking to the relevant place
 
 ## Running benchmarks
 
-Inside [`backend/`](https://github.com/asn-d6/zkalc/blob/main/backend/) we collect benchmarks for all the crypto libraries and operations we support. Consider [for example](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs) the benchmarks for the `arkworks` library.
+Inside [`backend/`](https://github.com/asn-d6/zkalc/blob/main/backend/) we collect benchmarks for all the supported public-key operations under different configurations. All benchmarks were run with multithreading enabled and with best settings available.
+Consider this [benchmarks](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs) for the `arkworks` library. At compile time, we enable the feature flags `parallel,std,asm`. The microbenchmarks inside look a bit like the following:
 
 <GitHubFile url="https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs#L24-L31" />
 
@@ -68,10 +69,10 @@ For numbers outside the benchmarking range, we [extrapolate](https://en.wikipedi
 
 <PlotExtrapolation />
 
-In the specific case of MSMs, Pippenger's complexity is [well known](https://jbootle.github.io/Misc/pippenger.pdf) to behave like <InlineMath math="\frac{n}{\log n}" />. we fit the data set to a function <InlineMath math="h(x) = \frac{ax + b}{logx}" /> and we evaluate it at <InlineMath math="h(n)" />.
+In the specific case of MSMs, Pippenger's complexity is [well known](https://jbootle.github.io/Misc/pippenger.pdf) to be asymptotically <InlineMath math="O({n} / {\log n})" />. We fit the data set to a function <InlineMath math="h(x) = \frac{a x + b}{\log x}" />
+solving for <InlineMath math="a, b" /> .
 
 We do not expect extrapolation to faithfully follow the benchmarks.
-`{* For instance, in the case of multi-scalar multiplications as above, we record an error of XXX for the size YYY. *}`
 We believe however that the estimates provide a rough idea of how long an algorithm will take.
 In addition, it's worth pointing out while we try to provide useful results for arbitrary operation sizes, we cannot guarantee that the requested machine will be able to handle the requested size. For example, a commodity laptop will likely run out of memory before it computes an MSM of size <InlineMath math="2^{28}" />.
 

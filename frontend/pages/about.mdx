@@ -10,19 +10,13 @@ import logo from "../public/logo.png";
 
 <Col span={16} offset={4} style={{ fontSize: "15px"}}>
 
-<center>
-
-[zkalc](https://github.com/asn-d6/zkalc) helps you calculate how much time
-cryptographic operations take on a real computer
-
-<br />
-<br />
-
-# About zkalc
-</center>
-
 Cryptographers tend to be good at cryptography but they can be quite bad at
 estimating the time it takes a computer to run their schemes.
+
+<center>
+_[zkalc](https://github.com/asn-d6/zkalc) helps you calculate how much time
+cryptographic operations take on a real computer._
+</center>
 
 We hope that zkalc can help shorten the gap between cryptography and practice:
 
@@ -33,36 +27,24 @@ We hope that zkalc can help shorten the gap between cryptography and practice:
 
 <br />
 
-<center>
 
-## The zkalc manual
+## Tooltips
 
-</center>
 
-- Tooltips can help you reach zkalc enlightment <br />
-- All benchmarks were run with multithreading enabled unless mentioned <br />
-- Results above <InlineMath math="\mathbb{2^{22}}" /> have reduced accuracy due
-  to missing benchmarks (see
-  [TODO.md](https://github.com/asn-d6/zkalc/blob/main/TODO.md)) <br />
-- Click on the total time to get the result in SI units (seconds) <br />
+- Click on the total time to get the result in SI units (seconds)
+- Click on the title to clean erase all stored elements in the list
+- Hover over the operations to get more details about a specific operation
+- Hover over a machine or a library to get more details about the benchmark setup
 
-<br />
 
-<center>
-  ## How to add benchmarks to zkalc?
-  <br />
-</center>
+## Enriching the benchmarking suite
+
+zkalc does not currently support all possible cryptographic operations. For
+example, we do not currently have benchmarks for FFTs, or batch inversion formulae.
 
 If a functionality you need is missing, please help us add it! First, make sure
 you <Link href="/methodology">check out our methodology page</Link> and then
 follow the instructions below:
-
-## I want to add a new cryptographic operation!
-
-zkalc does not currently support all possible cryptographic operations. For
-example, maybe you want to add benchmarks for FFTs.
-
-To do so follow the following steps:
 
 - Find the existing benchmarks in the `backend/` directory, and add benchmark
   code for the new cryptographic operation following the
@@ -70,13 +52,13 @@ To do so follow the following steps:
 - Run all benchmarks on your machine by running `make` in the `backend/`
   directory.
 
-Finally, please open a PR with your changes and the json benchmark output files
+Last bu not least please open a PR with your changes and the json benchmark output files
 and we will take care of the rest!
 
-## I want to add benchmarks for a different machine!
+## Benchmarking on another machine
 
 zkalc only supports a few machine types right now. Do you have access to a beefy
-AWS machine or to some GPU prover? We would love your benchmarks!
+AWS machine or to some GPU prover? We would love to get in touch!
 
 Simply run all benchmarks on your beefy AWS machine by running `make` in the
 `backend/` directory. Then open a PR with the json benchmark output files and we
@@ -86,10 +68,10 @@ If your machine is especially weak (rpi4) or particularly strong (GPU prover)
 consider modifying the benchmark parameters (e.g. increase/decrease the size of
 the MSMs) and get in touch with us!
 
-## I want to benchmark a different elliptic curve!
+## Testing new curves and libraries
 
-zkalc only supports BLS12-381 right now but we would love to support BLS12-377
-or curve25519 or whatever really.
+zkalc supports only a limited number of curves (BLS12-381) and libraries (arkworks, blstrs).
+We would love to support BLS12-377, curve25519 or whatever really.
 
 To add benchmarks for a different elliptic curve, write benchmarks for the new
 curve in the `backend/` directory following the
@@ -108,9 +90,6 @@ help.
 Finally, please open a PR with your changes and the json benchmark output files
 and we will take care of the rest!
 
-## I want to benchmark a different cryptographic libray!
-
-Please follow the same process as adding a different elliptic curve.
 </Col>
 
 export default ({ children }) => <Layout title="About zkalc">{children}</Layout>;
