@@ -19,10 +19,9 @@ import logo from "../public/logo.png";
 
 In this page, we describe our benchmarking pipeline and how we derive our results. In short:
 
-1. For each supported operation, we run benchmarks that measures its performance.
-    We use [`criterion.rs`](https://criterion.rs), to take at least 10 samples, and then select the average.
-1. We collect the data inside `frontend/data/` and make it freely available.
-1. We extrapolate a curve linking the aboves samples, using linear interpolation inside the curve and curve fitting with least squares outside the benchmarking bounds.
+1. For each supported operation, we run benchmarks that measure its performance. We use [`criterion.rs`](https://github.com/bheisler/criterion.rs) to take multiple samples, and then select the average.
+1. We collect the benchmark results inside `frontend/data/` and make it freely available.
+1. For each operation, we [fit a function](https://en.wikipedia.org/wiki/Curve_fitting) to its benchmark results. We use linear interpolation inside the benchmark bounds and least squares regression outside the benchmarking bounds.
 1. When a user queries zkalc for an operation of size <InlineMath math="n" />, we estimate the its running time using the produced function.
 
 We will now go deeper into the above process, also linking to the relevant places in the codebase.
@@ -30,7 +29,7 @@ We will now go deeper into the above process, also linking to the relevant place
 ## Running benchmarks
 
 Inside [`backend/`](https://github.com/asn-d6/zkalc/blob/main/backend/) we collect benchmarks for all the supported public-key operations under different configurations. All benchmarks were run with multithreading enabled and with best settings available.
-Consider this [benchmarks](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs) for the `arkworks` library. At compile time, we enable the feature flags `parallel,std,asm`. The microbenchmarks inside look a bit like the following:
+Consider this [benchmark](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs) for the `arkworks` library. At compile time, we enable the feature flags `parallel,std,asm`. The microbenchmarks inside look a bit like the following:
 
 <GitHubFile url="https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs#L24-L31" />
 
@@ -51,10 +50,10 @@ For instance, this is the file reporting the benchmarks for curve BLS12-381 usin
 
 Now we have benchmark data for every operation in the `perf/` directory. The next step is to fit a function <InlineMath math="f(x)" /> to every operation, so that when a user queries us for an operation with arbitrary size <InlineMath math="n" />, we can answer it by evaluating  <InlineMath math="f(n)" />.
 
-For simple operations like basic scalar multiplication and field addition (which are not amortized) we consider they are computed sequentially. That is, if a single scalar multiplication takes <InlineMath math="x" /> seconds, <InlineMath math="n" /> such operations will take <InlineMath math="n \cdot x" /> seconds. That results in a linear function <InlineMath math="f(x) = n \cdot x" /> that can easily be exported to the zkalc website.
+For simple operations like basic scalar multiplication and field addition (which are not amortized) we consider them to be sequential computations. That is, if a single scalar multiplication takes <InlineMath math="x" /> seconds, <InlineMath math="n" /> such operations will take <InlineMath math="n \cdot x" /> seconds. That results in a simple linear function <InlineMath math="f(x) = n \cdot x" />.
 
 More complicated operations like MSMs and pairing products are amortized and their performance doesn't follow a simple linear curve.
-For such operations, we [collect benchmark data](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs#L52) for various sizes. For example, consider the figure below which displays the benchmark data from a <InlineMath>\mathbb G_1</InlineMath> MSM operation (both axis are in log scale):
+For such operations, we [collect benchmark data](https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs#L52) for various sizes. For example, consider the figure below which displays the benchmark data from a <InlineMath>\mathbb G_1</InlineMath> MSM operation for sizes from <InlineMath math="2" /> to  <InlineMath math="2^{21}" /> (both axis are in log scale):
 
 <PlotPoints />
 
@@ -65,11 +64,13 @@ We end up with a piecewise function that covers the entire benchmark range, as w
 
 <PlotPointsAndEstimates />
 
-For numbers outside the benchmarking range, we [extrapolate](https://en.wikipedia.org/wiki/Extrapolation) via non-linear curve fitting with least squares, which to our surprise, given the simple asymptotic can also be done in [javascript](https://github.com/asn-d6/zkalc/blob/main/frontend/lib/estimates.js). Here is an example of the behavior of the MSM estimations outside of the benchmarking range.
+For numbers outside the benchmarking range, we [extrapolate](https://en.wikipedia.org/wiki/Extrapolation) via non-linear least squares. To make things more exciting we decided that it should be done... in [Javascript](https://github.com/asn-d6/zkalc/blob/main/frontend/lib/estimates.js) inside your browser.
+
+Here is an example of the extrapolation behavior in MSM outside of the benchmarking range (that is, after <InlineMath math="2^{21}" />):
 
 <PlotExtrapolation />
 
-In the specific case of MSMs, Pippenger's complexity is [well known](https://jbootle.github.io/Misc/pippenger.pdf) to be asymptotically <InlineMath math="O({n} / {\log n})" />. We fit the data set to a function <InlineMath math="h(x) = \frac{a x + b}{\log x}" />
+In the specific case of MSMs, Pippenger's complexity is [well known](https://jbootle.github.io/Misc/pippenger.pdf) to be asymptotically <InlineMath math="O({n} / {\log n})" />. Hence, we fit the data set to a function <InlineMath math="h(x) = \frac{a x + b}{\log x}" />
 solving for <InlineMath math="a, b" /> .
 
 We do not expect extrapolation to faithfully follow the benchmarks.
