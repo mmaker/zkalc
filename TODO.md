@@ -16,6 +16,7 @@ Here is a bunch of stuff we could add to zkalc in the future:
   - [constantine](https://github.com/mratsim/constantine)
   - [miracl](https://github.com/miracl/core)
   - [relic](https://github.com/relic-toolkit/relic)
+  - go postquantum?
 - **Going beyond microbenchmarks**
   - Add some primitives like [Naor–Reingold](https://en.wikipedia.org/wiki/Naor%E2%80%93Reingold_pseudorandom_function)
   - Calculate proof sizes
