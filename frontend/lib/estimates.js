@@ -64,7 +64,7 @@ const simpleEstimation = (samples) => {
 const nLognEstimation = (samples) => {
   return (n) => {
     let { range, results } = samples;
-    if (n < range[0] || range[range.length - 1] < n) {
+    if (n > range[range.length - 1]) { // extrapolate to the right (do regression)
       const xs =
         n < range[0]
           ? range.slice(0, regressionSet)
@@ -76,7 +76,14 @@ const nLognEstimation = (samples) => {
       ys = ys.map((x) => x * Math.log2(n));
       const extrapolate = linearRegression(xs, ys);
       return extrapolate(n) / Math.log2(n);
-    } else {
+    } else if (n < range[0]) { // extrapolate to the left (use the first lagrange poly)
+      let [p, q] = [
+        [range[0], results[0]],
+        [range[1], results[1]],
+      ];
+      const [m, b] = line(p, q);
+      return m * n + b;
+    } else { // interpolate within benchmark bounds (find the right lagrange poly)
       let i = 0;
       while (range[i] <= n && i < range.length - 1) {
         i++;
