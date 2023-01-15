@@ -245,7 +245,7 @@ const Home = () => {
   const [ingredientForm] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
   const [lib, setLib] = React.useState("arkworks");
-  const [machine, setMachine] = React.useState("m1pro");
+  const [machine, setMachine] = React.useState("ec2c59xlarge");
   const [curve, setCurve] = React.useState("bls12_381");
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
 
