@@ -70,8 +70,7 @@ Here is an example of the extrapolation behavior in MSM outside of the benchmark
 
 <PlotExtrapolation />
 
-In the specific case of MSMs, Pippenger's complexity is [well known](https://jbootle.github.io/Misc/pippenger.pdf) to be asymptotically <InlineMath math="O({n} / {\log n})" />. Hence, we fit the data set to a function <InlineMath math="h(x) = \frac{a x + b}{\log x}" />
-solving for <InlineMath math="a, b" /> .
+In the specific case of MSMs, Pippenger's complexity is [well known](https://jbootle.github.io/Misc/pippenger.pdf) to be asymptotically <InlineMath math="O({n} / {\log n})" />. Hence, we use least squares to fit the data set to a function <InlineMath math="h(x) = \frac{a x + b}{\log x}" /> solving for <InlineMath math="a, b" /> .
 
 We do not expect extrapolation to faithfully follow the benchmarks.
 We believe however that the estimates provide a rough idea of how long an algorithm will take.

@@ -169,14 +169,14 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
   let op = "msm_G1";
   let samples = estimates[curve][lib][machine][op];
   const start = 1 << 2;
-  const end = 1 << 28;
+  const end = 1 << 30;
 
   let smaller_samples = filterSamples(samples, ([i, x, y]) => x >= start);
   let range = geomspace(start, end, 20);
   let points = samplesToPlotData(smaller_samples, "interpolation");
   let estimator_f = estimator(curve, lib, machine, op);
 
-  let extrapolation_range = geomspace(1 << 21, 1 << 28, 20);
+  let extrapolation_range = geomspace(1 << 21, end, 100);
   let estimations = functionToPlotData(
     extrapolation_range,
     estimator_f,
