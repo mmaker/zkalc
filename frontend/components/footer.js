@@ -5,17 +5,10 @@ const { Title, Text } = Typography;
 
 const Authors = () => {
   // only two authors for now
-  const _authors = [
-    { name: "George Kadianakis", website: "https://github.com/asn-d6" },
+  const authors = [
     { name: "Michele Orrù", website: "https://tumbolandia.net" },
+    { name: "George Kadianakis", website: "https://github.com/asn-d6" },
   ];
-  const [authors, setAuthors] = React.useState(_authors);
-
-  // Randomize author list
-  React.useEffect(() => {
-    const randomizedAuthors = [..._authors].sort(() => 0.5 - Math.random());
-    setAuthors(randomizedAuthors);
-  }, []);
 
   return (
     <Text style={{ fontSize: 13 }}>
