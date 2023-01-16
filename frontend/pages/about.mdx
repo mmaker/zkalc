@@ -22,24 +22,24 @@ We hope that zkalc can help shorten the gap between cryptography and practice:
 
 - Cryptographers can use the simple zkalc UX to learn how fast their paper will
   run on various machines
-- Protocol designers can more easily tune the parameters of their protocol
-  depending on their requirements
+- Protocol designers can easily tune the parameters of their protocol depending on their requirements
+
+We designed zkalc to be easy to use but also *easy to extend*. Writing new types of benchmarks, or adding fresh data to the zkalc website is easy. We hope that this way we can motivate you to improve zkalc to better fit your needs. See below for more details.
 
 <br />
 
+## zkalc tips
 
-## Tooltips
+Here are some ways you can squeeze more juice out of zkalc:
 
-
-- Click on the total time to get the result in SI units (seconds)
-- Click on the title to clean erase all stored elements in the list
-- Hover over the operations to get more details about a specific operation
+- Hover over operations to get more details about them
 - Hover over a machine or a library to get more details about the benchmark setup
+- Click on the title to reset zkalc
+- Click on the total time to get the result in SI units (seconds)
 - Type over the dropdown select menu to autocomplete the cryptographic operation
-- Type inside the quantity box any arithmetic operation,
-  even common constants like `e` and `pi` or functions like `log2`
+- Type inside the quantity box any arithmetic operation, even common constants like `e` and `pi` or functions like `log2`
 
-## Enriching the benchmarking suite
+## Enriching zkalc
 
 zkalc does not currently support all possible cryptographic operations. For
 example, we do not currently have benchmarks for FFTs, or batch inversion formulae.
@@ -57,7 +57,9 @@ follow the instructions below:
 Last but not least please open a PR with your changes and the json benchmark output files
 and we will take care of the rest!
 
-## Benchmarking on another machine
+In the sections below, we provide more information on how to mod zkalc:
+
+### Benchmarking on another machine
 
 zkalc only supports a few machine types right now. Do you have access to a beefy
 AWS machine or to some GPU prover? We would love to get in touch!
@@ -70,7 +72,7 @@ If your machine is especially weak (rpi4) or particularly strong (GPU prover)
 consider modifying the benchmark parameters (e.g. increase/decrease the size of
 the MSMs) and get in touch with us!
 
-## Testing new curves and libraries
+### Testing new curves and libraries
 
 zkalc supports only a limited number of curves (BLS12-381) and libraries (arkworks, blstrs).
 We would love to support BLS12-377, curve25519 or whatever really.

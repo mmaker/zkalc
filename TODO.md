@@ -4,6 +4,7 @@ Here is a bunch of stuff we could add to zkalc in the future:
 
 - **Improve result accuracy**: we are not statisticians, we are not sure the methodology is really sound and standard.
 - **Add singlethreaded benchmarks**
+- **Improve UI**: make it easier to compare performance of different machines or libraries
 - **Benchmark more operations**
   - FFTs
   - Batch inversion
