@@ -57,14 +57,13 @@ For such operations, we [collect benchmark data](https://github.com/asn-d6/zkalc
 
 <PlotPoints />
 
-We then perform [polynomial interpolation](https://www.youtube.com/watch?v=yQsDxOdn1hk) over the entire dataset.
+To answer user queries within the benchmark range, we perform [polynomial interpolation](https://www.youtube.com/watch?v=yQsDxOdn1hk) over the benchmark data.
 
-That is, for each pair of benchmark data <InlineMath math="(x_i, f(x_i))" /> and <InlineMath math="(x_{i+1}, f(x_{i+1}))" /> we trace the line [that goes through both points](https://github.com/asn-d6/zkalc/blob/main/frontend/lib/estimates.js#L26).
-We end up with a piecewise function that covers the entire benchmark range, as we can see in the figure below:
+That is, for each pair of benchmark data <InlineMath math="(x_i, f(x_i))" /> and <InlineMath math="(x_{i+1}, f(x_{i+1}))" /> we trace the line [that goes through both points](https://github.com/asn-d6/zkalc/blob/main/frontend/lib/estimates.js#L26). We end up with a piecewise function that covers the entire benchmark range, as we can see in the figure below:
 
 <PlotPointsAndEstimates />
 
-For numbers outside the benchmarking range, we [extrapolate](https://en.wikipedia.org/wiki/Extrapolation) via non-linear least squares. To make things more exciting we decided that it should be done... in [Javascript](https://github.com/asn-d6/zkalc/blob/main/frontend/lib/estimates.js) inside your browser.
+For user queries outside of the benchmarking range, we [extrapolate](https://en.wikipedia.org/wiki/Extrapolation) via non-linear least squares. To make things more exciting we decided that it should be done... in [Javascript](https://github.com/asn-d6/zkalc/blob/main/frontend/lib/estimates.js) inside your browser.
 
 Here is an example of the extrapolation behavior in MSM outside of the benchmarking range (that is, after <InlineMath math="2^{21}" />):
 
@@ -72,9 +71,9 @@ Here is an example of the extrapolation behavior in MSM outside of the benchmark
 
 In the specific case of MSMs, Pippenger's complexity is [well known](https://jbootle.github.io/Misc/pippenger.pdf) to be asymptotically <InlineMath math="O({n} / {\log n})" />. Hence, we use least squares to fit the data set to a function <InlineMath math="h(x) = \frac{a x + b}{\log x}" /> solving for <InlineMath math="a, b" /> .
 
-We do not expect extrapolation to faithfully follow the benchmarks.
-We believe however that the estimates provide a rough idea of how long an algorithm will take.
-In addition, it's worth pointing out while we try to provide useful results for arbitrary operation sizes, we cannot guarantee that the requested machine will be able to handle the requested size. For example, a commodity laptop will likely run out of memory before it computes an MSM of size <InlineMath math="2^{28}" />.
+We do not expect extrapolation to faithfully follow the benchmarks. We believe however that the estimates provide a rough idea of how long an algorithm will take. In addition, it's worth pointing out while we try to provide useful results for arbitrary operation sizes, we cannot guarantee that the requested machine will be able to handle the requested size. For example, a commodity laptop will likely run out of memory before it computes an MSM of size <InlineMath math="2^{28}" />.
+
+In the end of this process, we end up with a piecewise function for each operation that we can query inside and outside the benchmarking range to answer user queries.
 
 ## Hazmat
 
