@@ -9,15 +9,16 @@ const { Title } = Typography;
 
 import {
   QuestionCircleOutlined,
+  LineChartOutlined,
   ExperimentOutlined,
   GithubOutlined,
 } from "@ant-design/icons";
 
-export const Header = ({onClickTitle, title="zkalc"}) => {
+export const Header = ({onClickTitle=()=>window.href("/"), title="zkalc"}) => {
   return (
     <Row align="center" span={24} id="header">
       <Col span={2}>
-        <Link href="/">
+        <Link href="/about">
           <Image priority src={logo} width={80} alt="" />
         </Link>
       </Col>
@@ -27,11 +28,9 @@ export const Header = ({onClickTitle, title="zkalc"}) => {
           </Title>
       </Col>
       <Col span={3} offset={3}>
-        <Link href="/about">
-          <Tooltip title="about zkalc">
-            <QuestionCircleOutlined
-              style={{ fontSize: "25px", color: "black" }}
-            />
+        <Link href="/sketch">
+          <Tooltip title="sketch">
+          <LineChartOutlined style={{ fontSize: "25px", color: "black" }} />
           </Tooltip>
         </Link>
         &nbsp;&nbsp;&nbsp;

@@ -4,6 +4,7 @@ import { humanTime } from "../lib/time";
 import { area, curveMonotoneX } from "d3-shape";
 
 import { estimates, estimator } from "../lib/estimates";
+import { filterSamples, samplesToPlotData } from "../lib/samples";
 
 const tooltipStyle = {
   border: "2px solid",
@@ -13,11 +14,6 @@ const tooltipStyle = {
   // fontWeight: "bold",
   boxShadow: "0px 5px 15px rgba(0,0,0,0.1)",
   marginBottom: "2px",
-};
-
-export const samplesToPlotData = (samples, id = "data") => {
-  const xys = samples.range.map((x, i) => ({ x: x, y: samples.results[i] }));
-  return { id, data: [...xys] }; // , color: "#e8c1a0"
 };
 
 const linspace = (start, stop, num) => {
@@ -101,19 +97,15 @@ const msmStyleById = {
   data: {
     strokeWidth: 0,
   },
-  default: {
+  dashed: {
     strokeDasharray: "12, 6",
     strokeWidth: 3,
   },
+  default: {
+    strokeWidth: 1,
+  },
 };
 
-const filterSamples = (samples, f) => {
-  let xy = samples.range.map((x, i) => [i, x, samples.results[i]]).filter(f);
-  return {
-    range: xy.map((x) => x[1]),
-    results: xy.map((x) => x[2]),
-  };
-};
 
 export const PlotPointsAndEstimates = ({ ...kwargs }) => {
   let lib = "arkworks";
@@ -173,7 +165,7 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
 
   let smaller_samples = filterSamples(samples, ([i, x, y]) => x >= start);
   let range = geomspace(start, end, 20);
-  let points = samplesToPlotData(smaller_samples, "interpolation");
+  let points = samplesToPlotData(smaller_samples, "dashed");
   let estimator_f = estimator(curve, lib, machine, op);
 
   let extrapolation_range = geomspace(1 << 21, end, 100);
