@@ -125,7 +125,7 @@ const Home = () => {
     if (new_lib in estimates[curve]) {
       setLib(new_lib);
     } else if (new_lib in curves_selection) {
-      setCurve(curves_selection[lib][0].key);
+      setCurve(curves_selection[new_lib][0].key);
       setLib(new_lib);
     } else {
       throw new Error("library not found in estimates");
