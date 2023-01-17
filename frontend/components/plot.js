@@ -61,9 +61,9 @@ const tooltipElement = (props) => {
   const time = humanTime(props.point.data.y);
   return (
     <div style={tooltipStyle}>
-      MSM of size{" "}
+      {"x: "}
       <InlineMath math={`2^{${Math.log2(props.point.data.x).toFixed(0)}}`} />
-      {": "}
+      {", y: "}
       {time}
     </div>
   );
@@ -94,10 +94,10 @@ const msmStyleById = {
   extrapolation: {
     strokeWidth: 1.5,
   },
-  data: {
+  datapoints: {
     strokeWidth: 0,
   },
-  dashed: {
+  interpolation: {
     strokeDasharray: "12, 6",
     strokeWidth: 3,
   },
@@ -118,7 +118,7 @@ export const PlotPointsAndEstimates = ({ ...kwargs }) => {
     samples,
     ([i, x, y]) => x > 2 && x < 1 << 22
   );
-  let points = samplesToPlotData(smaller_samples, "data");
+  let points = samplesToPlotData(smaller_samples, "datapoints");
   let estimator_f = estimator(curve, lib, machine, op);
   let estimations = functionToPlotData(
     smaller_samples.range,
@@ -165,7 +165,7 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
 
   let smaller_samples = filterSamples(samples, ([i, x, y]) => x >= start);
   let range = geomspace(start, end, 20);
-  let points = samplesToPlotData(smaller_samples, "dashed");
+  let points = samplesToPlotData(smaller_samples, "interpolation");
   let estimator_f = estimator(curve, lib, machine, op);
 
   let extrapolation_range = geomspace(1 << 21, end, 100);
@@ -254,7 +254,7 @@ export const PlotPoints = ({ ...kwargs }) => {
     samples,
     ([i, x, y]) => x > 2 && x < 1 << 22
   );
-  let points = samplesToPlotData(smaller_samples, "data");
+  let points = samplesToPlotData(smaller_samples, "datapoints");
   let data = [points];
   return (
     <Plot

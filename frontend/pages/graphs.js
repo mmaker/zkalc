@@ -109,7 +109,7 @@ const Home = () => {
       onChange={handleParamChange}
     /> */}
     <Select
-      width={100}
+      width={200}
       defaultValue={op}
       options={operations_selection}
       onChange={setOp}
