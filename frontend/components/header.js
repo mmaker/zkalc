@@ -28,8 +28,8 @@ export const Header = ({onClickTitle=()=>window.href("/"), title="zkalc"}) => {
           </Title>
       </Col>
       <Col span={3} offset={3}>
-        <Link href="/graphs">
-          <Tooltip title="Graphs">
+        <Link href="/charts">
+          <Tooltip title="Charts">
           <LineChartOutlined style={{ fontSize: "25px", color: "black" }} />
           </Tooltip>
         </Link>
