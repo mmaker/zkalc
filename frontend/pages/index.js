@@ -126,6 +126,7 @@ const Home = () => {
       setLib(new_lib);
     } else if (new_lib in curves_selection) {
       setCurve(curves_selection[new_lib][0].key);
+      setMachine(machine in estimates[curve][new_lib]? machine : machines_selection[0].key)
       setLib(new_lib);
     } else {
       throw new Error("library not found in estimates");
@@ -141,6 +142,12 @@ const Home = () => {
         throw new Error("Only single expressions are supported");
       } else if (evaluated > Math.pow(2, 40)) {
         throw new Error("Digit too large");
+      } else if (evaluated < 0) {
+        throw new Error("Digit is negative")
+      } else if (isNaN(evaluated)) {
+        throw new Error("Not a number")
+      } else if (evaluated == 0) {
+        throw new Error("Quantity is zero")
       }
     }
   };

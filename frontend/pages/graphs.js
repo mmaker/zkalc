@@ -1,6 +1,7 @@
 import "katex/dist/katex.min.css";
 
-import { Select } from "antd";
+import { Select, Row, Space, Typography } from "antd";
+import { SwapOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { Layout } from "../components/layout";
 import { Plot } from "../components/plot";
@@ -23,9 +24,10 @@ import {
 } from "../lib/selections";
 import { humanTime } from "../lib/time";
 
+const { Text } = Typography;
 const compStrategyOptions = [
-  { value: false, label: "Library Comparison" },
-  { value: true, label: "Curve Comparison" },
+  { value: false, label: "Fix curve to:" },
+  { value: true, label: "Fix library to" },
 ];
 
 const Home = () => {
@@ -39,7 +41,7 @@ const Home = () => {
   let [lib, setLib] = useState(defaultLib);
   let [machine, setMachine] = useState(defaultMachine);
   let [op, setOp] = useState(defaultOp);
-  let [fixLib, setCompStrategy] = useState(defaultFixLib);
+  let [fixLib, setFixLib] = useState(defaultFixLib);
 
   const theme = {
     labels: { text: { fontSize: 11 } },
@@ -75,8 +77,6 @@ const Home = () => {
     },
   ];
 
-  const getDefaultParameter = () => (fixLib ? defaultCurve : defaultLib);
-
   const handleParamChange = (value) => {
     if (fixLib) {
       setLib(value);
@@ -86,12 +86,38 @@ const Home = () => {
   };
 
   const getParameterSelection = () => {
-    if (fixLib) {
+    if (!fixLib) {
       return curves_selection[lib];
     } else {
-      return libraries_selection.filter((x) => x in estimates[curve]);
+      return libraries_selection[curve];
     }
   };
+
+
+  const SelectGraph = () => {
+    return (
+    <Row align="center">
+      <Space align="baseline">
+    <SwapOutlined onClick={() => setFixLib(!fixLib)} />
+    <Text>
+      {fixLib ? `Showing results for ${lib}` : `Showing results for ${curve}`}
+    </Text>
+    {/* <Select
+      width={200}
+      options={getParameterSelection()}
+      defaultValue={fixLib ? lib : curve}
+      onChange={handleParamChange}
+    /> */}
+    <Select
+      width={100}
+      defaultValue={op}
+      options={operations_selection}
+      onChange={setOp}
+    />
+    </Space>
+    </Row>);
+  };
+
 
   const ZkalcGraph = () => {
     let samples = estimates[defaultCurve][defaultLib][defaultMachine][op];
@@ -181,21 +207,7 @@ const Home = () => {
 
   return (
     <Layout>
-      <Select
-        defaultValue={fixLib}
-        options={compStrategyOptions}
-        onChange={(value) => setCompStrategy(value)}
-      />
-      <Select
-        options={getParameterSelection()}
-        defaultValue={getDefaultParameter()}
-        onChange={handleParamChange}
-      />
-      <Select
-        defaultValue={op}
-        options={operations_selection}
-        onChange={setOp}
-      />
+      <SelectGraph />
       <ZkalcGraph />
     </Layout>
   );

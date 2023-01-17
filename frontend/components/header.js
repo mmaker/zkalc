@@ -28,21 +28,29 @@ export const Header = ({onClickTitle=()=>window.href("/"), title="zkalc"}) => {
           </Title>
       </Col>
       <Col span={3} offset={3}>
-        <Link href="/sketch">
-          <Tooltip title="sketch">
+        <Link href="/graphs">
+          <Tooltip title="Graphs">
           <LineChartOutlined style={{ fontSize: "25px", color: "black" }} />
           </Tooltip>
         </Link>
         &nbsp;&nbsp;&nbsp;
         <Link href="/methodology">
-          <Tooltip title="methodology">
+          <Tooltip title="Methodology">
             <ExperimentOutlined style={{ fontSize: "25px", color: "black" }} />
           </Tooltip>
         </Link>
         &nbsp;&nbsp;&nbsp;
         <Link href="https://github.com/asn-d6/zkalc">
-          <Tooltip title="zkalc github">
+          <Tooltip title="Github">
             <GithubOutlined style={{ fontSize: "25px", color: "black" }} />
+          </Tooltip>
+        </Link>
+        &nbsp;&nbsp;&nbsp;
+        <Link href="/about">
+          <Tooltip title="about zkalc">
+            <QuestionCircleOutlined
+              style={{ fontSize: "25px", color: "black" }}
+            />
           </Tooltip>
         </Link>
       </Col>
