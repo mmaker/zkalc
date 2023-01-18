@@ -4,7 +4,7 @@ import { Typography } from "antd";
 import machines from "../data/machines.json";
 import libraries from "../data/libraries.json";
 import curves from "../data/curves.json";
-import {estimates} from "../lib/estimates";
+import { estimates } from "../lib/estimates";
 
 const { Text } = Typography;
 
@@ -198,10 +198,13 @@ export const machines_selection = Object.fromEntries(
     Object.fromEntries(
       Object.keys(estimates[curve]).map((lib) => [
         lib,
-        Object.keys(machines).map(machine => ({
+        Object.keys(machines).map((machine) => ({
           label: machines[machine].label,
           key: machine,
-          disabled: machines[machine].disable || !(machine in estimates[curve][lib]) || false
+          disabled:
+            machines[machine].disable ||
+            !(machine in estimates[curve][lib]) ||
+            false,
         })),
       ])
     ),

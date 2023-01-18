@@ -129,7 +129,9 @@ const Home = () => {
       const new_curve = curves_selection[new_lib][0].key;
       setCurve(new_curve);
       if (!(machine in estimates[new_curve][new_lib])) {
-        const new_machine = machines_selection[new_curve][new_lib].filter(x => !x.disabled)[0].key;
+        const new_machine = machines_selection[new_curve][new_lib].filter(
+          (x) => !x.disabled
+        )[0].key;
         setMachine(new_machine);
       }
       setLib(new_lib);
@@ -148,11 +150,11 @@ const Home = () => {
       } else if (evaluated > Math.pow(2, 40)) {
         throw new Error("Digit too large");
       } else if (evaluated < 0) {
-        throw new Error("Digit is negative")
+        throw new Error("Digit is negative");
       } else if (isNaN(evaluated)) {
-        throw new Error("Not a number")
+        throw new Error("Not a number");
       } else if (evaluated == 0) {
-        throw new Error("Quantity is zero")
+        throw new Error("Quantity is zero");
       }
     }
   };
