@@ -70,6 +70,7 @@ const Home = () => {
     //   renderMathInElement(ingredientsList.current, katex_settings);
     ingredientForm.getFieldInstance("op").focus();
     window.estimator = estimator;
+    window.estimates = estimates;
   });
   const [ingredientForm] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
@@ -125,8 +126,12 @@ const Home = () => {
     if (new_lib in estimates[curve]) {
       setLib(new_lib);
     } else if (new_lib in curves_selection) {
-      setCurve(curves_selection[new_lib][0].key);
-      setMachine(machine in estimates[curve][new_lib]? machine : machines_selection[0].key)
+      const new_curve = curves_selection[new_lib][0].key;
+      setCurve(new_curve);
+      if (!(machine in estimates[new_curve][new_lib])) {
+        const new_machine = machines_selection[new_curve][new_lib].filter(x => !x.disabled)[0].key;
+        setMachine(new_machine);
+      }
       setLib(new_lib);
     } else {
       throw new Error("library not found in estimates");
@@ -200,7 +205,7 @@ const Home = () => {
         >
           <Dropdown
             menu={{
-              items: machines_selection,
+              items: machines_selection[curve][lib],
               onClick: ({ key }) => setMachine(key),
             }}
           >

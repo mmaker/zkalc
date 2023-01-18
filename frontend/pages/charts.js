@@ -206,7 +206,7 @@ const Home = () => {
   };
 
   return (
-    <Layout>
+    <Layout title="zcharts">
       <SelectGraph />
       <ZkalcGraph />
     </Layout>
