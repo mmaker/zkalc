@@ -211,8 +211,8 @@ export const machines_selection = Object.fromEntries(
   ])
 );
 
-export const curves_selection = {
-  arkworks: [curves.bls12_381],
-  blstrs: [curves.bls12_381],
-  curve25519_dalek: [curves.curve25519],
-};
+export const curves_selection = Object.fromEntries(
+  Object.keys(libraries).map((lib) => [
+    lib,
+    Object.keys(curves).filter(curve => lib in estimates[curve]).map((curve) => curves[curve])]
+));
