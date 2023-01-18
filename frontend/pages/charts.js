@@ -129,6 +129,9 @@ const Home = () => {
 
   const ZkalcGraph = () => {
     let samples = estimates[defaultCurve][defaultLib][defaultMachine][op];
+    if (typeof samples === "undefined") {
+      return <Row align={"center"}>Unavailable</Row>
+    }
     if (samples.range.length > 1) {
       return <ZkalcPlot />;
     } else {
