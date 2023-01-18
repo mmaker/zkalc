@@ -16,7 +16,7 @@ export const humanTime = (nanoseconds) => {
       2
     )} ${units[unitIndex - 2]}`;
   } else {
-    return `${value.toFixed(1)} ${units[unitIndex]}`;
+    return `${value.toFixed(1)} ${units[unitIndex - 1]}`;
   }
 };
 
