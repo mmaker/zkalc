@@ -55,7 +55,7 @@ export const Header = ({
         </Link>
         &nbsp;&nbsp;&nbsp;
         <Link href="/about">
-          <Tooltip title="about zkalc">
+          <Tooltip title="About zkalc">
             <QuestionCircleOutlined
               style={{ fontSize: "25px", color: "black" }}
             />
