@@ -1,7 +1,7 @@
 import "katex/dist/katex.min.css";
 
-import { Select, Row, Space, Typography } from "antd";
-import { SwapOutlined } from "@ant-design/icons";
+import { Select, Row, Space, Typography, Dropdown } from "antd";
+import { SwapOutlined, DownOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { Layout } from "../components/layout";
 import { Plot } from "../components/plot";
@@ -33,7 +33,7 @@ const compStrategyOptions = [
 const Home = () => {
   let defaultLib = "arkworks";
   let defaultCurve = "bls12_381";
-  let defaultMachine = "ec2c59xlarge";
+  let defaultMachine = "m1pro";
   let defaultOp = "msm_G1";
   let defaultFixLib = false;
 
@@ -55,8 +55,8 @@ const Home = () => {
       anchor: "bottom-right",
       direction: "column",
       justify: false,
-      translateX: 100,
-      translateY: 0,
+      translateX: 50,
+      translateY: -20,
       itemsSpacing: 0,
       itemDirection: "left-to-right",
       itemWidth: 80,
@@ -86,13 +86,12 @@ const Home = () => {
   };
 
   const getParameterSelection = () => {
-    if (!fixLib) {
-      return curves_selection[lib];
-    } else {
+    if (fixLib) {
       return libraries_selection[curve];
+    } else {
+      return curves_selection;
     }
   };
-
 
   const SelectGraph = () => {
     return (
@@ -100,14 +99,23 @@ const Home = () => {
       <Space align="baseline">
     <SwapOutlined onClick={() => setFixLib(!fixLib)} />
     <Text>
-      {fixLib ? `Showing results for ${lib}` : `Showing results for ${curve}`}
+      Showing results for:
+      {/* {fixLib ? `On backend ${lib}, showing results for` : `Showing results for ${curve}`} */}
     </Text>
-    {/* <Select
-      width={200}
-      options={getParameterSelection()}
-      defaultValue={fixLib ? lib : curve}
-      onChange={handleParamChange}
-    /> */}
+    <Dropdown
+          menu={{
+            items: getParameterSelection(),
+            onClick: ({ key }) => handleParamChange(key),
+          }}
+        >
+          <a onClick={(e) => e.preventDefault()}>
+            <Space>
+              {fixLib? libraries[lib].label : curves[curve].label}{" "}
+              <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
+              &nbsp;
+            </Space>
+          </a>
+        </Dropdown>
     <Select
       style={{width: 200}}
       defaultValue={op}
@@ -170,7 +178,6 @@ const Home = () => {
       >
         <ResponsiveBar
           height={150}
-          width={700}
           layout="horizontal"
           margin={{
             top: 5,

@@ -32,21 +32,8 @@ import { parse, ResultSet } from "mathjs";
 
 import { Layout } from "../components/layout";
 import { Recipe } from "../components/recipe";
-import { estimator } from "../lib/estimates";
+import { estimator, estimates } from "../lib/estimates";
 import { humanTime, siTime } from "../lib/time";
-
-// import renderMathInElement from "katex/contrib/auto-render";
-
-const { Title, Text } = Typography;
-
-///////////////////// Add your benchmarks here /////////////////////
-
-import curves from "../data/curves.json";
-import libraries from "../data/libraries.json";
-import machines from "../data/machines.json";
-
-// Import our benchmark results
-import { estimates } from "../lib/estimates";
 import {
   operations,
   operations_selection,
@@ -54,6 +41,14 @@ import {
   libraries_selection,
   curves_selection,
 } from "../lib/selections";
+// import renderMathInElement from "katex/contrib/auto-render";
+
+import curves from "../data/curves.json";
+import libraries from "../data/libraries.json";
+import machines from "../data/machines.json";
+
+const { Title, Text } = Typography;
+
 
 const katexSettings = {
   delimiters: [

@@ -6,5 +6,9 @@
     "curve25519": {
         "label": "curve25519",
         "key": "curve25519"
+    },
+    "bls12_377": {
+        "label": "BLS12-377",
+        "key": "bls12_377"
     }
 }
