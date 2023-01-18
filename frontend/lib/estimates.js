@@ -6,6 +6,8 @@ import estBls12381BlstT450 from "../data/bls12-381/blstrs/thinkpad_t450.json";
 import estBls12381BlstEc2C59xlarge from "../data/bls12-381/blstrs/aws_c5_9xlarge.json";
 import estCurve25519DalekM1 from "../data/curve25519/curve25519-dalek/m1pro.json";
 import estCurve25519DalekT450 from "../data/curve25519/curve25519-dalek/t450.json";
+import estBls12377ArkM1 from "../data/bls12-377/arkworks/m1pro.json";
+// import estBls12377ArkT450 from "../data/bls12-377/arkworks/thinkpad_t450.json";
 
 
 /// how many elements to keep for regression.
@@ -28,6 +30,12 @@ export const estimates = {
       thinkpad_t450: estBls12381ArkT450,
       m1pro: estBls12381ArkM1,
       ec2c59xlarge: estBls12381ArkEc2C59xlarge,
+    },
+  },
+  bls12_377: {
+    arkworks: {
+      // thinkpad_t450: estBls12377ArkT450,
+      m1pro: estBls12377ArkM1,
     },
   },
 };

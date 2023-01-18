@@ -142,11 +142,13 @@ const Home = () => {
         .filter((x, i) => {
           return lib in estimates[x];
         })
-        .map((x, i) => f(estimates[x][lib][machine][op], x));
+        .map((x, i) => f(estimates[x][lib][machine][op], x))
+        .filter(x => x !== null);
     } else {
       return Object.keys(libraries)
         .filter((x) => x in estimates[curve])
-        .map((x, i) => f(estimates[curve][x][machine][op], x));
+        .map((x, i) => f(estimates[curve][x][machine][op], x))
+        .filter(x => x !== null);
     }
   };
 

@@ -10,7 +10,7 @@ use ark_std::UniformRand;
 use criterion::{black_box, BenchmarkId, Criterion};
 use std::ops::Add;
 
-use ark_test_curves::bls12_381::Bls12_381;
+use ark_bls12_377::Bls12_377;
 
 fn bench_add_ff<P: Pairing>(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
@@ -136,15 +136,15 @@ criterion_group! {
     name=arkworks_benchmarks;
     config=Criterion::default();
     targets=
-        bench_mul_ff::<Bls12_381>,
-        bench_mul_ec::<Bls12_381>,
-        bench_add_ff::<Bls12_381>,
-        bench_add_ec::<Bls12_381>,
-        bench_sum_of_products::<Bls12_381>,
-        bench_msm::<Bls12_381>,
-        bench_invert::<Bls12_381>,
-        bench_pairing::<Bls12_381>,
-        bench_pairing_product::<Bls12_381>
+        bench_mul_ff::<Bls12_377>,
+        bench_mul_ec::<Bls12_377>,
+        bench_add_ff::<Bls12_377>,
+        bench_add_ec::<Bls12_377>,
+        bench_sum_of_products::<Bls12_377>,
+        bench_msm::<Bls12_377>,
+        bench_invert::<Bls12_377>,
+        bench_pairing::<Bls12_377>,
+        bench_pairing_product::<Bls12_377>
 }
 
 criterion_main! {arkworks_benchmarks}

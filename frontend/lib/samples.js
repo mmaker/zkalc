@@ -8,11 +8,18 @@ export const filterSamples = (samples, f) => {
 
 
   export const samplesToPlotData = (samples, id = "data") => {
+    if (typeof samples === "undefined") {
+      return null;
+    }
     const xys = samples.range.map((x, i) => ({ x: x, y: samples.results[i] }));
     return { id, data: [...xys] }; // , color: "#e8c1a0"
   };
 
   export const samplesToBarData = (samples,  label = "label", id = "operation") => {
+    if (typeof samples === "undefined") {
+      return null;
+    }
+
     if (samples.range.length != 1) {
         throw Error("samplesToChart only supports one sample at a time")
     } else {
