@@ -1,10 +1,10 @@
 import { InlineMath, BlockMath } from "react-katex";
 import { Typography } from "antd";
+import { estimates } from "../lib/estimates";
 
 import machines from "../data/machines.json";
 import libraries from "../data/libraries.json";
 import curves from "../data/curves.json";
-import { estimates } from "../lib/estimates";
 
 const { Text } = Typography;
 
@@ -184,13 +184,11 @@ export const operations_selection = Object.keys(operations).map((operation) => {
   };
 });
 
-export const libraries_selection = Object.keys(libraries).map((lib) => {
-  return {
-    label: libraries[lib].label,
-    key: lib,
-    disabled: libraries[lib].disabled || false,
-  };
-});
+export const libraries_selection = Object.fromEntries(Object.keys(curves).map((curve) => [
+  curve,
+  Object.keys(libraries).map(lib => ({label: libraries[lib].label, key: lib,
+      disabled: libraries[lib].disabled || !(lib in estimates[curve]) || false}))
+]));
 
 export const machines_selection = Object.fromEntries(
   Object.keys(estimates).map((curve) => [
@@ -211,8 +209,4 @@ export const machines_selection = Object.fromEntries(
   ])
 );
 
-export const curves_selection = Object.fromEntries(
-  Object.keys(libraries).map((lib) => [
-    lib,
-    Object.keys(curves).filter(curve => lib in estimates[curve]).map((curve) => curves[curve])]
-));
+export const curves_selection = Object.keys(curves).map(curve => curves[curve]);

@@ -74,9 +74,9 @@ const Home = () => {
   });
   const [ingredientForm] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
-  const [lib, setLib] = React.useState("arkworks");
-  const [machine, setMachine] = React.useState("ec2c59xlarge");
-  const [curve, setCurve] = React.useState("bls12_381");
+
+  const [cfg, setCfg] = React.useState({lib: "arkworks", machine: "ec2c59xlarge", curve: "bls12_381"});
+
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
 
   const addIngredient = (ingredient) => {
@@ -100,7 +100,7 @@ const Home = () => {
   };
 
   const estimatedTime = (item) => {
-    return estimator(curve, lib, machine, item.op)(item.quantity.evaluate());
+    return estimator(cfg.curve, cfg.lib, cfg.machine, item.op)(item.quantity.evaluate());
   };
 
   const estimatedTimeForRecipe = (recipe) => {
@@ -123,22 +123,41 @@ const Home = () => {
   const handleLibChange = (new_lib) => {
     // UX choice: make it easy to see differences between implementations
     // resetRecipe();
-    if (new_lib in estimates[curve]) {
-      setLib(new_lib);
-    } else if (new_lib in curves_selection) {
-      const new_curve = curves_selection[new_lib][0].key;
-      setCurve(new_curve);
-      if (!(machine in estimates[new_curve][new_lib])) {
-        const new_machine = machines_selection[new_curve][new_lib].filter(
-          (x) => !x.disabled
-        )[0].key;
-        setMachine(new_machine);
-      }
-      setLib(new_lib);
-    } else {
-      throw new Error("library not found in estimates");
+
+    // if (new_lib in estimates[curve]) {
+    //   setLib(new_lib);
+    // }
+
+    // assume curve is already selected and valid
+    let new_curve = cfg.curve;
+    let new_machine = cfg.machine;
+
+    if (!(new_machine in estimates[new_curve][new_lib])) {
+      new_machine = machines_selection[new_curve][new_lib].filter(x => !x.disabled)[0].key;
     }
+
+    setCfg({curve: new_curve, lib: new_lib, machine: new_machine});
   };
+
+  const handleCurveChange = (new_curve) => {
+
+    let new_lib = cfg.lib;
+    let new_machine = cfg.machine;
+
+    if (!(new_lib in estimates[new_curve])) {
+      new_lib = libraries_selection[new_curve].filter(x => !x.disabled)[0].key;
+    }
+
+    if (!(new_machine in estimates[new_curve][new_lib])) {
+      new_machine = machines_selection[new_curve][new_lib].filter(x => !x.disabled)[0].key;
+    }
+
+    setCfg({curve: new_curve, lib: new_lib, machine: new_machine});
+  }
+
+  const handleMachineChange = (new_machine) => {
+    setCfg({curve: cfg.curve, lib: cfg.lib, machine: new_machine});
+  }
 
   const validateQuantity = async (rule, value) => {
     if (value.trim() === "") {
@@ -160,13 +179,17 @@ const Home = () => {
   };
 
   const BackendSelection = () => {
+    const lib = cfg.lib;
+    const curve = cfg.curve;
+    const machine = cfg.machine;
+
     return (
       <>
         Estimating &nbsp;
         <Dropdown
           menu={{
-            items: curves_selection[lib],
-            onClick: ({ key }) => setCurve(key),
+            items: curves_selection,
+            onClick: ({ key }) => handleCurveChange(key),
           }}
         >
           <a onClick={(e) => e.preventDefault()}>
@@ -184,7 +207,7 @@ const Home = () => {
         >
           <Dropdown
             menu={{
-              items: libraries_selection,
+              items: libraries_selection[curve],
               onClick: ({ key }) => handleLibChange(key),
             }}
           >
@@ -208,7 +231,7 @@ const Home = () => {
           <Dropdown
             menu={{
               items: machines_selection[curve][lib],
-              onClick: ({ key }) => setMachine(key),
+              onClick: ({ key }) => handleMachineChange(key),
             }}
           >
             <a onClick={(e) => e.preventDefault()}>
