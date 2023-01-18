@@ -25,12 +25,11 @@ _[zkalc](https://github.com/asn-d6/zkalc) helps you calculate how much time
 cryptographic operations take on a real computer_
 </center>
 
-zkalc's purpose is to answer questions like *"How quickly can I run an MSM of size <InlineMath math="2^{18}" /> and compute <InlineMath math="2^6" /> pairings in an AWS C5 machine?"*.
+zkalc was created to instantly answer questions like *"How quickly can I run an MSM of size <InlineMath math="2^{18}" /> and compute <InlineMath math="120" /> pairings on an AWS C5 machine?"* or *"Which curve can perform DH in less than <InlineMath math="10" /> microseconds?"*.
 
 We hope that zkalc can help shorten the gap between cryptography and practice:
 
-- Cryptographers can use the simple zkalc UX to learn how fast their paper will
-  run on various machines
+- Cryptographers can use the simple UX to learn how fast their new fancy scheme runs on various machines without wasting computer cycles and CO2;
 - Protocol designers can easily tune the parameters of their protocol depending on their requirements
 
 We designed zkalc to be easy to use but also *easy to extend*. Writing new types of benchmarks, or adding fresh data to the zkalc website is easy. We hope that this way we can motivate you to improve zkalc to better fit your needs. See below for more details.
