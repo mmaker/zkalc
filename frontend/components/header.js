@@ -23,7 +23,7 @@ export const Header = ({onClickTitle=()=>window.href("/"), title="zkalc"}) => {
         </Link>
       </Col>
       <Col span={10} offset={4}>
-          <Title align="center" onClick={onClickTitle}  italic>
+          <Title align="center" onClick={onClickTitle}  italic  style={{cursor: "pointer"}}>
             {title}
           </Title>
       </Col>
