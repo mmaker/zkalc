@@ -49,7 +49,6 @@ import machines from "../data/machines.json";
 
 const { Title, Text } = Typography;
 
-
 const katexSettings = {
   delimiters: [
     { left: "$$", right: "$$", display: true },
@@ -70,7 +69,11 @@ const Home = () => {
   const [ingredientForm] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
 
-  const [cfg, setCfg] = React.useState({lib: "arkworks", machine: "ec2c59xlarge", curve: "bls12_381"});
+  const [cfg, setCfg] = React.useState({
+    lib: "arkworks",
+    machine: "ec2c59xlarge",
+    curve: "bls12_381",
+  });
 
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
 
@@ -86,16 +89,15 @@ const Home = () => {
     ingredientForm.getFieldInstance("op").focus();
   };
 
-  const formatTime = (num) => {
-    if (humanTimeFormat) {
-      return humanTime(num);
-    } else {
-      return siTime(num);
-    }
-  };
+  const formatTime = (num) => (humanTimeFormat ? humanTime : siTime)(num);
 
   const estimatedTime = (item) => {
-    return estimator(cfg.curve, cfg.lib, cfg.machine, item.op)(item.quantity.evaluate());
+    return estimator(
+      cfg.curve,
+      cfg.lib,
+      cfg.machine,
+      item.op
+    )(item.quantity.evaluate());
   };
 
   const estimatedTimeForRecipe = (recipe) => {
@@ -128,31 +130,35 @@ const Home = () => {
     let new_machine = cfg.machine;
 
     if (!(new_machine in estimates[new_curve][new_lib])) {
-      new_machine = machines_selection[new_curve][new_lib].filter(x => !x.disabled)[0].key;
+      new_machine = machines_selection[new_curve][new_lib].filter(
+        (x) => !x.disabled
+      )[0].key;
     }
 
-    setCfg({curve: new_curve, lib: new_lib, machine: new_machine});
+    setCfg({ curve: new_curve, lib: new_lib, machine: new_machine });
   };
 
   const handleCurveChange = (new_curve) => {
-
     let new_lib = cfg.lib;
     let new_machine = cfg.machine;
 
     if (!(new_lib in estimates[new_curve])) {
-      new_lib = libraries_selection[new_curve].filter(x => !x.disabled)[0].key;
+      new_lib = libraries_selection[new_curve].filter((x) => !x.disabled)[0]
+        .key;
     }
 
     if (!(new_machine in estimates[new_curve][new_lib])) {
-      new_machine = machines_selection[new_curve][new_lib].filter(x => !x.disabled)[0].key;
+      new_machine = machines_selection[new_curve][new_lib].filter(
+        (x) => !x.disabled
+      )[0].key;
     }
 
-    setCfg({curve: new_curve, lib: new_lib, machine: new_machine});
-  }
+    setCfg({ curve: new_curve, lib: new_lib, machine: new_machine });
+  };
 
   const handleMachineChange = (new_machine) => {
-    setCfg({curve: cfg.curve, lib: cfg.lib, machine: new_machine});
-  }
+    setCfg({ curve: cfg.curve, lib: cfg.lib, machine: new_machine });
+  };
 
   const validateQuantity = async (rule, value) => {
     if (value.trim() === "") {
