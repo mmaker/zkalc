@@ -5,6 +5,11 @@ export const humanTime = (nanoseconds) => {
   let value = Number(nanoseconds);
   let unitIndex = 0;
   let remainder = 0;
+
+  // special case for 0: return 0 ns immediately
+  if (value == 0) {
+    return "0 ns";
+  }
   while (value >= conversions[unitIndex] && unitIndex < conversions.length) {
     remainder = value % conversions[unitIndex];
     value = Math.floor(value / conversions[unitIndex]);
