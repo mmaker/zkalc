@@ -10,7 +10,7 @@ import re
 
 
 probes = {
-    r'msm/G([12])/(\d+)': lambda x, y: (f"msm_{x}", y),
+    r'msm/G([12])/(\d+)': lambda x, y: (f"msm_{x}", int(y)),
     r'(mul_ff|mul_ec|add_ff|add_ec|mul_ec|invert|pairing)': lambda x: (x, 1),
 }
 
@@ -34,15 +34,7 @@ def export_measurement_to_json(operation, measurement):
 
     # Get the sizes and times from the data
     sizes, times = zip(*measurement.items())
-
-    # Handle simple non-amortized operations like mul:
-    # If one mul takes x ms, n muls take x*n ms.
-    if len(sizes) == 1:
-        x = int(times[0])
-        print(f"{operation} [{len(measurement)} samples] [2^28 example: {(x * 2**28 * 1e-9):.2} s]:\n\t{x}\n", file=sys.stderr)
-        return {"range": [1], "results": [x]}
-    else:
-        return {"range": sizes, "results": times}
+    return {"range": sizes, "results": times}
 
 def extract_measurements(bench_output):
     measurements = defaultdict(dict)
@@ -60,7 +52,7 @@ def extract_measurements(bench_output):
             continue
 
         measurement_in_ns = to_nanoseconds(measurement["mean"]["estimate"], measurement["mean"]["unit"])
-        measurements[operation][int(size)] = measurement_in_ns
+        measurements[operation][size] = measurement_in_ns
 
     return measurements
 
