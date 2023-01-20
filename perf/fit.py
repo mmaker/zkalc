@@ -12,6 +12,7 @@ ark_names = {
     'Double': 'double',
     'Addition': 'add',
     'Subtraction': 'sub',
+    'Scalar Multiplication': 'mul',
 }
 
 probes = {
@@ -19,11 +20,12 @@ probes = {
     r'(mul_ff|add_ff|invert|pairing)': lambda x: (x, 1),
     r'add_ec': lambda: ("add_G1", 1),
     r'mul_ec': lambda: ("mul_G1", 1),
-    r'Arithmetic for .*::(G[12])/(\w+)': lambda x, y: (f"{ark_names[y]}_{x}", 1),
+    r'Arithmetic for .*::(G[12])/(.*)': lambda x, y: (f"{ark_names[y]}_{x}", 1),
 }
 
+
 def parse_benchmark_description(description):
-    ## match description against the list of probes
+    # match description against the list of probes
     for probe in probes:
         match = re.match(probe, description)
 
@@ -35,17 +37,19 @@ def parse_benchmark_description(description):
         print(f"❌ no probe found for '{description}'", file=sys.stderr)
         raise NotImplementedError
 
+
 def to_nanoseconds(num, unit_str):
     """Convert `num` in `unit_str` to nanoseconds"""
-    units = {"ns": 1, "µs" : 1e3, "ms": 1e6, "s": 1e9}
+    units = {"ns": 1, "µs": 1e3, "ms": 1e6, "s": 1e9}
     return num * units[unit_str]
 
-def export_measurement_to_json(operation, measurement):
+
+def export_measurement(measurement):
     """Export this measurement in json"""
     # Get the sizes and times from the data
     sizes, times = zip(*measurement.items())
-
     return {"range": sizes, "results": times}
+
 
 def extract_measurements(bench_output):
     measurements = defaultdict(dict)
@@ -62,27 +66,27 @@ def extract_measurements(bench_output):
         except NotImplementedError:
             continue
 
-        measurement_in_ns = to_nanoseconds(measurement["mean"]["estimate"], measurement["mean"]["unit"])
+        measurement_in_ns = to_nanoseconds(
+            measurement["mean"]["estimate"], measurement["mean"]["unit"])
         measurements[operation][size] = measurement_in_ns
 
     return measurements
+
 
 def dump_benchmarks_to_json(bench_output, file=sys.stdout):
     # Dictionary of results in format: { operation : measurements }
     results = {}
     # Extract measurements into a nested dictionary: { operation : {size : time_in_microseconds }}
     measurements = extract_measurements(bench_output)
+    # Re-format the measurements into a dictionary: {operation : {range: [sizes], results: [times]}
+    results = {operation: export_measurement(
+        measurements[operation]) for operation in measurements}
 
-    # Fit each operation to a Javascript function
-    for operation in measurements.keys():
-        measurement_json = export_measurement_to_json(operation, measurements[operation])
-        results[operation] = measurement_json
-
-    # Write results to json file
     # Encode the functions as a JSON object
     json_data = json.dumps(results)
     # Write the JSON object to the file
     file.write(json_data)
+
 
 if __name__ == '__main__':
     bench_output = [json.loads(line) for line in sys.stdin]
