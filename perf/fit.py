@@ -4,12 +4,8 @@ Usage:
     fit.py < coefficients.json > results.json
 """
 import sys
-import math
 import json
 from collections import defaultdict
-
-import numpy as np
-import numpy.polynomial.polynomial as poly
 
 class NoNeedForFitting(Exception): pass
 
