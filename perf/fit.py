@@ -6,22 +6,23 @@ Usage:
 import sys
 import json
 from collections import defaultdict
+import re
 
-class NoNeedForFitting(Exception): pass
+
+probes = {
+    r'msm/G([12])/(\d+)': lambda x, y: (f"msm_{x}", y),
+    r'(mul_ff|mul_ec|add_ff|add_ec|mul_ec|invert|pairing)': lambda x: (x, 1),
+}
 
 def parse_benchmark_description(description):
-    description = description.split("/")
-
-    if description[0] == "msm":
-        desc = description[0] + "_" + description[1]
-        return desc, description[2]
-    if description[0] == "pairing_product":
-        desc = description[0]
-        return desc, description[1]
-    if description[0] in ("mul_ff", "mul_ec", "add_ff", "add_ec", "mul_ec", "invert", "pairing"):
-        return description[0], 1
+    ## match description against the list of probes
+    for probe in probes:
+        match = re.match(probe, description)
+        if match:
+            return probes[probe](*match.groups())
     else:
-        raise NoNeedForFitting
+        print(f"No probe found for {description}", file=sys.stderr)
+        raise LookupError
 
 def to_nanoseconds(num, unit_str):
     """Convert `num` in `unit_str` to nanoseconds"""
@@ -55,7 +56,7 @@ def extract_measurements(bench_output):
         # Extra data from json
         try:
             operation, size = parse_benchmark_description(measurement["id"])
-        except NoNeedForFitting:
+        except LookupError:
             continue
 
         measurement_in_ns = to_nanoseconds(measurement["mean"]["estimate"], measurement["mean"]["unit"])
