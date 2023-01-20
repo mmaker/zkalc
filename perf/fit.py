@@ -13,6 +13,10 @@ ark_names = {
     'Addition': 'add',
     'Subtraction': 'sub',
     'Scalar Multiplication': 'mul',
+    'Negation': 'neg',
+    'Inverse': 'inv',
+    'Multiplication': 'mul',
+    'Square': 'square',
 }
 
 probes = {
@@ -20,7 +24,10 @@ probes = {
     r'(mul_ff|add_ff|invert|pairing)': lambda x: (x, 1),
     r'add_ec': lambda: ("add_G1", 1),
     r'mul_ec': lambda: ("mul_G1", 1),
-    r'Arithmetic for .*::(G[12])/(.*)': lambda x, y: (f"{ark_names[y]}_{x}", 1),
+    f'Arithmetic for .*::(G[12])/({"|".join(ark_names.keys())})': lambda x, y: (f"{ark_names[y]}_{x}", 1),
+    r'Arithmetic for .*::Fr/Sum of products of size (\d)': lambda x: (f"ip_ff", int(x)),
+    f'Arithmetic for .*::Fr/({"|".join(ark_names.keys())})': lambda y: (f"{ark_names[y]}_ff", 1),
+
 }
 
 
