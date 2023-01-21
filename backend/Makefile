@@ -1,6 +1,6 @@
 OUTDIR=../perf/data/
 
-all: init blstrs arkworks curve25519-dalek
+all: init blstrs arkworks curve25519-dalek pasta_curves
 
 init:
 	cargo install cargo-criterion
@@ -20,4 +20,9 @@ curve25519-dalek:
 	mkdir -p $(OUTDIR)/curve25519/curve25519-dalek/
 	mv curve25519-dalek/machine.json $(OUTDIR)/curve25519/curve25519-dalek/
 
-.PHONY: init blstrs arkworks curve25519-dalek
+pasta_curves:
+	cd pasta_curves; cargo criterion --message-format=json 1> machine.json
+	mkdir -p $(OUTDIR)/pasta_curves
+	mv pasta_curves/machine.json $(OUTDIR)/pasta_curves/
+
+.PHONY: init blstrs arkworks curve25519-dalek pasta_curves
