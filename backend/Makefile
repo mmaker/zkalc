@@ -1,6 +1,6 @@
 OUTDIR=../perf/data/
 
-all: init blstrs arkworks curve25519-dalek pasta_curves
+all: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto
 
 init:
 	cargo install cargo-criterion
@@ -25,4 +25,9 @@ pasta_curves:
 	mkdir -p $(OUTDIR)/pasta_curves
 	mv pasta_curves/machine.json $(OUTDIR)/pasta_curves/
 
-.PHONY: init blstrs arkworks curve25519-dalek pasta_curves
+zkcrypto:
+	cd zkcrypto; cargo criterion --message-format=json 1> machine.json
+	mkdir -p $(OUTDIR)/zkcrypto
+	mv zkcrypto/machine.json $(OUTDIR)/zkcrypto/
+
+.PHONY: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto
