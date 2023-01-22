@@ -91,7 +91,7 @@ fn bench_pairing_product<P: pairing::Engine + MultiMillerLoop, M: Measurement>(
 }
 
 fn bench_bls12_381(c: &mut Criterion) {
-    let mut group = c.benchmark_group("BLS12-381");
+    let mut group = c.benchmark_group("bls12_381");
     bench_add_ff::<bls12_381::G1Projective, _>(&mut group);
     bench_mul_ff::<bls12_381::G1Projective, _>(&mut group);
     bench_invert::<bls12_381::G1Projective, _>(&mut group);
@@ -104,7 +104,7 @@ fn bench_bls12_381(c: &mut Criterion) {
 }
 
 fn bench_jubjub(c: &mut Criterion) {
-    let mut group = c.benchmark_group("Jubjub");
+    let mut group = c.benchmark_group("jubjub");
     bench_add_ff::<jubjub::ExtendedPoint, _>(&mut group);
     bench_mul_ff::<jubjub::ExtendedPoint, _>(&mut group);
     bench_invert::<jubjub::ExtendedPoint, _>(&mut group);
