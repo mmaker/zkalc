@@ -19,27 +19,35 @@ ark_names = {
     'Square': 'square',
 }
 
-keys = [
+op_ids = [
+    # scalar field
     "mul_ff",
     "add_ff",
+    "msm_ff",
+    "invert"
+
+    # G1
     "mul_G1",
     "add_G1",
+    "msm_G1",
+
+    # G2
     "mul_G2",
     "add_G2",
+    "msm_G2",
+
+    # Gt
+    "add_Gt",
+    "mul_Gt",
     "pairing",
+    "msm_Gt",
 ]
 
 probes = {
     # zkalc naming convention
-    r'msm/G([12])/(\d+)': lambda x, y: (f"msm_{x}", int(y)),
-    r'(mul_ff|add_ff|invert|pairing)': lambda x: (x, 1),
-    # simple ec operations are always on G1
-    r'add_G1': lambda: ("add_G1", 1),
-    r'mul_G1': lambda: ("mul_G1", 1),
-                    r'mul_G1': lambda: ("mul_G1", 1),
+    r'.*/msm/G([12t])/(\d+)': lambda x, y: (f"msm_{x}", int(y)),
+    f'({"|".join(op_ids.keys())})': lambda x: (x, 1),
 
-    # backwards compatibility: pairing_product is msm_gt
-    r'pairing_product': lambda: ("msm_gt", 1),
     # compatibility with arkworks ark-bench naming
     f'Arithmetic for .*::(G[12])/({"|".join(ark_names.keys())})': lambda x, y: (f"{ark_names[y]}_{x}", 1),
     r'Arithmetic for .*::Fr/Sum of products of size (\d)': lambda x: (f"ip_ff", int(x)),
