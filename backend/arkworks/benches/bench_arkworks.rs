@@ -2,7 +2,7 @@
 extern crate criterion;
 
 use ark_ec::pairing::Pairing;
-use ark_ec::CurveGroup;
+use ark_ec::{CurveGroup, ScalarMul};
 use ark_ff::Field;
 use ark_std::test_rng;
 use ark_std::UniformRand;
@@ -50,6 +50,7 @@ fn bench_multi_pairing<P: Pairing, M: Measurement>(c: &mut BenchmarkGroup<'_, M>
         });
     }
 }
+
 fn bench_sum_of_products<F: Field, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let rng = &mut test_rng();
     c.bench_function("msm/ff", |b| {
@@ -68,6 +69,16 @@ fn bench_sum_of_products<F: Field, M: Measurement>(c: &mut BenchmarkGroup<'_, M>
     });
 }
 
+fn bench_mul<G: ScalarMul, M: Measurement>(c: &mut BenchmarkGroup<'_, M>, group_name: &str) {
+    let rng = &mut test_rng();
+    c.bench_function(format!("mul/{}", group_name), |b| {
+        const SIZE: usize = 256;
+        let lhs = G::rand(rng);
+        let rhs = G::ScalarField::rand(rng);
+        b.iter(|| lhs * &rhs)
+    });
+}
+
 fn bench_pairing<P: Pairing, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let mut rng = rand::thread_rng();
     c.bench_function("pairing", |r| {
@@ -79,9 +90,12 @@ fn bench_pairing<P: Pairing, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
 
 fn bench_bls12_381(c: &mut Criterion) {
     use ark_bls12_381::{Bls12_381, Fr, G1Projective, G2Projective};
+    type Gt = ark_ec::pairing::PairingOutput<Bls12_381>;
+
     let mut group = c.benchmark_group("bls12_381");
     bench_msm::<G1Projective, _>(&mut group, "G1");
     bench_msm::<G2Projective, _>(&mut group, "G2");
+    bench_mul::<Gt, _>(&mut group, "Gt");
     bench_multi_pairing::<Bls12_381, _>(&mut group);
     bench_pairing::<Bls12_381, _>(&mut group);
     bench_sum_of_products::<Fr, _>(&mut group);
@@ -90,9 +104,12 @@ fn bench_bls12_381(c: &mut Criterion) {
 
 fn bench_bls12_377(c: &mut Criterion) {
     use ark_bls12_377::{Bls12_377, Fr, G1Projective, G2Projective};
+    type Gt = ark_ec::pairing::PairingOutput<Bls12_377>;
+
     let mut group = c.benchmark_group("bls12_381");
     bench_msm::<G1Projective, _>(&mut group, "G1");
     bench_msm::<G2Projective, _>(&mut group, "G2");
+    bench_mul::<Gt, _>(&mut group, "Gt");
     bench_multi_pairing::<Bls12_377, _>(&mut group);
     bench_pairing::<Bls12_377, _>(&mut group);
     bench_sum_of_products::<Fr, _>(&mut group);

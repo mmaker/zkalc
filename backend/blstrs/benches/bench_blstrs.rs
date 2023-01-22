@@ -1,6 +1,6 @@
 #![allow(non_snake_case)]
 
-use blstrs::{Bls12, G2Prepared};
+use blstrs::{Bls12, G2Prepared, Gt};
 use blstrs::{G1Affine, G1Projective, G2Projective, Scalar};
 use criterion::*;
 use group::ff::Field;
@@ -8,47 +8,58 @@ use group::{Curve, Group};
 use pairing_lib::{MillerLoopResult, MultiMillerLoop, PairingCurveAffine};
 use std::ops::Add;
 
-fn bench_add_ff(c: &mut Criterion) {
+fn bench_mul(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
-    c.bench_function("bls12_381/add_ff", |b| {
-        let lhs = Scalar::random(&mut rng);
-        let rhs = Scalar::random(&mut rng);
-        b.iter(|| black_box(lhs) + black_box(rhs))
-    });
-}
 
-fn bench_mul_ff(c: &mut Criterion) {
-    let mut rng = rand::thread_rng();
     c.bench_function("bls12_381/mul_ff", |b| {
         let lhs = Scalar::random(&mut rng);
         let rhs = Scalar::random(&mut rng);
         b.iter(|| black_box(lhs) * black_box(rhs))
     });
-}
 
-fn bench_mul_G1(c: &mut Criterion) {
-    let mut rng = rand::thread_rng();
     c.bench_function("bls12_381/mul_G1", |b| {
         let lhs = G1Projective::random(&mut rng);
         let rhs = Scalar::random(&mut rng);
         b.iter(|| black_box(lhs) * black_box(rhs))
     });
-}
 
-fn bench_mul_G2(c: &mut Criterion) {
-    let mut rng = rand::thread_rng();
     c.bench_function("bls12_381/mul_G2", |b| {
         let lhs = G2Projective::random(&mut rng);
         let rhs = Scalar::random(&mut rng);
         b.iter(|| black_box(lhs) * black_box(rhs))
     });
+
+    c.bench_function("bls12_381/mul_Gt", |b| {
+        let lhs = Gt::random(&mut rng);
+        let rhs = Scalar::random(&mut rng);
+        b.iter(|| black_box(lhs) * black_box(rhs))
+    });
 }
 
-fn bench_add_ec(c: &mut Criterion) {
+fn bench_add(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
-    c.bench_function("bls12_381/add_ec", |r| {
+
+    c.bench_function("bls12_381/add_ff", |b| {
+        let lhs = Scalar::random(&mut rng);
+        let rhs = Scalar::random(&mut rng);
+        b.iter(|| black_box(lhs) + black_box(rhs))
+    });
+
+    c.bench_function("bls12_381/add_G1", |r| {
         let a = G1Projective::random(&mut rng);
         let b = G1Projective::random(&mut rng);
+        r.iter(|| a.add(b))
+    });
+
+    c.bench_function("bls12_381/add_G2", |r| {
+        let a = G2Projective::random(&mut rng);
+        let b = G2Projective::random(&mut rng);
+        r.iter(|| a.add(b))
+    });
+
+    c.bench_function("bls12_381/add_Gt", |r| {
+        let a = Gt::random(&mut rng);
+        let b = Gt::random(&mut rng);
         r.iter(|| a.add(b))
     });
 }
@@ -123,11 +134,8 @@ fn bench_multi_pairing(c: &mut Criterion) {
 
 criterion_group!(
     blstrs_benchmarks,
-    bench_mul_ff,
-    bench_mul_G1,
-    bench_mul_G2,
-    bench_add_ff,
-    bench_add_ec,
+    bench_mul,
+    bench_add,
     bench_msm,
     bench_invert,
     bench_pairing,

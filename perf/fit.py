@@ -19,13 +19,25 @@ ark_names = {
     'Square': 'square',
 }
 
+keys = [
+    "mul_ff",
+    "add_ff",
+    "mul_G1",
+    "add_G1",
+    "mul_G2",
+    "add_G2",
+    "pairing",
+]
+
 probes = {
     # zkalc naming convention
     r'msm/G([12])/(\d+)': lambda x, y: (f"msm_{x}", int(y)),
     r'(mul_ff|add_ff|invert|pairing)': lambda x: (x, 1),
     # simple ec operations are always on G1
-    r'add_ec': lambda: ("add_G1", 1),
-    r'mul_ec': lambda: ("mul_G1", 1),
+    r'add_G1': lambda: ("add_G1", 1),
+    r'mul_G1': lambda: ("mul_G1", 1),
+                    r'mul_G1': lambda: ("mul_G1", 1),
+
     # backwards compatibility: pairing_product is msm_gt
     r'pairing_product': lambda: ("msm_gt", 1),
     # compatibility with arkworks ark-bench naming
