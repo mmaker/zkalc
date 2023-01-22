@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Usage:
-    fit.py < coefficients.json > results.json
+    fit.py <(cat coefficients.json | grep Bls12_381) > results.json
 """
 import sys
 import json
@@ -20,14 +20,18 @@ ark_names = {
 }
 
 probes = {
+    # zkalc naming convention
     r'msm/G([12])/(\d+)': lambda x, y: (f"msm_{x}", int(y)),
     r'(mul_ff|add_ff|invert|pairing)': lambda x: (x, 1),
+    # simple ec operations are always on G1
     r'add_ec': lambda: ("add_G1", 1),
     r'mul_ec': lambda: ("mul_G1", 1),
+    # backwards compatibility: pairing_product is msm_gt
+    r'pairing_product': lambda: ("msm_gt", 1),
+    # compatibility with arkworks ark-bench naming
     f'Arithmetic for .*::(G[12])/({"|".join(ark_names.keys())})': lambda x, y: (f"{ark_names[y]}_{x}", 1),
     r'Arithmetic for .*::Fr/Sum of products of size (\d)': lambda x: (f"ip_ff", int(x)),
     f'Arithmetic for .*::Fr/({"|".join(ark_names.keys())})': lambda y: (f"{ark_names[y]}_ff", 1),
-
 }
 
 
