@@ -4,6 +4,7 @@ all: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto
 
 init:
 	cargo install cargo-criterion
+	mkdir -p $(OUTDIR)
 
 blstrs:
 	cd blstrs; cargo criterion --message-format=json 1> ../$(OUTDIR)/blstrs.json
