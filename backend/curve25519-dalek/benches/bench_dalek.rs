@@ -66,10 +66,13 @@ fn bench_msm(c: &mut Criterion) {
     }
 }
 
-criterion_group! {
-    name=msm_benchmarks;
-    config=Criterion::default();
-    targets=bench_mul_ff, bench_mul_ec, bench_add_ff, bench_msm, bench_invert_ff
-}
+criterion_group!(
+    msm_benchmarks,
+    bench_mul_ff,
+    bench_mul_ec,
+    bench_add_ff,
+    bench_msm,
+    bench_invert_ff
+);
 
-criterion_main! {msm_benchmarks}
+criterion_main!(msm_benchmarks);
