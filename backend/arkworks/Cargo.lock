@@ -25,6 +25,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "ark-bls12-381"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c775f0d12169cba7aae4caeb547bb6a50781c7449a8aa53793827c9ec4abf488"
+dependencies = [
+ "ark-ec",
+ "ark-ff",
+ "ark-serialize",
+ "ark-std",
+]
+
+[[package]]
+name = "ark-curve25519"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4ab653b3eff27100f7dcb06b94785f2fbe0d1230408df55d543ee0ef48cd8760"
+dependencies = [
+ "ark-ec",
+ "ark-ff",
+ "ark-std",
+]
+
+[[package]]
 name = "ark-ec"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -87,6 +110,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "ark-pallas"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "760ecac12a00211188c9101b63bd284b80da5abcc5d97d9d2b3803bca1f63a52"
+dependencies = [
+ "ark-ec",
+ "ark-ff",
+ "ark-std",
+]
+
+[[package]]
 name = "ark-poly"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -109,6 +143,17 @@ dependencies = [
  "ark-ff",
  "ark-std",
  "tracing",
+]
+
+[[package]]
+name = "ark-secp256k1"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4c02e954eaeb4ddb29613fee20840c2bbc85ca4396d53e33837e11905363c5f2"
+dependencies = [
+ "ark-ec",
+ "ark-ff",
+ "ark-std",
 ]
 
 [[package]]
@@ -146,16 +191,33 @@ dependencies = [
 ]
 
 [[package]]
+name = "ark-vesta"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "534dddabcd5017dca22582d25bf6946fadab04aa6cf15af243a126f27f6632f9"
+dependencies = [
+ "ark-ec",
+ "ark-ff",
+ "ark-pallas",
+ "ark-std",
+]
+
+[[package]]
 name = "arkworks-benchmarks"
 version = "0.1.0"
 dependencies = [
  "ark-bls12-377",
+ "ark-bls12-381",
+ "ark-curve25519",
  "ark-ec",
  "ark-ff",
+ "ark-pallas",
  "ark-poly",
  "ark-relations",
+ "ark-secp256k1",
  "ark-serialize",
  "ark-std",
+ "ark-vesta",
  "criterion",
  "rand",
  "rayon",

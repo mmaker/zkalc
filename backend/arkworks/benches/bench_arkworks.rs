@@ -3,109 +3,72 @@ extern crate criterion;
 
 use ark_ec::pairing::Pairing;
 use ark_ec::CurveGroup;
-use ark_ec::VariableBaseMSM;
 use ark_ff::Field;
 use ark_std::test_rng;
 use ark_std::UniformRand;
-use criterion::{black_box, BenchmarkId, Criterion};
-use std::ops::Add;
+use criterion::measurement::Measurement;
+use criterion::BenchmarkGroup;
+use criterion::{BenchmarkId, Criterion};
 
-use ark_bls12_377::Bls12_377;
-
-fn bench_add_ff<P: Pairing>(c: &mut Criterion) {
-    let mut rng = rand::thread_rng();
-    c.bench_function("add_ff", |b| {
-        let lhs = P::ScalarField::rand(&mut rng);
-        let rhs = P::ScalarField::rand(&mut rng);
-        b.iter(|| black_box(lhs) + black_box(rhs))
-    });
-}
-
-fn bench_mul_ec<P: Pairing>(c: &mut Criterion) {
-    let mut rng = rand::thread_rng();
-    c.bench_function("mul_ec", |b| {
-        let lhs = P::G1::rand(&mut rng);
-        let rhs = P::ScalarField::rand(&mut rng);
-        b.iter(|| black_box(lhs) * black_box(rhs))
-    });
-}
-
-fn bench_mul_ff<P: Pairing>(c: &mut Criterion) {
-    let mut rng = rand::thread_rng();
-    c.bench_function("mul_ff", |b| {
-        let lhs = P::ScalarField::rand(&mut rng);
-        let rhs = P::ScalarField::rand(&mut rng);
-        b.iter(|| black_box(lhs) * black_box(rhs))
-    });
-}
-
-fn bench_add_ec<P: Pairing>(c: &mut Criterion) {
-    let mut rng = rand::thread_rng();
-    c.bench_function("add_ec", |r| {
-        let a = P::G1::rand(&mut rng);
-        let b = P::G1::rand(&mut rng);
-        r.iter(|| a.add(b))
-    });
-}
-
-fn bench_msm<P: Pairing>(c: &mut Criterion) {
+fn bench_msm<G: CurveGroup, M: Measurement>(c: &mut BenchmarkGroup<'_, M>, group_name: &str) {
     let rng = &mut test_rng();
 
-    let mut group = c.benchmark_group("msm");
     for logsize in 1..=21 {
         let size = 1 << logsize;
 
         // Dynamically control sample size so that big MSMs don't bench eternally
         if logsize > 20 {
-            group.sample_size(10);
+            c.sample_size(10);
         }
 
         let scalars = (0..size)
-            .map(|_| P::ScalarField::rand(rng))
+            .map(|_| G::ScalarField::rand(rng))
             .collect::<Vec<_>>();
+        let gs = (0..size)
+            .map(|_| G::rand(rng).into_affine())
+            .collect::<Vec<_>>();
+        c.bench_with_input(
+            BenchmarkId::new(format!("msm/{}", group_name), size),
+            &logsize,
+            |b, _| b.iter(|| G::msm(&gs, &scalars)),
+        );
+    }
+}
+
+fn bench_multi_pairing<P: Pairing, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
+    let rng = &mut test_rng();
+    for logsize in 1..=18 {
+        let size = 1 << logsize;
         let g1s = (0..size)
             .map(|_| P::G1::rand(rng).into_affine())
             .collect::<Vec<_>>();
         let g2s = (0..size)
             .map(|_| P::G2::rand(rng).into_affine())
             .collect::<Vec<_>>();
-
-        group.bench_with_input(BenchmarkId::new("G1", size), &logsize, |b, _| {
-            b.iter(|| P::G1::msm(&g1s, &scalars))
-        });
-        group.bench_with_input(BenchmarkId::new("G2", size), &logsize, |b, _| {
-            b.iter(|| P::G2::msm(&g2s, &scalars))
+        c.bench_with_input(BenchmarkId::new("msm/Gt", size), &logsize, |b, _| {
+            b.iter(|| P::multi_pairing(&g1s, &g2s))
         });
     }
 }
-
-fn bench_sum_of_products<P: Pairing>(c: &mut Criterion) {
+fn bench_sum_of_products<F: Field, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let rng = &mut test_rng();
-    c.bench_function("ip", |b| {
+    c.bench_function("msm/ff", |b| {
         const SIZE: usize = 256;
-        let lhs: [P::ScalarField; SIZE] = (0..SIZE)
-            .map(|_| P::ScalarField::rand(rng))
+        let lhs: [F; SIZE] = (0..SIZE)
+            .map(|_| F::rand(rng))
             .collect::<Vec<_>>()
             .try_into()
             .unwrap();
-        let rhs: [P::ScalarField; SIZE] = (0..SIZE)
-            .map(|_| P::ScalarField::rand(rng))
+        let rhs: [F; SIZE] = (0..SIZE)
+            .map(|_| F::rand(rng))
             .collect::<Vec<_>>()
             .try_into()
             .unwrap();
-        b.iter(|| P::ScalarField::sum_of_products(&lhs, &rhs))
+        b.iter(|| F::sum_of_products(&lhs, &rhs))
     });
 }
 
-fn bench_invert<P: Pairing>(c: &mut Criterion) {
-    let mut rng = rand::thread_rng();
-    c.bench_function("invert", |b| {
-        let a = P::ScalarField::rand(&mut rng);
-        b.iter(|| a.inverse().unwrap())
-    });
-}
-
-fn bench_pairing<P: Pairing>(c: &mut Criterion) {
+fn bench_pairing<P: Pairing, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let mut rng = rand::thread_rng();
     c.bench_function("pairing", |r| {
         let a = P::G1::rand(&mut rng).into_affine();
@@ -114,37 +77,67 @@ fn bench_pairing<P: Pairing>(c: &mut Criterion) {
     });
 }
 
-fn bench_pairing_product<P: Pairing>(c: &mut Criterion) {
-    let mut rng = rand::thread_rng();
-    let mut group = c.benchmark_group("pairing_product");
-    for d in 4..=10 {
-        let size = 1 << d;
-        let g1s = (0..size)
-            .map(|_| P::G1::rand(&mut rng).into_affine())
-            .collect::<Vec<_>>();
-        let g2s = (0..size)
-            .map(|_| P::G2::rand(&mut rng).into_affine())
-            .collect::<Vec<_>>();
-
-        group.bench_with_input(BenchmarkId::from_parameter(size), &d, |b, _| {
-            b.iter(|| P::multi_pairing(&g1s, &g2s))
-        });
-    }
+fn bench_bls12_381(c: &mut Criterion) {
+    use ark_bls12_381::{Bls12_381, Fr, G1Projective, G2Projective};
+    let mut group = c.benchmark_group("bls12_381");
+    bench_msm::<G1Projective, _>(&mut group, "G1");
+    bench_msm::<G2Projective, _>(&mut group, "G2");
+    bench_multi_pairing::<Bls12_381, _>(&mut group);
+    bench_pairing::<Bls12_381, _>(&mut group);
+    bench_sum_of_products::<Fr, _>(&mut group);
+    group.finish();
 }
 
-criterion_group! {
-    name=arkworks_benchmarks;
-    config=Criterion::default();
-    targets=
-        bench_mul_ff::<Bls12_377>,
-        bench_mul_ec::<Bls12_377>,
-        bench_add_ff::<Bls12_377>,
-        bench_add_ec::<Bls12_377>,
-        bench_sum_of_products::<Bls12_377>,
-        bench_msm::<Bls12_377>,
-        bench_invert::<Bls12_377>,
-        bench_pairing::<Bls12_377>,
-        bench_pairing_product::<Bls12_377>
+fn bench_bls12_377(c: &mut Criterion) {
+    use ark_bls12_377::{Bls12_377, Fr, G1Projective, G2Projective};
+    let mut group = c.benchmark_group("bls12_381");
+    bench_msm::<G1Projective, _>(&mut group, "G1");
+    bench_msm::<G2Projective, _>(&mut group, "G2");
+    bench_multi_pairing::<Bls12_377, _>(&mut group);
+    bench_pairing::<Bls12_377, _>(&mut group);
+    bench_sum_of_products::<Fr, _>(&mut group);
+    group.finish();
 }
 
-criterion_main! {arkworks_benchmarks}
+fn bench_curve25519(c: &mut Criterion) {
+    use ark_curve25519::{EdwardsProjective as G, Fr};
+    let mut group = c.benchmark_group("bls12_381");
+    bench_msm::<G, _>(&mut group, "G1");
+    bench_sum_of_products::<Fr, _>(&mut group);
+    group.finish();
+}
+
+fn bench_secp256k1(c: &mut Criterion) {
+    use ark_secp256k1::{Fr, Projective as G};
+    let mut group = c.benchmark_group("bls12_381");
+    bench_msm::<G, _>(&mut group, "G1");
+    bench_sum_of_products::<Fr, _>(&mut group);
+    group.finish();
+}
+
+fn bench_pallas(c: &mut Criterion) {
+    use ark_pallas::{Fr, Projective as G};
+    let mut group = c.benchmark_group("bls12_381");
+    bench_msm::<G, _>(&mut group, "G1");
+    bench_sum_of_products::<Fr, _>(&mut group);
+    group.finish();
+}
+
+fn bench_vesta(c: &mut Criterion) {
+    use ark_pallas::{Fr, Projective as G};
+    let mut group = c.benchmark_group("bls12_381");
+    bench_msm::<G, _>(&mut group, "G1");
+    bench_sum_of_products::<Fr, _>(&mut group);
+    group.finish();
+}
+
+criterion_group!(
+    benches,
+    bench_bls12_381,
+    bench_bls12_377,
+    bench_curve25519,
+    bench_secp256k1,
+    bench_pallas,
+    bench_vesta
+);
+criterion_main!(benches);
