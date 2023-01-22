@@ -82,7 +82,7 @@ fn bench_msm<C: CurveAffine, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
 }
 
 fn bench_pallas(c: &mut Criterion) {
-    let mut group = c.benchmark_group("Pallas");
+    let mut group = c.benchmark_group("pallas");
     bench_add_ff::<pallas::Point, _>(&mut group);
     bench_mul_ff::<pallas::Point, _>(&mut group);
     bench_invert::<pallas::Point, _>(&mut group);
@@ -94,7 +94,7 @@ fn bench_pallas(c: &mut Criterion) {
 }
 
 fn bench_vesta(c: &mut Criterion) {
-    let mut group = c.benchmark_group("Vesta");
+    let mut group = c.benchmark_group("vesta");
     bench_add_ff::<vesta::Point, _>(&mut group);
     bench_mul_ff::<vesta::Point, _>(&mut group);
     bench_invert::<vesta::Point, _>(&mut group);
