@@ -16,7 +16,7 @@ Please see the various pages of [the website](https://zka.lc) for more informati
 ## Run new benchmarks
 
 All benchmarks are listed and run inside the `benchmarks/` folder.
-To run benchmarks, we assume that `make`, `git`, and `cargo` are available in the system. Simply run:
+To run benchmarks, we assume that `make`, `git`, and `rust` (**nightly!**) are installed in the system. Simply run:
 
 ```bash
     $ cd backend
