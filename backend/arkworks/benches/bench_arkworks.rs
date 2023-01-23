@@ -106,7 +106,7 @@ fn bench_bls12_377(c: &mut Criterion) {
     use ark_bls12_377::{Bls12_377, Fr, G1Projective, G2Projective};
     type Gt = ark_ec::pairing::PairingOutput<Bls12_377>;
 
-    let mut group = c.benchmark_group("bls12_381");
+    let mut group = c.benchmark_group("bls12_377");
     bench_msm::<G1Projective, _>(&mut group, "G1");
     bench_msm::<G2Projective, _>(&mut group, "G2");
     bench_mul::<Gt, _>(&mut group, "Gt");

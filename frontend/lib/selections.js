@@ -9,6 +9,27 @@ import curves from "../data/curves.json";
 const { Text } = Typography;
 
 export const operations = {
+  msm_ff: {
+    label: (
+      <>
+        Inner product in <InlineMath math="\mathbb{F}_p" />
+      </>
+    ),
+    description: (
+      <>
+        Sum of Products over <InlineMath math="\mathbb{F}_p" />
+      </>
+    ),
+    tooltip_width: 500,
+    tooltip: (
+      <>
+        Given scalars{" "}
+        <InlineMath math="a_1, a_2, \dots, a_n \in \mathbb{F}_p" /> and points{" "}
+        <InlineMath math="b_1, b_2, \dots, b_n \in \mathbb{F}_p" /> compute{" "}
+        <InlineMath math="\sum_i a_ib_i" />
+      </>
+    ),
+  },
   msm_G1: {
     label: (
       <>
@@ -49,6 +70,28 @@ export const operations = {
         <InlineMath math="a_1, a_2, \dots, a_n \in \mathbb{F}_p" /> and points{" "}
         <InlineMath math="P_1, P_2, \dots, P_n \in \mathbb{G}_2" /> compute{" "}
         <InlineMath math="\sum_i a_iP_i" />
+      </>
+    ),
+  },
+  msm_Gt: {
+    label: (
+      <>
+        Multi-pairing
+      </>
+    ),
+    value: "msm_G2",
+    description: (
+      <>
+        Multi-pairing of <InlineMath math="\mathbb{G}_1" /> and <InlineMath math="\mathbb{G}_2" /> elements
+      </>
+    ),
+    tooltip_width: 500,
+    tooltip: (
+      <>
+        Given scalars{" "}
+        <InlineMath math="P_1, P_2, \dots, P_n \in \mathbb{G}_1" /> and points{" "}
+        <InlineMath math="Q_1, Q_2, \dots, Q_n \in \mathbb{G}_2" /> compute{" "}
+        <InlineMath math="\sum_i P_i Q_i" />
       </>
     ),
   },
@@ -116,7 +159,7 @@ export const operations = {
       </>
     ),
   },
-  mul_ec: {
+  mul_G1: {
     label: (
       <>
         Scalar mult. over <InlineMath math="\mathbb{G}_1" />
@@ -133,6 +176,30 @@ export const operations = {
         Given <InlineMath math="a_1, a_2, \dots, a_n \in \mathbb{F}_p" /> and{" "}
         <InlineMath math="P_1, P_2, \dots, P_n \in \mathbb{G}_1" /> compute{" "}
         <InlineMath math="a_1 P_1, a_2 P_2, \dots, a_n P_n" />
+        <br />
+        <Text italic> without batch wNAF</Text>
+      </>
+    ),
+  },
+  mul_G2: {
+    label: (
+      <>
+        Scalar mult. over <InlineMath math="\mathbb{G}_2" />
+      </>
+    ),
+    description: (
+      <>
+        Scalar multiplication(s) over <InlineMath math="\mathbb{G}_2" />
+      </>
+    ),
+    tooltip_width: 300,
+    tooltip: (
+      <>
+        Given <InlineMath math="a_1, a_2, \dots, a_n \in \mathbb{F}_p" /> and{" "}
+        <InlineMath math="P_1, P_2, \dots, P_n \in \mathbb{G}_2" /> compute{" "}
+        <InlineMath math="a_1 P_1, a_2 P_2, \dots, a_n P_n" />
+        <br />
+        <Text italic> without batch wNAF</Text>
       </>
     ),
   },
@@ -159,7 +226,7 @@ export const operations = {
       </>
     ),
   },
-  add_ec: {
+  add_G1: {
     label: (
       <>
         Addition over <InlineMath math="\mathbb{G}_1" />
@@ -173,6 +240,38 @@ export const operations = {
     tooltip_width: 500,
     tooltip: (
       <InlineMath math="\mathbb{G}_1^n \mapsto \mathbb{G}_1: (A_1, A_1, \dots, A_n) \mapsto \sum_i A_i" />
+    ),
+  },
+  add_G2: {
+    label: (
+      <>
+        Addition over <InlineMath math="\mathbb{G}_2" />
+      </>
+    ),
+    description: (
+      <>
+        Elliptic curve <InlineMath math="\mathbb{G}_2" /> additions
+      </>
+    ),
+    tooltip_width: 500,
+    tooltip: (
+      <InlineMath math="\mathbb{G}_2^n \mapsto \mathbb{G}_2: (A_1, A_1, \dots, A_n) \mapsto \sum_i A_i" />
+    ),
+  },
+  add_Gt: {
+    label: (
+      <>
+        Addition over <InlineMath math="\mathbb{G}_t" />
+      </>
+    ),
+    description: (
+      <>
+        Elliptic curve <InlineMath math="\mathbb{G}_t" /> additions
+      </>
+    ),
+    tooltip_width: 500,
+    tooltip: (
+      <InlineMath math="\mathbb{G}_2^n \mapsto \mathbb{G}_t: (A_1, A_1, \dots, A_n) \mapsto \sum_i A_i" />
     ),
   },
 };

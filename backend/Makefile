@@ -13,7 +13,7 @@ arkworks: arkworks_curves_benchmarks
 	cd arkworks; cargo criterion --message-format=json 1> ../$(OUTDIR)/arkworks.json
 
 arkworks_curves_benchmarks:
-	git clone https://github.com/arkworks-rs/curves
+	git clone https://github.com/arkworks-rs/curves || true
 	cd curves; cargo criterion --message-format=json 1> ../$(OUTDIR)/ark-curves.json
 
 curve25519-dalek:

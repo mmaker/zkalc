@@ -148,7 +148,7 @@ const estimating_functions = {
   default: simpleEstimation,
   msm_G1: nLognEstimation,
   msm_G2: nLognEstimation,
-  pairing_product: linearEstimation,
+  msm_Gt: linearEstimation,
 };
 
 export const estimator = (curve, lib, machine, op) => {
