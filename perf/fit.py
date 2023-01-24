@@ -24,7 +24,7 @@ op_ids = [
     "mul_ff",
     "add_ff",
     "msm_ff",
-    "invert"
+    "invert",
 
     # G1
     "mul_G1",
@@ -45,8 +45,8 @@ op_ids = [
 
 probes = {
     # zkalc naming convention
-    r'.*/msm/G([12t])/(\d+)': lambda x, y: (f"msm_{x}", int(y)),
-    f'({"|".join(op_ids)})': lambda x: (x, 1),
+    r'.*/msm/(G[12t]|ff)/(\d+)': lambda x, y: (f"msm_{x}", int(y)),
+    f'.*/({"|".join(op_ids)})': lambda x: (x, 1),
 
     # compatibility with arkworks ark-bench naming
     f'Arithmetic for .*::(G[12])/({"|".join(ark_names.keys())})': lambda x, y: (f"{ark_names[y]}_{x}", 1),
@@ -120,5 +120,5 @@ def dump_benchmarks_to_json(bench_output, file=sys.stdout):
 
 
 if __name__ == '__main__':
-    bench_output = [json.loads(line) for line in sys.stdin]
+    bench_output = [json.loads(line) for line in sys.stdin if line.strip()]
     dump_benchmarks_to_json(bench_output)

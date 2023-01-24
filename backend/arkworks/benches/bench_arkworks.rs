@@ -71,7 +71,7 @@ fn bench_sum_of_products<F: Field, M: Measurement>(c: &mut BenchmarkGroup<'_, M>
 
 fn bench_mul<G: ScalarMul, M: Measurement>(c: &mut BenchmarkGroup<'_, M>, group_name: &str) {
     let rng = &mut test_rng();
-    c.bench_function(format!("mul/{}", group_name), |b| {
+    c.bench_function(format!("mul_{}", group_name), |b| {
         const SIZE: usize = 256;
         let lhs = G::rand(rng);
         let rhs = G::ScalarField::rand(rng);
@@ -118,7 +118,7 @@ fn bench_bls12_377(c: &mut Criterion) {
 
 fn bench_curve25519(c: &mut Criterion) {
     use ark_curve25519::{EdwardsProjective as G, Fr};
-    let mut group = c.benchmark_group("bls12_381");
+    let mut group = c.benchmark_group("curve25519");
     bench_msm::<G, _>(&mut group, "G1");
     bench_sum_of_products::<Fr, _>(&mut group);
     group.finish();
@@ -126,7 +126,7 @@ fn bench_curve25519(c: &mut Criterion) {
 
 fn bench_secp256k1(c: &mut Criterion) {
     use ark_secp256k1::{Fr, Projective as G};
-    let mut group = c.benchmark_group("bls12_381");
+    let mut group = c.benchmark_group("secp256k1");
     bench_msm::<G, _>(&mut group, "G1");
     bench_sum_of_products::<Fr, _>(&mut group);
     group.finish();
@@ -134,7 +134,7 @@ fn bench_secp256k1(c: &mut Criterion) {
 
 fn bench_pallas(c: &mut Criterion) {
     use ark_pallas::{Fr, Projective as G};
-    let mut group = c.benchmark_group("bls12_381");
+    let mut group = c.benchmark_group("pallas");
     bench_msm::<G, _>(&mut group, "G1");
     bench_sum_of_products::<Fr, _>(&mut group);
     group.finish();
@@ -142,7 +142,7 @@ fn bench_pallas(c: &mut Criterion) {
 
 fn bench_vesta(c: &mut Criterion) {
     use ark_pallas::{Fr, Projective as G};
-    let mut group = c.benchmark_group("bls12_381");
+    let mut group = c.benchmark_group("vesta");
     bench_msm::<G, _>(&mut group, "G1");
     bench_sum_of_products::<Fr, _>(&mut group);
     group.finish();
