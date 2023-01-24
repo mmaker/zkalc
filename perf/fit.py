@@ -46,7 +46,7 @@ op_ids = [
 probes = {
     # zkalc naming convention
     r'.*/msm/G([12t])/(\d+)': lambda x, y: (f"msm_{x}", int(y)),
-    f'({"|".join(op_ids.keys())})': lambda x: (x, 1),
+    f'({"|".join(op_ids)})': lambda x: (x, 1),
 
     # compatibility with arkworks ark-bench naming
     f'Arithmetic for .*::(G[12])/({"|".join(ark_names.keys())})': lambda x, y: (f"{ark_names[y]}_{x}", 1),
