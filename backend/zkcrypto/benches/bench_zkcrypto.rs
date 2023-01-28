@@ -33,7 +33,7 @@ fn bench_invert<G: Group, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
 
 fn bench_add_ec<G: Group, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let mut rng = rand::thread_rng();
-    c.bench_function("add_ec", |r| {
+    c.bench_function("add_G1", |r| {
         let a = G::random(&mut rng);
         let b = G::random(&mut rng);
         r.iter(|| a.add(b))
@@ -42,7 +42,7 @@ fn bench_add_ec<G: Group, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
 
 fn bench_dbl_ec<G: Group, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let mut rng = rand::thread_rng();
-    c.bench_function("dbl_ec", |r| {
+    c.bench_function("dbl_G1", |r| {
         let a = G::random(&mut rng);
         r.iter(|| a.double())
     });
@@ -50,7 +50,7 @@ fn bench_dbl_ec<G: Group, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
 
 fn bench_mul_ec<G: Group, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let mut rng = rand::thread_rng();
-    c.bench_function("mul_ec", |b| {
+    c.bench_function("mul_G1", |b| {
         let lhs = G::random(&mut rng);
         let rhs = G::Scalar::random(&mut rng);
         b.iter(|| black_box(lhs) * black_box(rhs))
