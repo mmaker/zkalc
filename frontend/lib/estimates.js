@@ -1,9 +1,9 @@
 import estBls12381ArkM1 from "../data/bls12-381/arkworks/m1pro.json";
 import estBls12381ArkT450 from "../data/bls12-381/arkworks/thinkpad_t450.json";
-import estBls12381ArkEc2C59xlarge from "../data/bls12-381/arkworks/aws_c5_9xlarge.json";
+import estBls12381ArkAwsC59xlarge from "../data/bls12-381/arkworks/aws_c5_9xlarge.json";
 import estBls12381BlstM1 from "../data/bls12-381/blstrs/m1pro.json";
 import estBls12381BlstT450 from "../data/bls12-381/blstrs/thinkpad_t450.json";
-import estBls12381BlstEc2C59xlarge from "../data/bls12-381/blstrs/aws_c5_9xlarge.json";
+import estBls12381BlstAwsC59xlarge from "../data/bls12-381/blstrs/aws_c5_9xlarge.json";
 import estCurve25519DalekM1 from "../data/curve25519/curve25519-dalek/m1pro.json";
 import estCurve25519DalekT450 from "../data/curve25519/curve25519-dalek/t450.json";
 import estBls12377ArkM1 from "../data/bls12-377/arkworks/m1pro.json";
@@ -14,28 +14,28 @@ import estBls12377ArkM1 from "../data/bls12-377/arkworks/m1pro.json";
 const regressionSet = 4;
 
 export const estimates = {
-  curve25519: {
-    curve25519_dalek: {
-      m1pro: estCurve25519DalekM1,
-      thinkpad_t450: estCurve25519DalekT450,
+  "curve25519": {
+    "curve25519_dalek": {
+      "m1pro": estCurve25519DalekM1,
+      "thinkpad_t450": estCurve25519DalekT450,
     },
   },
   bls12_381: {
-    blstrs: {
-      thinkpad_t450: estBls12381BlstT450,
-      m1pro: estBls12381BlstM1,
-      ec2c59xlarge: estBls12381BlstEc2C59xlarge,
+    "blstrs": {
+      "thinkpad_t450": estBls12381BlstT450,
+      "m1pro": estBls12381BlstM1,
+      "aws_c5.9xlarge": estBls12381BlstAwsC59xlarge,
     },
-    arkworks: {
-      thinkpad_t450: estBls12381ArkT450,
-      m1pro: estBls12381ArkM1,
-      ec2c59xlarge: estBls12381ArkEc2C59xlarge,
+    "arkworks": {
+      "thinkpad_t450": estBls12381ArkT450,
+      "m1pro": estBls12381ArkM1,
+      "aws_c5.9xlarge": estBls12381ArkAwsC59xlarge,
     },
   },
-  bls12_377: {
-    arkworks: {
+  "bls12_377": {
+    "arkworks": {
       // thinkpad_t450: estBls12377ArkT450,
-      m1pro: estBls12377ArkM1,
+      "m1pro": estBls12377ArkM1,
     },
   },
 };
