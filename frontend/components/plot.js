@@ -110,7 +110,7 @@ const msmStyleById = {
 export const PlotPointsAndEstimates = ({ ...kwargs }) => {
   let lib = "arkworks";
   let curve = "bls12_381";
-  let machine = "m1pro";
+  let machine = "aws_c5.9xlarge";
   let op = "msm_G1";
   let samples = estimates[curve][lib][machine][op];
 
@@ -157,7 +157,7 @@ export const PlotPointsAndEstimates = ({ ...kwargs }) => {
 export const PlotExtrapolation = ({ ...kwargs }) => {
   let lib = "arkworks";
   let curve = "bls12_381";
-  let machine = "m1pro";
+  let machine = "aws_c5.9xlarge";
   let op = "msm_G1";
   let samples = estimates[curve][lib][machine][op];
   const start = 1 << 2;
@@ -249,7 +249,8 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
 };
 
 export const PlotPoints = ({ ...kwargs }) => {
-  let samples = estimates["bls12_381"]["arkworks"]["m1pro"]["msm_G1"];
+  let machine = "aws_c5.9xlarge";
+  let samples = estimates["bls12_381"]["arkworks"][machine]["msm_G1"];
   let smaller_samples = filterSamples(
     samples,
     ([i, x, y]) => x > 2 && x < 1 << 22

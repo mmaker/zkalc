@@ -1,13 +1,23 @@
-import estBls12381ArkM1 from "../data/bls12-381/arkworks/m1pro.json";
-import estBls12381ArkT450 from "../data/bls12-381/arkworks/thinkpad_t450.json";
-import estBls12381ArkAwsC59xlarge from "../data/bls12-381/arkworks/aws_c5_9xlarge.json";
-import estBls12381BlstM1 from "../data/bls12-381/blstrs/m1pro.json";
-import estBls12381BlstT450 from "../data/bls12-381/blstrs/thinkpad_t450.json";
-import estBls12381BlstAwsC59xlarge from "../data/bls12-381/blstrs/aws_c5_9xlarge.json";
-import estCurve25519DalekM1 from "../data/curve25519/curve25519-dalek/m1pro.json";
-import estCurve25519DalekT450 from "../data/curve25519/curve25519-dalek/t450.json";
-import estBls12377ArkM1 from "../data/bls12-377/arkworks/m1pro.json";
-// import estBls12377ArkT450 from "../data/bls12-377/arkworks/thinkpad_t450.json";
+import estBls12381ArkAwsC59xlarge from "../data/bls12-381/arkworks/aws_c5.9xlarge.json";
+import estBls12381BlstAwsC59xlarge from "../data/bls12-381/blstrs/aws_c5.9xlarge.json";
+import estCurve25519DalekAwsC59xlarge from "../data/curve25519/curve25519-dalek/aws_c5.9xlarge.json";
+import estBls12381ArkAwsM52xlarge from "../data/bls12-381/arkworks/aws_m5.2xlarge.json";
+import estBls12381BlstAwsM52xlarge from "../data/bls12-381/blstrs/aws_m5.2xlarge.json";
+import estCurve25519DalekAwsM52xlarge from "../data/curve25519/curve25519-dalek/aws_m5.2xlarge.json";
+import estBls12381ZkCryptoAwsC59xlarge from "../data/bls12-381/zkcrypto/aws_c5.9xlarge.json";
+import estBls12381ZkCryptoAwsM52xlarge from "../data/bls12-381/zkcrypto/aws_m5.2xlarge.json";
+import estBls12377ArkAwsC59xlarge from "../data/bls12-377/arkworks/aws_c5.9xlarge.json";
+import estBls12377ArkAwsM52xlarge from "../data/bls12-377/arkworks/aws_m5.2xlarge.json";
+import estBls12377BlstAwsC59xlarge from "../data/bls12-377/blstrs/aws_c5.9xlarge.json";
+import estBls12377BlstAwsM52xlarge from "../data/bls12-377/blstrs/aws_m5.2xlarge.json";
+import estSecp256k1ArkAwsC59xlarge from "../data/secp256k1/arkworks/aws_c5.9xlarge.json";
+import estSecp256k1ArkAwsM52xlarge from "../data/secp256k1/arkworks/aws_m5.2xlarge.json";
+import estPallasArkAwsC59xlarge from "../data/pallas/arkworks/aws_c5.9xlarge.json";
+import estPallasArkAwsM52xlarge from "../data/pallas/arkworks/aws_m5.2xlarge.json";
+import estVestaArkAwsC59xlarge from "../data/vesta/arkworks/aws_c5.9xlarge.json";
+import estVestaArkAwsM52xlarge from "../data/vesta/arkworks/aws_m5.2xlarge.json";
+import estCurve25519ArkAwsC59xlarge from "../data/curve25519/arkworks/aws_c5.9xlarge.json";
+import estCurve25519ArkAwsM52xlarge from "../data/curve25519/arkworks/aws_m5.2xlarge.json";
 
 
 /// how many elements to keep for regression.
@@ -15,29 +25,61 @@ const regressionSet = 4;
 
 export const estimates = {
   "curve25519": {
+    "arkworks": {
+      "aws_c5.9xlarge": estCurve25519ArkAwsC59xlarge,
+      "aws_m5.2xlarge": estCurve25519ArkAwsM52xlarge,
+    },
     "curve25519_dalek": {
-      "m1pro": estCurve25519DalekM1,
-      "thinkpad_t450": estCurve25519DalekT450,
+      "aws_c5.9xlarge": estCurve25519DalekAwsC59xlarge,
+      "aws_m5.2xlarge": estCurve25519DalekAwsM52xlarge,
+      // "m1pro": estCurve25519DalekM1,
+      // "thinkpad_t450": estCurve25519DalekT450,
     },
   },
-  bls12_381: {
+  "bls12_381": {
     "blstrs": {
-      "thinkpad_t450": estBls12381BlstT450,
-      "m1pro": estBls12381BlstM1,
+      // "thinkpad_t450": estBls12381BlstT450,
+      // "m1pro": estBls12381BlstM1,
+      "aws_m5.2xlarge": estBls12381BlstAwsM52xlarge,
       "aws_c5.9xlarge": estBls12381BlstAwsC59xlarge,
     },
     "arkworks": {
-      "thinkpad_t450": estBls12381ArkT450,
-      "m1pro": estBls12381ArkM1,
+      // "thinkpad_t450": estBls12381ArkT450,
+      // "m1pro": estBls12381ArkM1,
+      "aws_m5.2xlarge": estBls12381ArkAwsM52xlarge,
       "aws_c5.9xlarge": estBls12381ArkAwsC59xlarge,
     },
+    "zkcrypto": {
+      "aws_c5.9xlarge": estBls12381ZkCryptoAwsC59xlarge,
+      "aws_m5.2xlarge": estBls12381ZkCryptoAwsM52xlarge,
+    }
   },
   "bls12_377": {
     "arkworks": {
+      "aws_c5.9xlarge": estBls12377ArkAwsC59xlarge,
+      "aws_m5.2xlarge": estBls12377ArkAwsM52xlarge,
       // thinkpad_t450: estBls12377ArkT450,
-      "m1pro": estBls12377ArkM1,
+      // "m1pro": estBls12377ArkM1,
     },
   },
+  "secp256k1": {
+    "arkworks": {
+      "aws_c5.9xlarge": estSecp256k1ArkAwsC59xlarge,
+      "aws_m5.2xlarge": estSecp256k1ArkAwsM52xlarge,
+    }
+  },
+  "pallas": {
+    "arkworks": {
+      "aws_c5.9xlarge": estPallasArkAwsC59xlarge,
+      "aws_m5.2xlarge": estPallasArkAwsM52xlarge,
+    }
+  },
+  "vesta": {
+    "arkworks": {
+      "aws_c5.9xlarge": estVestaArkAwsC59xlarge,
+      "aws_m5.2xlarge": estVestaArkAwsM52xlarge,
+    }
+  }
 };
 
 // find the line passing through points p and q

@@ -10,5 +10,17 @@
     "bls12_377": {
         "label": "BLS12-377",
         "key": "bls12_377"
+    },
+    "pallas": {
+        "label": "pallas",
+        "key": "pallas"
+    },
+    "vesta": {
+        "label": "vesta",
+        "key": "vesta"
+    },
+    "secp256k1": {
+        "label": "secp256k1",
+        "key": "secp256k1"
     }
 }

@@ -1,0 +1,1 @@
+{"add_ff": {"range": [1], "results": [5.374973759012566]}, "mul_ff": {"range": [1], "results": [30.16311567962639]}, "invert": {"range": [1], "results": [10700.096491791714]}, "add_G1": {"range": [1], "results": [994.2153695071574]}, "mul_G1": {"range": [1], "results": [422967.7541329089]}, "pairing": {"range": [1], "results": [262210565.14]}}

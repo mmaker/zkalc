@@ -33,7 +33,7 @@ const compStrategyOptions = [
 const Home = () => {
   let defaultLib = "arkworks";
   let defaultCurve = "bls12_381";
-  let defaultMachine = "m1pro";
+  let defaultMachine = "aws_c5.9xlarge";
   let defaultOp = "msm_G1";
   let defaultFixLib = false;
 

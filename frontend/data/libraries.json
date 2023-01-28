@@ -13,5 +13,10 @@
         "label": "curve25519-dalek-ng",
         "version": "4 (rustc: 1.68.0-nightly)",
         "url": "dalek.rs"
+    },
+    "zkcrypto": {
+        "label": "zkcrypto",
+        "version": "0.4 (rustc: 1.68.0-nightly)",
+        "url": "https://github.com/zkcrypto/"
     }
 }

@@ -71,7 +71,7 @@ const Home = () => {
 
   const [cfg, setCfg] = React.useState({
     lib: "arkworks",
-    machine: "ec2c59xlarge",
+    machine: "aws_c5.9xlarge",
     curve: "bls12_381",
   });
 
