@@ -46,6 +46,7 @@ import {
 import curves from "../data/curves.json";
 import libraries from "../data/libraries.json";
 import machines from "../data/machines.json";
+import defaults from "../data/defaults.json";
 
 const { Title, Text } = Typography;
 
@@ -69,11 +70,7 @@ const Home = () => {
   const [ingredientForm] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
 
-  const [cfg, setCfg] = React.useState({
-    lib: "arkworks",
-    machine: "aws_c5.9xlarge",
-    curve: "bls12_381",
-  });
+  const [cfg, setCfg] = React.useState(defaults);
 
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
 
@@ -265,7 +262,7 @@ const Home = () => {
         <Space align="baseline">
           <Form.Item
             name="op"
-            initialValue="msm_G1"
+            initialValue={defaults.op}
             rules={[{ required: true, message: "Missing operation" }]}
           >
             <Select

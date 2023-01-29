@@ -5,6 +5,7 @@ import { area, curveMonotoneX } from "d3-shape";
 
 import { estimates, estimator } from "../lib/estimates";
 import { filterSamples, samplesToPlotData } from "../lib/samples";
+import defaults from "../data/defaults.json";
 
 const tooltipStyle = {
   border: "2px solid",
@@ -108,9 +109,9 @@ const msmStyleById = {
 
 
 export const PlotPointsAndEstimates = ({ ...kwargs }) => {
-  let lib = "arkworks";
-  let curve = "bls12_381";
-  let machine = "aws_c5.9xlarge";
+  let lib = defaults.lib;
+  let curve = defaults.curve;
+  let machine = defaults.machine;
   let op = "msm_G1";
   let samples = estimates[curve][lib][machine][op];
 
@@ -155,9 +156,9 @@ export const PlotPointsAndEstimates = ({ ...kwargs }) => {
 };
 
 export const PlotExtrapolation = ({ ...kwargs }) => {
-  let lib = "arkworks";
-  let curve = "bls12_381";
-  let machine = "aws_c5.9xlarge";
+  let lib = defaults.lib;
+  let curve = defaults.curve;
+  let machine = defaults.machine;
   let op = "msm_G1";
   let samples = estimates[curve][lib][machine][op];
   const start = 1 << 2;
@@ -249,8 +250,7 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
 };
 
 export const PlotPoints = ({ ...kwargs }) => {
-  let machine = "aws_c5.9xlarge";
-  let samples = estimates["bls12_381"]["arkworks"][machine]["msm_G1"];
+  let samples = estimates[defaults.curve][defaults.lib][defaults.machine]["msm_G1"];
   let smaller_samples = filterSamples(
     samples,
     ([i, x, y]) => x > 2 && x < 1 << 22

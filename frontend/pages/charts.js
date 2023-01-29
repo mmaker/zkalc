@@ -10,6 +10,8 @@ import { ResponsiveBar } from "@nivo/bar";
 import { estimates, estimator } from "../lib/estimates";
 import libraries from "../data/libraries.json";
 import curves from "../data/curves.json";
+import defaults from "../data/defaults.json";
+
 import {
   filterSamples,
   samplesToBarData,
@@ -31,9 +33,9 @@ const compStrategyOptions = [
 ];
 
 const Home = () => {
-  let defaultLib = "arkworks";
-  let defaultCurve = "bls12_381";
-  let defaultMachine = "aws_c5.9xlarge";
+  let defaultLib = defaults.lib;
+  let defaultCurve = defaults.curve;
+  let defaultMachine = defaults.machine;
   let defaultOp = "msm_G1";
   let defaultFixLib = false;
 
