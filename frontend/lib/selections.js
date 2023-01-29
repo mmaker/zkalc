@@ -79,7 +79,7 @@ export const operations = {
         Multi-pairing
       </>
     ),
-    value: "msm_G2",
+    value: "msm_Gt",
     description: (
       <>
         Multi-pairing of <InlineMath math="\mathbb{G}_1" /> and <InlineMath math="\mathbb{G}_2" /> elements
@@ -91,7 +91,7 @@ export const operations = {
         Given scalars{" "}
         <InlineMath math="P_1, P_2, \dots, P_n \in \mathbb{G}_1" /> and points{" "}
         <InlineMath math="Q_1, Q_2, \dots, Q_n \in \mathbb{G}_2" /> compute{" "}
-        <InlineMath math="\sum_i P_i Q_i" />
+        <InlineMath math="\sum_i e(P_i, Q_i)" />
       </>
     ),
   },
@@ -103,19 +103,6 @@ export const operations = {
     tooltip: (
       <>
         Computation of <InlineMath>n</InlineMath> pairings
-      </>
-    ),
-  },
-  pairing_product: {
-    label: "Pairing product",
-    description: "Pairing product",
-    tooltip_width: 500,
-    tooltip: (
-      <>
-        Given as input{" "}
-        <InlineMath math="A_1, A_2, \dots, A_n \in \mathbb{G}_1" /> and{" "}
-        <InlineMath math="B_1, B_2, \dots, B_n \in \mathbb{G}_2" />, compute:
-        <BlockMath math="\sum_i e(A_i, B_i)" />
       </>
     ),
   },
