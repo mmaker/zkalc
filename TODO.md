@@ -13,7 +13,6 @@ Here is a bunch of stuff we could add to zkalc in the future:
   - Sum of products of field elements
 - **extend supportedlibraries**:
   - [gnark](https://github.com/ConsenSys/gnark)
-  - [zkcrypto](https://github.com/zcash/halo2)
   - [constantine](https://github.com/mratsim/constantine)
   - [miracl](https://github.com/miracl/core)
   - [relic](https://github.com/relic-toolkit/relic)
