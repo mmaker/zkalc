@@ -1,15 +1,10 @@
 import React from "react";
 import { Typography } from "antd";
+import { authors } from "../../AUTHORS";
 
 const { Title, Text } = Typography;
 
 const Authors = () => {
-  // only two authors for now
-  const authors = [
-    { name: "Michele Orrù", website: "https://tumbolandia.net" },
-    { name: "George Kadianakis", website: "https://github.com/asn-d6" },
-  ];
-
   return (
     <Text style={{ fontSize: 13 }}>
       Developed by
