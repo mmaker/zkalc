@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Usage:
-    fit.py <(cat coefficients.json | grep Bls12_381) > results.json
+    cat sources*.json | grep -i curve_name | ./fit.py > results.json
 """
 import sys
 import json
