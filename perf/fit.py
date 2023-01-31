@@ -51,7 +51,7 @@ probes = {
     # compatibility with arkworks ark-bench naming
     f'Arithmetic for .*::(G[12])/({"|".join(ark_names.keys())})': lambda x, y: (f"{ark_names[y]}_{x}", 1),
     ## ::G should be ::G1
-    f'Arithmetic for .*::G/({"|".join(ark_names.keys())})': lambda x, y: (f"{ark_names[y]}_G1", 1),
+    f'Arithmetic for .*::G/({"|".join(ark_names.keys())})': lambda x: (f"{ark_names[x]}_G1", 1),
     r'Arithmetic for .*::Fr/Sum of products of size (\d)': lambda x: (f"ip_ff", int(x)),
 
     f'Arithmetic for .*::Fr/({"|".join(ark_names.keys())})': lambda y: (f"{ark_names[y]}_ff", 1),
