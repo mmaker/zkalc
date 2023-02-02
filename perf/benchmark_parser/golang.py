@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-import argparse
 import json
 import re, io, sys
 from collections import OrderedDict, defaultdict
 
-from common import to_nanoseconds, parse_benchmark_description
+from .common import to_nanoseconds, parse_benchmark_description
 
 def parse_benchline(line):
     """
@@ -86,8 +85,8 @@ def extract_measurements(benchmarks):
     return measurements
 
 # if invoked as main just print statistics
-def dump_benchmarks_to_json(file=sys.stdout):
-    benchmarks, labels = load_benchmarks(sys.stdin)
+def main(ins=sys.stdin, outs=sys.stdout):
+    benchmarks, labels = load_benchmarks(ins)
     measurements = extract_measurements(benchmarks)
 
     # Re-format the measurements into a dictionary: {operation : {range: [sizes], results: [times]}
@@ -96,7 +95,5 @@ def dump_benchmarks_to_json(file=sys.stdout):
     # Encode the functions as a JSON object
     json_data = json.dumps(results)
     # Write the JSON object to the file
-    file.write(json_data)
+    outs.write(json_data)
 
-if __name__ == '__main__':
-    dump_benchmarks_to_json()

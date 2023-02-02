@@ -7,7 +7,7 @@ import sys
 import json
 from collections import defaultdict
 
-from common import to_nanoseconds, parse_benchmark_description
+from .common import to_nanoseconds, parse_benchmark_description
 
 ark_names = {
     'Double': 'double',
@@ -87,7 +87,8 @@ def extract_measurements(bench_output):
     return measurements
 
 
-def dump_benchmarks_to_json(bench_output, file=sys.stdout):
+def main(ins=sys.stdin, outs=sys.stdout):
+    bench_output = [json.loads(line) for line in sys.stdin if line.strip()]
     # Dictionary of results in format: { operation : measurements }
     results = {}
     # Extract measurements into a nested dictionary: { operation : {size : time_in_microseconds }}
@@ -99,9 +100,5 @@ def dump_benchmarks_to_json(bench_output, file=sys.stdout):
     # Encode the functions as a JSON object
     json_data = json.dumps(results)
     # Write the JSON object to the file
-    file.write(json_data)
+    outs.write(json_data)
 
-
-if __name__ == '__main__':
-    bench_output = [json.loads(line) for line in sys.stdin if line.strip()]
-    dump_benchmarks_to_json(bench_output)
