@@ -2,7 +2,6 @@
 
 Here is a bunch of stuff we could add to zkalc in the future:
 
-- **Improve result accuracy**: we are not statisticians, we are not sure the methodology is really sound and standard.
 - **Add singlethreaded benchmarks**
 - **Improve UI**: make it easier to compare performance of different machines or libraries
 - **Benchmark more operations**
@@ -21,4 +20,7 @@ Here is a bunch of stuff we could add to zkalc in the future:
   - Add some primitives like [Naor–Reingold](https://en.wikipedia.org/wiki/Naor%E2%80%93Reingold_pseudorandom_function)
   - Calculate proof sizes
   - Calculate number of constraints (e.g. for sha256, sha3, poseidon)
-
+- **Support new functions**
+  - Fp: Square, Sqrt
+  - G1/2: Subgroup membership check, cofactor clearing
+  - GT: Square (cyclotomic), MSM
