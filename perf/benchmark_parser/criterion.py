@@ -30,18 +30,15 @@ op_ids = [
     # G1
     "mul_G1",
     "add_G1",
-    "msm_G1",
 
     # G2
     "mul_G2",
     "add_G2",
-    "msm_G2",
 
     # Gt
     "add_Gt",
     "mul_Gt",
     "pairing",
-    "msm_Gt",
 ]
 
 probes = {
