@@ -1,6 +1,6 @@
 OUTDIR=../perf/data/new/
 
-all: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto
+all: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto gnark
 
 init:
 	cargo install cargo-criterion
@@ -13,7 +13,7 @@ arkworks: arkworks_curves
 	cd arkworks; cargo criterion --message-format=json 1> ../$(OUTDIR)/arkworks.json
 
 arkworks_curves:
-	git clone https://github.com/arkworks-rs/curves || true
+	git clone https://github.com/arkworks-rs/curves.git || true
 	cd curves; cargo criterion --features ark-ec/parallel,ark-ff/asm --message-format=json 1> ../$(OUTDIR)/ark-curves.json
 
 curve25519-dalek:
@@ -25,8 +25,13 @@ pasta_curves:
 zkcrypto:
 	cd zkcrypto; cargo criterion --message-format=json 1> ../$(OUTDIR)/zkcrypto.json
 
+gnark:
+	git clone -b zkalc https://github.com/mmaker/gnark-crypto.git || true
+	cd gnark-crypto; bash ./zkalc.sh | tee ../$(OUTDIR)/gnark.txt
+
 clean:
 	@rm -rf curves
+	@rm -rf gnark-crypto
 	@rm -rf $(OUTDIR)
 
 .PHONY: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto arkworks_curves_benchmarks clean
