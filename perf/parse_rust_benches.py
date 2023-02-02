@@ -6,7 +6,8 @@ Usage:
 import sys
 import json
 from collections import defaultdict
-import re
+
+from common import to_nanoseconds, parse_benchmark_description
 
 ark_names = {
     'Double': 'double',
@@ -57,27 +58,6 @@ probes = {
     f'Arithmetic for .*::Fr/({"|".join(ark_names.keys())})': lambda y: (f"{ark_names[y]}_ff", 1),
 }
 
-
-def parse_benchmark_description(description):
-    # match description against the list of probes
-    for probe in probes:
-        match = re.match(probe, description)
-
-        if match is not None:
-            familiar_name = probes[probe](*match.groups())
-            print(f'✅ probe matched {description}', file=sys.stderr)
-            return familiar_name
-    else:
-        print(f"❌ no probe found for '{description}'", file=sys.stderr)
-        raise NotImplementedError
-
-
-def to_nanoseconds(num, unit_str):
-    """Convert `num` in `unit_str` to nanoseconds"""
-    units = {"ns": 1, "µs": 1e3, "ms": 1e6, "s": 1e9}
-    return num * units[unit_str]
-
-
 def export_measurement(measurement):
     """Export this measurement in json"""
     # Get the sizes and times from the data
@@ -96,7 +76,7 @@ def extract_measurements(bench_output):
 
         # Extra data from json
         try:
-            operation, size = parse_benchmark_description(measurement["id"])
+            operation, size = parse_benchmark_description(measurement["id"], probes)
         except NotImplementedError:
             continue
 
