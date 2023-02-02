@@ -84,7 +84,7 @@ fn bench_pairing_product<P: pairing::Engine + MultiMillerLoop, M: Measurement>(
             v_ref.push((&v[i].0, &v[i].1));
         }
 
-        c.bench_with_input(BenchmarkId::new("pairing_product", size), &d, |b, _| {
+        c.bench_with_input(BenchmarkId::new("msm_Gt", size), &d, |b, _| {
             b.iter(|| P::multi_miller_loop(&v_ref).final_exponentiation())
         });
     }
