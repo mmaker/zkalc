@@ -47,13 +47,23 @@ def load_benchmarks(f):
     return benchmarks, labels
 
 probes = {
-    r'MultiExpG1/(\d+)_points': lambda x: (f"msm_G1", int(x)),
-    r'MultiExpG2/(\d+)_points': lambda x: (f"msm_G2", int(x)),
-    r'MultiPair/(\d+)_pairs-8': lambda x: (f"msm_Gt", int(x)),
-    r'(mul_ff|add_ff|invert|Pairing)': lambda x: (x, 1),
-    r'add_ec': lambda: ("add_G1", 1),
-    r'mul_ec': lambda: ("mul_G1", 1),
+    r'ElementAdd':                    lambda:   ("add_ff", 1),
+    r'ElementMul':                    lambda:   ("mul_ff", 1),
+    r'ElementInverse':                lambda:   ("invert", 1),
 
+    r'G1JacAdd':                      lambda:   ("add_G1", 1),
+    r'G1JacScalarMultiplication':     lambda:   ("mul_G1", 1),
+    r'MultiExpG1/(\d+)_points':       lambda x: ("msm_G1", int(x)),
+
+    r'G2JacAdd':                      lambda:   ("add_G2", 1),
+    r'G2JacScalarMultiplication':     lambda:   ("mul_G2", 1),
+    r'MultiExpG2/(\d+)_points':       lambda x: ("msm_G2", int(x)),
+
+    r'E12Add':                        lambda x: ("add_Gt", 1),
+    r'E12Mul':                        lambda x: ("mul_Gt", 1),
+
+    r'Pairing':                       lambda x: ("pairing", 1),
+    r'MultiPair/(\d+)_pairs-8':       lambda x: ("msm_Gt", int(x)),
 }
 
 def export_measurement(measurement):
