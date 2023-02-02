@@ -112,7 +112,7 @@ fn bench_pairing(c: &mut Criterion) {
 fn bench_multi_pairing(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
     let mut group = c.benchmark_group("bls12_381/msm/Gt");
-    for d in 4..=10 {
+    for d in 1..=10 {
         let size = 1 << d;
         let mut v: Vec<(G1Affine, G2Prepared)> = Vec::new();
         for _ in 0..size {

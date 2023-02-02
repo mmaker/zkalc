@@ -70,7 +70,7 @@ fn bench_pairing_product<P: pairing::Engine + MultiMillerLoop, M: Measurement>(
     c: &mut BenchmarkGroup<'_, M>,
 ) {
     let mut rng = rand::thread_rng();
-    for d in 4..=10 {
+    for d in 1..=10 {
         let size = 1 << d;
         let mut v: Vec<(P::G1Affine, P::G2Prepared)> = Vec::new();
         for _ in 0..size {
