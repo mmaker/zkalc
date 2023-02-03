@@ -58,10 +58,10 @@ probes = {
     r'G2JacScalarMultiplication':     lambda:   ("mul_G2", 1),
     r'MultiExpG2/(\d+)_points':       lambda x: ("msm_G2", int(x)),
 
-    r'E12Add':                        lambda x: ("add_Gt", 1),
-    r'E12Mul':                        lambda x: ("mul_Gt", 1),
+    r'E12Add':                        lambda:  ("add_Gt", 1),
+    r'E12Mul':                        lambda:  ("mul_Gt", 1),
 
-    r'Pairing':                       lambda x: ("pairing", 1),
+    r'Pairing':                       lambda:  ("pairing", 1),
     r'MultiPair/(\d+)_pairs-8':       lambda x: ("msm_Gt", int(x)),
 }
 
