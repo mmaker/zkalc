@@ -27,4 +27,14 @@ export const contributors = [
     username: "tlepoint",
     website: "https://tancre.de",
   },
+  {
+    name: "Jack Grigg",
+    username: "str4d",
+    website: "https://github.com/str4d",
+  },
+  {
+    name: "Youssef El Housni",
+    username: "yelhousni",
+    website: "https://yelhousni.github.io/",
+  },
 ];
