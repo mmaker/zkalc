@@ -17,7 +17,6 @@ Please see the various pages of [the website](https://zka.lc) for more informati
 ## Prerequisites
 
 To run benchmarks, we assume that `make`, `git`, `rust` (**nightly!**) and `go` (**> 1.17**) are installed in the system.
-To install `rust`, 
 
 **Installing Go.** To install `go`, you can download the binaries at [go.dev/dl](https://go.dev/dl/) and add `go/bin` to your `PATH` environment variable.
 
