@@ -20,6 +20,7 @@ To run benchmarks, we assume that `make`, `git`, `rust` (**nightly!**) and `go` 
 To install `rust`, 
 
 **Installing Go.** To install `go`, you can download the binaries at [go.dev/dl](https://go.dev/dl/) and add `go/bin` to your `PATH` environment variable.
+
 **Installing Rust.** To install rust, you can follow [rustup.rs](https://rustup.rs/) and then type `rustup default nightly`.
 
 ## Benchmarks
