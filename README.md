@@ -13,10 +13,18 @@ We hope that zkalc can help shorten the gap between cryptography and practice:
 
 Please see the various pages of [the website](https://zka.lc) for more information on how zkalc works.
 
-## Run new benchmarks
 
-All benchmarks are listed and run inside the `benchmarks/` folder.
-To run benchmarks, we assume that `make`, `git`, and `rust` (**nightly!**) are installed in the system. Simply run:
+## Prerequisites
+
+To run benchmarks, we assume that `make`, `git`, `rust` (**nightly!**) and `go` (**> 1.17**) are installed in the system.
+To install `rust`, 
+
+**Installing Go.** To install `go`, you can download the binaries at [go.dev/dl](https://go.dev/dl/) and add `go/bin` to your `PATH` environment variable.
+**Installing Rust.** To install rust, you can follow [rustup.rs](https://rustup.rs/) and then type `rustup default nightly`.
+
+## Benchmarks
+
+All benchmarks are listed and run inside the `benchmarks/` folder. To run them, type:
 
 ```bash
     $ cd backend
@@ -24,7 +32,7 @@ To run benchmarks, we assume that `make`, `git`, and `rust` (**nightly!**) are i
 ```
 The files generated will end up stored in `perf/data/new/`
 
-## Process benchmark outputs
+## Processing Benchmarks
 
 The produced benchmarks are then post-processed in a simpler and uniform json format.
 For this step, we require `python3`. In order to generate data accordingly, run:
