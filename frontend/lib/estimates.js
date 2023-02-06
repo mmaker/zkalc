@@ -18,6 +18,10 @@ import estVestaArkAwsC59xlarge from "../data/vesta/arkworks/aws_c5.9xlarge.json"
 import estVestaArkAwsM52xlarge from "../data/vesta/arkworks/aws_m5.2xlarge.json";
 import estCurve25519ArkAwsC59xlarge from "../data/curve25519/arkworks/aws_c5.9xlarge.json";
 import estCurve25519ArkAwsM52xlarge from "../data/curve25519/arkworks/aws_m5.2xlarge.json";
+import estBls12381GnarkAwsC59xlarge from "../data/bls12-381/gnark/aws_c5.9xlarge.json";
+import estBls12377GnarkAwsC59xlarge from "../data/bls12-377/gnark/aws_c5.9xlarge.json";
+import estSecp256k1GnarkAwsC59xlarge from "../data/secp256k1/gnark/aws_c5.9xlarge.json";
+import estBn254GnarkAwsC59xlarge from "../data/bn254/gnark/aws_c5.9xlarge.json";
 
 
 /// how many elements to keep for regression.
@@ -52,6 +56,9 @@ export const estimates = {
     "zkcrypto": {
       "aws_c5.9xlarge": estBls12381ZkCryptoAwsC59xlarge,
       "aws_m5.2xlarge": estBls12381ZkCryptoAwsM52xlarge,
+    },
+    "gnark": {
+      "aws_c5.9xlarge": estBls12381GnarkAwsC59xlarge,
     }
   },
   "bls12_377": {
@@ -61,11 +68,17 @@ export const estimates = {
       // thinkpad_t450: estBls12377ArkT450,
       // "m1pro": estBls12377ArkM1,
     },
+    "gnark": {
+      "aws_c5.9xlarge": estBls12377GnarkAwsC59xlarge,
+    }
   },
   "secp256k1": {
     "arkworks": {
       "aws_c5.9xlarge": estSecp256k1ArkAwsC59xlarge,
       "aws_m5.2xlarge": estSecp256k1ArkAwsM52xlarge,
+    },
+    "gnark": {
+      "aws_c5.9xlarge": estSecp256k1GnarkAwsC59xlarge,
     }
   },
   "pallas": {
@@ -78,6 +91,11 @@ export const estimates = {
     "arkworks": {
       "aws_c5.9xlarge": estVestaArkAwsC59xlarge,
       "aws_m5.2xlarge": estVestaArkAwsM52xlarge,
+    }
+  },
+  "bn254": {
+    "gnark": {
+      "aws_c5.9xlarge": estBn254GnarkAwsC59xlarge,
     }
   }
 };

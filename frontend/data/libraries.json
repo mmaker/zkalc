@@ -18,5 +18,10 @@
         "label": "zkcrypto",
         "version": "0.4 (rustc: 1.68.0-nightly)",
         "url": "https://github.com/zkcrypto/"
+    },
+    "gnark": {
+        "label": "gnark",
+        "version": "0.9.0 (branch: zkalc)",
+        "url": "https://github.com/ConsenSys/gnark-crypto/"
     }
 }
