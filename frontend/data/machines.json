@@ -11,6 +11,12 @@
         "ram": "72GB",
         "os": "Amazon Linux 2"
     },
+    "aws_a1.2xlarge": {
+        "label": "AWS EC2 a1.2xlarge",
+        "cpu": "8-core AWS Graviton Processor (Arm)",
+        "ram": "16GB",
+        "os": "Amazon Linux 2"
+    },
     "m1pro": {
         "label": "M1 Pro 2021",
         "description": "Macbook Pro 2022 14\"",

@@ -8,8 +8,6 @@ import estBls12381ZkCryptoAwsC59xlarge from "../data/bls12-381/zkcrypto/aws_c5.9
 import estBls12381ZkCryptoAwsM52xlarge from "../data/bls12-381/zkcrypto/aws_m5.2xlarge.json";
 import estBls12377ArkAwsC59xlarge from "../data/bls12-377/arkworks/aws_c5.9xlarge.json";
 import estBls12377ArkAwsM52xlarge from "../data/bls12-377/arkworks/aws_m5.2xlarge.json";
-import estBls12377BlstAwsC59xlarge from "../data/bls12-377/blstrs/aws_c5.9xlarge.json";
-import estBls12377BlstAwsM52xlarge from "../data/bls12-377/blstrs/aws_m5.2xlarge.json";
 import estSecp256k1ArkAwsC59xlarge from "../data/secp256k1/arkworks/aws_c5.9xlarge.json";
 import estSecp256k1ArkAwsM52xlarge from "../data/secp256k1/arkworks/aws_m5.2xlarge.json";
 import estPallasArkAwsC59xlarge from "../data/pallas/arkworks/aws_c5.9xlarge.json";
@@ -27,6 +25,13 @@ import estPallasZcashAwsC59xlarge from "../data/pallas/zcash/aws_c5.9xlarge.json
 import estVestaZcashAwsM52xlarge from "../data/vesta/zcash/aws_m5.2xlarge.json";
 import estPallasZcashAwsM52xlarge from "../data/pallas/zcash/aws_m5.2xlarge.json";
 
+import estBls12381ArkAwsA12xlarge from "../data/bls12-381/arkworks/aws_a1.2xlarge.json";
+import estBls12381BlstAwsA12xlarge from "../data/bls12-381/blstrs/aws_a1.2xlarge.json";
+import estBls12381ZkCryptoAwsA12xlarge from "../data/bls12-381/zkcrypto/aws_a1.2xlarge.json";
+import estCurve25519DalekAwsA12xlarge from "../data/curve25519/curve25519-dalek/aws_a1.2xlarge.json";
+import estPallasZcashAwsA12xlarge from "../data/pallas/zcash/aws_a1.2xlarge.json";
+import estVestaZcashAwsA12xlarge from "../data/vesta/zcash/aws_a1.2xlarge.json";
+
 
 /// how many elements to keep for regression.
 const regressionSet = 4;
@@ -38,6 +43,7 @@ export const estimates = {
       "aws_m5.2xlarge": estCurve25519ArkAwsM52xlarge,
     },
     "curve25519_dalek": {
+      "aws_a1.2xlarge": estCurve25519DalekAwsA12xlarge,
       "aws_c5.9xlarge": estCurve25519DalekAwsC59xlarge,
       "aws_m5.2xlarge": estCurve25519DalekAwsM52xlarge,
       // "m1pro": estCurve25519DalekM1,
@@ -48,16 +54,19 @@ export const estimates = {
     "blstrs": {
       // "thinkpad_t450": estBls12381BlstT450,
       // "m1pro": estBls12381BlstM1,
+      "aws_a1.2xlarge": estBls12381BlstAwsA12xlarge,
       "aws_m5.2xlarge": estBls12381BlstAwsM52xlarge,
       "aws_c5.9xlarge": estBls12381BlstAwsC59xlarge,
     },
     "arkworks": {
       // "thinkpad_t450": estBls12381ArkT450,
       // "m1pro": estBls12381ArkM1,
+      "aws_a1.2xlarge": estBls12381ArkAwsA12xlarge,
       "aws_m5.2xlarge": estBls12381ArkAwsM52xlarge,
       "aws_c5.9xlarge": estBls12381ArkAwsC59xlarge,
     },
     "zkcrypto": {
+      "aws_a1.2xlarge": estBls12381ZkCryptoAwsA12xlarge,
       "aws_c5.9xlarge": estBls12381ZkCryptoAwsC59xlarge,
       "aws_m5.2xlarge": estBls12381ZkCryptoAwsM52xlarge,
     },
@@ -91,6 +100,7 @@ export const estimates = {
       "aws_m5.2xlarge": estPallasArkAwsM52xlarge,
     },
     "zcash": {
+      "aws_a1.2xlarge": estPallasZcashAwsA12xlarge,
       "aws_c5.9xlarge": estPallasZcashAwsC59xlarge,
       "aws_m5.2xlarge": estPallasZcashAwsM52xlarge,
     }
@@ -101,6 +111,7 @@ export const estimates = {
       "aws_m5.2xlarge": estVestaArkAwsM52xlarge,
     },
     "zcash": {
+      "aws_a1.2xlarge": estVestaZcashAwsA12xlarge,
       "aws_c5.9xlarge": estVestaZcashAwsC59xlarge,
       "aws_m5.2xlarge": estVestaZcashAwsM52xlarge,
     }

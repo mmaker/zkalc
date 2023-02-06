@@ -43,9 +43,16 @@ op_ids = [
 
 probes = {
     # zkalc naming convention
+
+    # arkworks probes
     r'.*/msm/(G[12t]|ff)/(\d+)': lambda x, y: (f"msm_{x}", int(y)),
     f'.*/({"|".join(op_ids)})': lambda x: (x, 1),
     r'.*/msm/(\d+)': lambda x: (f"msm_G1", int(x)),
+
+    # curve25519-dalek
+    f'({"|".join(op_ids)})': lambda x: (x, 1),
+    f'mul_ec': lambda: ("mul_G1", 1),
+    r'msm/(G[12t]|ff)/(\d+)': lambda x, y: (f"msm_{x}", int(y)),
 
     # compatibility with arkworks ark-bench naming
     f'Arithmetic for .*::(G[12])/({"|".join(ark_names.keys())})': lambda x, y: (f"{ark_names[y]}_{x}", 1),
