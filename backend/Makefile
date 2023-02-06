@@ -26,7 +26,7 @@ zkcrypto:
 	cd zkcrypto; cargo criterion --message-format=json 1> ../$(OUTDIR)/zkcrypto.json
 
 gnark:
-	git clone -b zkalc https://github.com/mmaker/gnark-crypto.git || true
+	git clone -b zkalc https://github.com/ConsenSys/gnark-crypto.git || true
 	cd gnark-crypto && \
 	bash ./zkalc.sh bls12-381 | tee ../$(OUTDIR)/gnark-bls12-381.txt; \
 	bash ./zkalc.sh bls12-377 | tee ../$(OUTDIR)/gnark-bls12-377.txt; \
