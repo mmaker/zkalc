@@ -32,7 +32,6 @@ import estCurve25519DalekAwsA12xlarge from "../data/curve25519/curve25519-dalek/
 import estPallasZcashAwsA12xlarge from "../data/pallas/zcash/aws_a1.2xlarge.json";
 import estVestaZcashAwsA12xlarge from "../data/vesta/zcash/aws_a1.2xlarge.json";
 
-
 /// how many elements to keep for regression.
 const regressionSet = 4;
 
@@ -114,6 +113,11 @@ export const estimates = {
       "aws_a1.2xlarge": estVestaZcashAwsA12xlarge,
       "aws_c5.9xlarge": estVestaZcashAwsC59xlarge,
       "aws_m5.2xlarge": estVestaZcashAwsM52xlarge,
+    }
+  },
+  "bn254": {
+    "gnark": {
+      "aws_c5.9xlarge": estBn254GnarkAwsC59xlarge,
     }
   },
   "bn254": {
