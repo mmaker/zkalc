@@ -62,7 +62,7 @@ probes = {
     r'E12Mul':                        lambda:  ("mul_Gt", 1),
 
     r'Pairing':                       lambda:  ("pairing", 1),
-    r'MultiPair/(\d+)_pairs-8':       lambda x: ("msm_Gt", int(x)),
+    r'MultiPair/(\d+)_pairs':         lambda x: ("msm_Gt", int(x)),
 }
 
 def export_measurement(measurement):
