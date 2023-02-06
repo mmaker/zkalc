@@ -23,5 +23,10 @@
         "label": "gnark",
         "version": "0.9.0 (branch: zkalc)",
         "url": "https://github.com/ConsenSys/gnark-crypto/"
+    },
+    "zcash": {
+        "label": "zcash",
+        "version": "0.5",
+        "url": "https://github.com/zcash/pasta_curves"
     }
 }

@@ -22,6 +22,10 @@ import estBls12381GnarkAwsC59xlarge from "../data/bls12-381/gnark/aws_c5.9xlarge
 import estBls12377GnarkAwsC59xlarge from "../data/bls12-377/gnark/aws_c5.9xlarge.json";
 import estSecp256k1GnarkAwsC59xlarge from "../data/secp256k1/gnark/aws_c5.9xlarge.json";
 import estBn254GnarkAwsC59xlarge from "../data/bn254/gnark/aws_c5.9xlarge.json";
+import estVestaZcashAwsC59xlarge from "../data/vesta/zcash/aws_c5.9xlarge.json";
+import estPallasZcashAwsC59xlarge from "../data/pallas/zcash/aws_c5.9xlarge.json";
+import estVestaZcashAwsM52xlarge from "../data/vesta/zcash/aws_m5.2xlarge.json";
+import estPallasZcashAwsM52xlarge from "../data/pallas/zcash/aws_m5.2xlarge.json";
 
 
 /// how many elements to keep for regression.
@@ -85,12 +89,20 @@ export const estimates = {
     "arkworks": {
       "aws_c5.9xlarge": estPallasArkAwsC59xlarge,
       "aws_m5.2xlarge": estPallasArkAwsM52xlarge,
+    },
+    "zcash": {
+      "aws_c5.9xlarge": estPallasZcashAwsC59xlarge,
+      "aws_m5.2xlarge": estPallasZcashAwsM52xlarge,
     }
   },
   "vesta": {
     "arkworks": {
       "aws_c5.9xlarge": estVestaArkAwsC59xlarge,
       "aws_m5.2xlarge": estVestaArkAwsM52xlarge,
+    },
+    "zcash": {
+      "aws_c5.9xlarge": estVestaZcashAwsC59xlarge,
+      "aws_m5.2xlarge": estVestaZcashAwsM52xlarge,
     }
   },
   "bn254": {
