@@ -3,7 +3,7 @@ use criterion::{
     BenchmarkId, Criterion,
 };
 use group::{ff::Field, Curve, Group};
-use halo2_proofs::arithmetic::best_multiexp;
+use halo2_proofs::arithmetic::{best_fft, best_multiexp};
 use pasta_curves::{arithmetic::CurveAffine, pallas, vesta};
 
 fn bench_add_ff<G: Group, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
@@ -81,6 +81,27 @@ fn bench_msm<C: CurveAffine, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     }
 }
 
+fn bench_fft<Scalar: Field, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
+    let mut rng = rand::thread_rng();
+
+    for logsize in 1..=21 {
+        let degree = 1 << logsize;
+
+        // Dynamically control sample size so that big FFTs don't bench eternally
+        if logsize > 20 {
+            c.sample_size(10);
+        }
+
+        c.bench_with_input(BenchmarkId::new("fft", degree), &degree, |b, &degree| {
+            let mut scalars = (0..degree)
+                .map(|_| Scalar::random(&mut rng))
+                .collect::<Vec<_>>();
+            let omega = Scalar::random(&mut rng);
+            b.iter(|| best_fft(&mut scalars, omega, logsize as u32))
+        });
+    }
+}
+
 fn bench_pallas(c: &mut Criterion) {
     let mut group = c.benchmark_group("pallas");
     bench_add_ff::<pallas::Point, _>(&mut group);
@@ -90,6 +111,7 @@ fn bench_pallas(c: &mut Criterion) {
     bench_dbl_ec::<pallas::Point, _>(&mut group);
     bench_mul_ec::<pallas::Point, _>(&mut group);
     bench_msm::<pallas::Affine, _>(&mut group);
+    bench_fft::<pallas::Scalar, _>(&mut group);
     group.finish();
 }
 
@@ -102,6 +124,7 @@ fn bench_vesta(c: &mut Criterion) {
     bench_dbl_ec::<vesta::Point, _>(&mut group);
     bench_mul_ec::<vesta::Point, _>(&mut group);
     bench_msm::<vesta::Affine, _>(&mut group);
+    bench_fft::<vesta::Scalar, _>(&mut group);
     group.finish();
 }
 
