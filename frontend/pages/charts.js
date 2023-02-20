@@ -4,7 +4,7 @@ import { Select, Row, Space, Typography, Dropdown } from "antd";
 import { SwapOutlined, DownOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { Layout } from "../components/layout";
-import { Plot } from "../components/plot";
+import { Plot, formatTimeTick } from "../components/plot";
 import { ResponsiveBar } from "@nivo/bar";
 
 import { estimates, estimator } from "../lib/estimates";
@@ -169,6 +169,15 @@ const Home = () => {
           base: 2,
           min: "auto",
           max: "auto",
+        }}
+        axisLeft={{
+          orient: "left",
+          format: formatTimeTick(4),
+          tickSize: 5,
+          tickRotation: 10,
+          // legend: 'time (ns)',
+          legendOffset: -40,
+          legendPosition: "middle",
         }}
       />
     );

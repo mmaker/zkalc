@@ -29,8 +29,8 @@ const geomspace = (start, stop, num) => {
   );
 };
 
-const formatTimeTick = (v) => {
-  return `${(v / 1e9).toFixed(2)} s`;
+export const formatTimeTick = (n) => {
+  return (v) => `${(v / 1e9).toFixed(n)} s`;
 };
 
 const formatSizeTick = (v) => {
@@ -321,10 +321,9 @@ export const Plot = ({ data, height, ...kwargs }) => {
         //     min: 16,
         //     max: 'auto',
         // }}
-        yFormat=" >-.2f"
         axisLeft={{
           orient: "left",
-          format: formatTimeTick,
+          format: formatTimeTick(2),
           tickSize: 5,
           tickRotation: 10,
           // legend: 'time (ns)',
