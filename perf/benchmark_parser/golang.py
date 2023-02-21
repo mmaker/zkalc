@@ -50,7 +50,7 @@ probes = {
     r'ElementMul':                    lambda:   ("mul_ff", 1),
     r'ElementInverse':                lambda:   ("invert", 1),
 
-    r'FFT/fft_2\*\*(\d+)bits':       lambda x: ("fft", 2**int(x)),
+    r'FFT/fft_2\*\*(\d+)bits-':    lambda x:  ("fft", 2**int(x)),
 
     r'G1JacAdd':                      lambda:   ("add_G1", 1),
     r'G1JacScalarMultiplication':     lambda:   ("mul_G1", 1),

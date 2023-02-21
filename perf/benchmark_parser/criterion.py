@@ -46,6 +46,8 @@ probes = {
 
     # arkworks probes
     r'.*/msm/(G[12t]|ff)/(\d+)': lambda x, y: (f"msm_{x}", int(y)),
+    r'.*/fft/(\d+)': lambda x: (f"fft", int(x)),
+
     f'.*/({"|".join(op_ids)})': lambda x: (x, 1),
     r'.*/msm/(\d+)': lambda x: (f"msm_G1", int(x)),
 
