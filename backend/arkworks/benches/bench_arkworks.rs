@@ -3,7 +3,9 @@ extern crate criterion;
 
 use ark_ec::pairing::Pairing;
 use ark_ec::{CurveGroup, ScalarMul};
-use ark_ff::Field;
+use ark_ff::{FftField, Field};
+use ark_poly::univariate::DensePolynomial;
+use ark_poly::{DenseUVPolynomial, EvaluationDomain, GeneralEvaluationDomain};
 use ark_std::test_rng;
 use ark_std::UniformRand;
 use criterion::measurement::Measurement;
@@ -88,6 +90,20 @@ fn bench_pairing<P: Pairing, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     });
 }
 
+fn bench_fft<F: FftField, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
+    let mut rng = rand::thread_rng();
+    for logsize in 1..=21 {
+        let degree = 1 << logsize;
+        let domain = GeneralEvaluationDomain::<F>::new(degree).unwrap();
+        c.bench_with_input(BenchmarkId::new("fft", degree), &logsize, |b, _| {
+            let a = DensePolynomial::<F>::rand(degree, &mut rng)
+                .coeffs()
+                .to_vec();
+            b.iter(|| domain.fft(&a))
+        });
+    }
+}
+
 fn bench_bls12_381(c: &mut Criterion) {
     use ark_bls12_381::{Bls12_381, Fr, G1Projective, G2Projective};
     type Gt = ark_ec::pairing::PairingOutput<Bls12_381>;
@@ -99,6 +115,7 @@ fn bench_bls12_381(c: &mut Criterion) {
     bench_multi_pairing::<Bls12_381, _>(&mut group);
     bench_pairing::<Bls12_381, _>(&mut group);
     bench_sum_of_products::<Fr, _>(&mut group);
+    bench_fft::<Fr, _>(&mut group);
     group.finish();
 }
 
@@ -113,6 +130,7 @@ fn bench_bls12_377(c: &mut Criterion) {
     bench_multi_pairing::<Bls12_377, _>(&mut group);
     bench_pairing::<Bls12_377, _>(&mut group);
     bench_sum_of_products::<Fr, _>(&mut group);
+    bench_fft::<Fr, _>(&mut group);
     group.finish();
 }
 
@@ -121,6 +139,7 @@ fn bench_curve25519(c: &mut Criterion) {
     let mut group = c.benchmark_group("curve25519");
     bench_msm::<G, _>(&mut group, "G1");
     bench_sum_of_products::<Fr, _>(&mut group);
+    bench_fft::<Fr, _>(&mut group);
     group.finish();
 }
 
@@ -129,6 +148,7 @@ fn bench_secp256k1(c: &mut Criterion) {
     let mut group = c.benchmark_group("secp256k1");
     bench_msm::<G, _>(&mut group, "G1");
     bench_sum_of_products::<Fr, _>(&mut group);
+    bench_fft::<Fr, _>(&mut group);
     group.finish();
 }
 
@@ -137,6 +157,7 @@ fn bench_pallas(c: &mut Criterion) {
     let mut group = c.benchmark_group("pallas");
     bench_msm::<G, _>(&mut group, "G1");
     bench_sum_of_products::<Fr, _>(&mut group);
+    bench_fft::<Fr, _>(&mut group);
     group.finish();
 }
 
@@ -145,6 +166,7 @@ fn bench_vesta(c: &mut Criterion) {
     let mut group = c.benchmark_group("vesta");
     bench_msm::<G, _>(&mut group, "G1");
     bench_sum_of_products::<Fr, _>(&mut group);
+    bench_fft::<Fr, _>(&mut group);
     group.finish();
 }
 
