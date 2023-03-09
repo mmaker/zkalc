@@ -81,10 +81,7 @@ consider modifying the benchmark parameters (e.g. increase/decrease the size of
 the MSMs) and get in touch with us!
 
 ### Testing new curves and libraries
-
-zkalc supports only a limited number of curves (BLS12-381) and libraries (arkworks, blstrs).
-We would love to support BLS12-377, curve25519 or whatever really.
-
+  
 To add benchmarks for a different elliptic curve, write benchmarks for the new
 curve in the `backend/` directory following the
 [already existing conventions](https://github.com/asn-d6/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs).
