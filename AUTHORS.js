@@ -7,7 +7,7 @@ export const authors = [
   {
     name: "George Kadianakis",
     username: "asn-d6",
-    website: "https://asn-d6.github.io",
+    website: "https://github.com/asn-d6",
   },
 ];
 
