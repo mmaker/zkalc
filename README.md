@@ -1,6 +1,7 @@
 # [zkalc](https://zka.lc) is a cryptographic calculator!
 
-[zkalc](https://zka.lc) helps you calculate how much time cryptographic operations take on a real computer
+[zkalc](https://zka.lc) helps you calculate how much time cryptographic operations take on a real computer. 
+If you use our software, consider [citing us](/CITATION.bib)!
 
 
 ## Why?
