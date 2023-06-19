@@ -1,26 +1,11 @@
 #!/usr/bin/env node
 
 // Measuring elliptic curve operations for ffjavascript
+// import ffjs
+import { buildBn128, buildBls12381, F1Field } from 'ffjavascript';
+import { json } from 'stream/consumers';
+import { Bench } from 'tinybench';
 
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
-const ffjs = require('ffjavascript');
-const buildBn128 = ffjs.buildBn128;
-const buildBls12381 = ffjs.buildBls12381;
-const BigBuffer = ffjs.BigBuffer;
-const F1Field = ffjs.F1Field;
-
-async function getCurve(curve_name, singleThread) {
-    if (curve_name == "bn128") {
-        curve = await buildBn128(singleThread);
-    } else if (curve_name == "bls12_381") {
-        curve = await buildBls12381(singleThread);
-    } else {
-        throw new Error(`Curve not supported: ${curve}`);
-    }
-    return curve;
-}
 
 // Note that if we try to move the measuring in another function by passing
 // field.add (or any other operation) then we get the following error:
@@ -71,54 +56,62 @@ async function benchmark(curve, G, operation, count) {
 }
 
 
+const operations = [
+    "scalar-multiplication",
+    "multi-scalar-multiplication",
+    "pairing",
+]
+
+const curves = [
+    buildBls12381(false),
+    buildBn128(false),
+]
+
+function benchmark_add (bench, G, name) {
+    const x = G.timesScalar(G.g, G.F.random());
+    const y =  G.timesScalar(G.g, G.F.random());
+    bench.add(name + '/add', () => {
+        G.add(x, y);
+    });
+}
+
+function benchmark_scalarmul(bench, G, name) {
+    const x = G.F.random();
+    const y =  G.timesScalar(G.g, G.F.random());
+    bench.add(name + '/mul', () => {
+        G.timesScalar(y, x);
+    });
+}
+
+function benchmark_pairing(bench, curve, name) {
+    const x = curve.Fr.random();
+    const y = curve.Fr.random();
+    const g1 = curve.G1.timesScalar(curve.G1.g, x);
+    const g2 = curve.G2.timesScalar(curve.G2.g, y);
+    bench.add(name + '/pairing', () => {
+        const pre1 = curve.prepareG1(g1);
+        const pre2 = curve.prepareG2(g2);
+        const r1 = curve.millerLoop(pre1, pre2);
+        const r2 = curve.finalExponentiation(r1);
+    });
+}
+
 async function run () {
-    const singleThread = true;
-    var result_string = "";
-    // Read Arguments
-    // The first two arguments are node and app.js
-    if (process.argv.length != 6) {
-        throw new Error(`Please provide all arguments: curve, g, operation, count`);
-    }
-    // Curve of which we should measure the native or scalar field operations
-    const curve_name = process.argv[2];
-    const curve = await getCurve(curve_name, singleThread);
-    // Group
-    // For pairing it does not matter if it is G1 or G2.
-    const group_name = process.argv[3];
-    var G;
-    if (group_name == "g1") {
-        G = curve.G1;
-    } else if (group_name == "g2") {
-        G = curve.G2;
-    } else {
-        throw new Error(`G should be: g1 or g2`);
-    }
-    // Operation to exute
-    var operation = process.argv[4];
-    if (!["scalar-multiplication", "multi-scalar-multiplication", "pairing"].includes(operation)) {
-        throw new Error(`Field should be: scalar-multiplication, multi-scalar-multiplication, or pairing"`);
-    }
-    // Counter of how many times to run the operation
-    const count = parseInt(process.argv[5], 10);
-    console.log("framework,category,curve,operation,input,ram,time,nbPhysicalCores,nbLogicalCores,count,cpu");
+    const bench = new Bench();
 
-    // Execute benchmark
-    elapsed = Math.floor(await benchmark(curve, G, operation, count));
-
-    // Detect peripheral info
-    const ram = process.memoryUsage().rss;
-    const machine = os.cpus()[0].model;
-
-    // Prepend g1 or g2
-    if (["scalar-multiplication", "multi-scalar-multiplication"].includes(operation)) {
-        if (group_name == "g1") {
-            operation = "g1-" + operation;
-        } else {
-            operation = "g2-" + operation;
+    for (const curve of curves) {
+        for (const operation of operations) {
+            const c = await curve;
+            await benchmark_add(bench, c.G1,  c.name + "/G1");
+            await benchmark_add(bench, c.G2,  c.name + "/G2");
+            await benchmark_scalarmul(bench, c.G1,  c.name + "/G1");
+            await benchmark_scalarmul(bench, c.G2,  c.name + "/G2");
+            await benchmark_pairing(bench, c, c.name + "/pairing")
         }
     }
-
-    console.log("snarkjs,ec," + curve_name + "," + operation + "," + "," + ram + "," + elapsed + ",1,1," + count + "," + machine);
+    await bench.run();
+    console.error(bench.table());
+    // process.stdout.write(bench.results.map(x => JSON.stringify(x)).join('\n'));
 }
 
 run().then(() => {
