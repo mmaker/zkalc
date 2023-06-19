@@ -97,8 +97,8 @@ async function run() {
   }
 
   await bench.run();
-//   console.table(bench.table());
-  process.stdout.write(bench.results.map(x => JSON.stringify(x)).join('\n'));
+  process.stdout.write(JSON.stringify(bench.table()));
+  return bench.results;
 }
 
 run().then(() => {
