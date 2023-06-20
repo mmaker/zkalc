@@ -62,6 +62,19 @@ function bench_group(bench, name, fn, range) {
   }
 }
 
+function bench_fft(F) {
+  return (_n) => {
+    const n = Math.pow(2, _n);
+    const x = new BigBuffer(n * F.n8);
+    for (let i = 0; i < n; i++) {
+      x.set(F.random(), i * F.n8);
+    }
+    return () => {
+      F.fft(x);
+    };
+  };
+}
+
 function bench_msm(G, Fr) {
   return async (_n) => {
     // size is log-scale
@@ -69,9 +82,8 @@ function bench_msm(G, Fr) {
     const scalars = new BigBuffer(n * Fr.n8);
     const bases = new BigBuffer(n * G.F.n8 * 2);
     for (let i = 0; i < n; i++) {
-      const num = Fr.e(i + 1);
-      scalars.set(Fr.fromMontgomery(num), i * Fr.n8);
-      bases.set(G.toAffine(G.timesFr(G.g, num)), i * G.F.n8 * 2);
+      scalars.set(Fr.random(), i * Fr.n8);
+      bases.set(G.toAffine(G.timesFr(G.g, Fr.random())), i * G.F.n8 * 2);
     }
     await G.multiExpAffine(bases, scalars, false, "");
   };
@@ -92,11 +104,13 @@ async function run() {
       .add(c.name + "/add_G1", bench_add_ec(c.G1, c.Fr))
       .add(c.name + "/add_G2", bench_add_ec(c.G2, c.Fr));
 
-    bench_group(bench, c.name + "/msm_G1", bench_msm(c.G1, c.Fr), [10, 11]);
-    bench_group(bench, c.name + "/msm_G2", bench_msm(c.G2, c.Fr), [10, 11]);
+    bench_group(bench, c.name + "/msm_G1", bench_msm(c.G1, c.Fr), [10, 21]);
+    bench_group(bench, c.name + "/msm_G2", bench_msm(c.G2, c.Fr), [10, 21]);
+    bench_group(bench, c.name + "/fft", bench_fft(c.Fr), [10, 21]);
   }
 
   await bench.run();
+  // console.table(bench.table());
   process.stdout.write(JSON.stringify(bench.table()));
   return bench.results;
 }
