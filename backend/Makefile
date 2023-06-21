@@ -1,6 +1,6 @@
 OUTDIR=../perf/data/new/
 
-all: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto gnark pairing_ce
+all: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto gnark pairing_ce halo2_curves
 
 init:
 	cargo install cargo-criterion
@@ -29,6 +29,9 @@ zkcrypto:
 pairing_ce:
 	cd pairing_ce; cargo criterion --message-format=json 1> ../$(OUTDIR)/pairing_ce.json
 
+halo2_curves:
+	cd halo2_curves; cargo criterion --message-format=json 1> ../$(OUTDIR)/halo2_curves.json
+
 gnark:
 	git clone -b zkalc https://github.com/ConsenSys/gnark-crypto.git || true
 	cd gnark-crypto && \
@@ -45,4 +48,4 @@ clean:
 	@rm -rf gnark-crypto
 	@rm -rf $(OUTDIR)
 
-.PHONY: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto pairing_ce arkworks_curves_benchmarks iden3 clean
+.PHONY: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto pairing_ce halo2_curves arkworks_curves_benchmarks iden3 clean
