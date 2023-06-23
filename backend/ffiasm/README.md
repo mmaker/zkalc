@@ -5,6 +5,8 @@
 Benchmarks for the [ffiasm](https://github.com/iden3/ffiasm) library 
 using [nanobench](https://github.com/martinus/nanobench).
 
+**NOTE**: This benchmark can only run in Intel64 machines.
+
 
 ## Instructions
 
