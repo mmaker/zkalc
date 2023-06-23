@@ -4,7 +4,7 @@ all: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto gnark pairing_c
 
 init:
 	cargo install cargo-criterion
-	cd iden3; npm i
+	cd ffjavascript; npm i
 	mkdir -p $(OUTDIR)
 
 blstrs:
@@ -37,12 +37,12 @@ gnark:
 	bash ./zkalc.sh bn254     | tee ../$(OUTDIR)/gnark-bn254.txt && \
 	bash ./zkalc.sh secp256k1 | tee ../$(OUTDIR)/gnark-secp256k1.txt
 
-iden3:
-	cd iden3; node curves.js > ../$(OUTDIR)/iden3-ffjavascript.json
+ffjavascript:
+	cd ffjavascript; node bench.js > ../$(OUTDIR)/ffjavascript.json
 
 clean:
 	@rm -rf curves
 	@rm -rf gnark-crypto
 	@rm -rf $(OUTDIR)
 
-.PHONY: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto pairing_ce arkworks_curves_benchmarks iden3 clean
+.PHONY: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto pairing_ce arkworks_curves_benchmarks ffjavascript clean
