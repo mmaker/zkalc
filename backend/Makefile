@@ -5,6 +5,7 @@ all: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto gnark pairing_c
 init:
 	cargo install cargo-criterion
 	cd iden3; npm i
+	cd ffiasm; npm i
 	mkdir -p $(OUTDIR)
 
 blstrs:
@@ -39,6 +40,9 @@ gnark:
 
 iden3:
 	cd iden3; node curves.js > ../$(OUTDIR)/iden3-ffjavascript.json
+
+ffiasm:
+	cd ffiasm; node scripts/bench.js > ../$(OUTDIR)/ffiasm.json
 
 clean:
 	@rm -rf curves
