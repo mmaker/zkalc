@@ -4,6 +4,7 @@
 #include <iostream>
 #include "alt_bn128.hpp"
 #include "fr.hpp"
+#include <string>
 
 __uint128_t g_lehmer64_state = 0xAAAAAAAAAAAAAAAALL;
 
@@ -18,6 +19,8 @@ uint64_t lehmer64() {
 int main(int argc, char **argv) {
     int msm_lower = 10;
     int msm_upper = 11;
+    std::string c_name = "bn254";
+
 
     Fr_init();
 
@@ -26,6 +29,13 @@ int main(int argc, char **argv) {
     add_a.type = Fr_LONGMONTGOMERY;
     for (int i=0; i<Fr_N64; i++) {
         add_a.longVal[i] = 0xAAAAAAAA;
+    }
+
+    // Prepare Fr_inv
+    FrElement inv_a;
+    inv_a.type = Fr_LONGMONTGOMERY;
+    for (int i=0; i<Fr_N64; i++) {
+       inv_a.longVal[i] = 0xAAAAAAAA;
     }
 
     // Prepare Fr_mul
@@ -38,11 +48,15 @@ int main(int argc, char **argv) {
 
     ankerl::nanobench::Bench bench = ankerl::nanobench::Bench().performanceCounters(true).minEpochIterations(10)
     .output(nullptr) // surpress the table output
-    .run("Fr_add", [&]() {
+    .run(c_name + "/add_ff", [&]() {
         FrElement result;
         Fr_add(&result, &add_a, &add_a);
     })
-    .run("Fr_mul", [&]() {
+    .run(c_name + "/invert", [&]() {
+        FrElement result;
+        Fr_inv(&result, &inv_a);
+    })
+    .run(c_name + "/mul_ff", [&]() {
         Fr_mul(&mul_a, &mul_a, &mul_a);
     });
 
@@ -70,7 +84,7 @@ int main(int argc, char **argv) {
             AltBn128::G1.resetCounters();
         #endif
 
-        bench.run("msm_g1::" + std::to_string(X), [&]() {
+        bench.run(c_name + "/msm_G1/" + std::to_string(X), [&]() {
             AltBn128::G1.multiMulByScalar(p1, bases, (uint8_t *)scalars, 32, X);
         });
     }
@@ -99,7 +113,7 @@ int main(int argc, char **argv) {
             AltBn128::G2.resetCounters();
         #endif
 
-        bench.run("msm_g2::" + std::to_string(X), [&]() {
+        bench.run(c_name + "/msm_G2/" + std::to_string(X), [&]() {
             AltBn128::G2.multiMulByScalar(p1, bases, (uint8_t *)scalars, 32, X);
         });
     }
