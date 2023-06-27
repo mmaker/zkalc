@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "dependencies": {
+    "ffjavascript": "^0.2.59",
+    "tinybench": "^2.5.0"
+  }
+}
