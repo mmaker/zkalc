@@ -19,7 +19,7 @@ uint64_t lehmer64() {
 int main(int argc, char **argv) {
     int msm_lower = 10;
     int msm_upper = 11;
-    std::string c_name = "bn254";
+    std::string c_name = "alt_bn128";
 
 
     Fr_init();

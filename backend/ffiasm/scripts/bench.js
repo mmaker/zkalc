@@ -45,7 +45,7 @@ async function generate_field(dir, prime, name) {
 async function benchmarkMM() {
     const dir = await tmp.dir({prefix: "ffiasm", unsafeCleanup: true });
 
-    // Those are hardcoded for bn254 rn
+    // Those are hardcoded for alt_bn128 rn
     await generate_field(dir, bigInt("21888242871839275222246405745257275088548364400416034343698204186575808495617"), "Fr");
     await generate_field(dir, bigInt("21888242871839275222246405745257275088696311157297823662689037894645226208583"), "Fq");
 
