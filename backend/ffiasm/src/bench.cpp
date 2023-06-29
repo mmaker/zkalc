@@ -62,19 +62,20 @@ int main(int argc, char **argv) {
 
     // MSM_G1
     for (int X=msm_lower; X<=msm_upper; X++) {
+        int xp = 1 << X;
         // Prepare MSM_G1
-        uint8_t *scalars = new uint8_t[X*32];
-        AltBn128::G1PointAffine *bases = new AltBn128::G1PointAffine[X];
+        uint8_t *scalars = new uint8_t[xp*32];
+        AltBn128::G1PointAffine *bases = new AltBn128::G1PointAffine[xp];
 
         // random scalars
-        for (int i=0; i<X*4; i++) {
+        for (int i=0; i<xp*4; i++) {
             *((uint64_t *)(scalars + i*8)) = lehmer64();
         }
 
         AltBn128::G1.copy(bases[0], AltBn128::G1.one());
         AltBn128::G1.copy(bases[1], AltBn128::G1.one());
 
-        for (int i=2; i<X; i++) {
+        for (int i=2; i<xp; i++) {
             AltBn128::G1.add(bases[i], bases[i-1], bases[i-2]);
         }
 
@@ -84,26 +85,27 @@ int main(int argc, char **argv) {
             AltBn128::G1.resetCounters();
         #endif
 
-        bench.run(c_name + "/msm_G1/" + std::to_string(X), [&]() {
-            AltBn128::G1.multiMulByScalar(p1, bases, (uint8_t *)scalars, 32, X);
+        bench.run(c_name + "/msm_G1/" + std::to_string(xp), [&]() {
+            AltBn128::G1.multiMulByScalar(p1, bases, (uint8_t *)scalars, 32, xp);
         });
     }
 
     // MSM_G2
     for (int X=msm_lower; X<=msm_upper; X++) {
+        int xp = 1 << X;
         // Prepare MSM_G2
-        uint8_t *scalars = new uint8_t[X*32];
-        AltBn128::G2PointAffine *bases = new AltBn128::G2PointAffine[X];
+        uint8_t *scalars = new uint8_t[xp*32];
+        AltBn128::G2PointAffine *bases = new AltBn128::G2PointAffine[xp];
 
         // random scalars
-        for (int i=0; i<X*4; i++) {
+        for (int i=0; i<xp*4; i++) {
             *((uint64_t *)(scalars + i*8)) = lehmer64();
         }
 
         AltBn128::G2.copy(bases[0], AltBn128::G2.one());
         AltBn128::G2.copy(bases[1], AltBn128::G2.one());
 
-        for (int i=2; i<X; i++) {
+        for (int i=2; i<xp; i++) {
             AltBn128::G2.add(bases[i], bases[i-1], bases[i-2]);
         }
 
@@ -113,8 +115,8 @@ int main(int argc, char **argv) {
             AltBn128::G2.resetCounters();
         #endif
 
-        bench.run(c_name + "/msm_G2/" + std::to_string(X), [&]() {
-            AltBn128::G2.multiMulByScalar(p1, bases, (uint8_t *)scalars, 32, X);
+        bench.run(c_name + "/msm_G2/" + std::to_string(xp), [&]() {
+            AltBn128::G2.multiMulByScalar(p1, bases, (uint8_t *)scalars, 32, xp);
         });
     }
     bench.render(ankerl::nanobench::templates::json(), std::cout);
