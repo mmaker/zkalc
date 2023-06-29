@@ -1,0 +1,8 @@
+{
+  "type": "module",
+  "dependencies": {
+    "big-integer": "^1.6.51",
+    "ffiasm": "^0.1.5",
+    "tmp-promise": "^3.0.3"
+  }
+}
