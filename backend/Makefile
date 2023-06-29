@@ -4,10 +4,8 @@ all: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto gnark pairing_c
 
 init:
 	cargo install cargo-criterion
-
 	cd ffjavascript; npm i
-  cd ffiasm; npm i
-  
+	cd ffiasm; npm i
 	mkdir -p $(OUTDIR)
 
 blstrs:
@@ -44,11 +42,11 @@ ffjavascript:
 	cd ffjavascript; node bench.js > ../$(OUTDIR)/ffjavascript.json
 
 ffiasm:
-	cd ffiasm; node scripts/bench.js > ../$(OUTDIR)/ffiasm.json
+	cd ffiasm; CXX=clang++ node scripts/bench.js > ../$(OUTDIR)/ffiasm.json
 
 clean:
 	@rm -rf curves
 	@rm -rf gnark-crypto
 	@rm -rf $(OUTDIR)
 
-.PHONY: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto pairing_ce arkworks_curves_benchmarks ffjavascript clean
+.PHONY: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto pairing_ce arkworks_curves_benchmarks ffjavascript ffiasm clean
