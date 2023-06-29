@@ -42,7 +42,7 @@ ffjavascript:
 	cd ffjavascript; node bench.js > ../$(OUTDIR)/ffjavascript.json
 
 ffiasm:
-	cd ffiasm; CXX=clang++ node scripts/bench.js > ../$(OUTDIR)/ffiasm.json
+	cd ffiasm; node scripts/bench.js > ../$(OUTDIR)/ffiasm.json
 
 clean:
 	@rm -rf curves
