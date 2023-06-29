@@ -103,7 +103,7 @@ async function benchmarkMM() {
         ` -I${path.join(__dirname, "..", "include")} ` +
         ` -c ${path.join(__dirname, "..", "src", "nanobench.cpp")}` +
         " -o " + nanobench_o +
-        " -O3"
+        " -O3 -DNDEBUG -march=native -mtune=native"
         );
 
     }
@@ -121,7 +121,7 @@ async function benchmarkMM() {
        " " + nanobench_o + 
        ` -o ${path.join(dir.path, "benchmark")}` +
        ` -I${path.join(__dirname, "..", "include")} ` +
-       " -lgmp -fopenmp -O3"
+       " -lgmp -fopenmp -O3 -DNDEBUG -march=native -mtune=native"
     );
 
     // ignore x and y for now
