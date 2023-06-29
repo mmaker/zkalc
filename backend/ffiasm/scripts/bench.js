@@ -16,6 +16,35 @@ const __dirname = path.dirname(currentModulePath);
 
 const exec = util.promisify(child_process.exec);
 
+function getDefaultCXXCompiler() {
+    try {
+        // Execute 'g++ --version' command and extract the compiler name
+        const output = execSync('g++ --version').toString();
+        const match = output.match(/(\w+)\s+\(.*\)/);
+
+        if (match) {
+            return match[1];
+        }
+    } catch (error) {
+        // Handle any errors that occur during the execution or if 'g++' is not found
+    }
+
+    // Return a default compiler if 'g++' was not found or encountered an error
+    return 'g++';
+}
+
+function getCXXCompiler() {
+    const cxx = process.env.CXX;
+    if (cxx) {
+        return cxx;
+    }
+
+    return getDefaultCXXCompiler();
+}
+
+// Example usage
+const compiler = getCXXCompiler();
+
 async function generate_field(dir, prime, name) {
     const source = await buildZqField(prime, name);
 
@@ -70,7 +99,7 @@ async function benchmarkMM() {
     const nanobench_o = path.join(__dirname, "..", "lib", "nanobench.o");
 
     if (!fs.existsSync(nanobench_o)) {
-        await exec("g++" +
+        await exec(compiler +
         ` -I${path.join(__dirname, "..", "include")} ` +
         ` -c ${path.join(__dirname, "..", "src", "nanobench.cpp")}` +
         " -o " + nanobench_o +
@@ -79,7 +108,7 @@ async function benchmarkMM() {
 
     }
 
-    await exec("g++" +
+    await exec(compiler +
        ` ${path.join(dir.path,  "bench.cpp")}` +
        ` ${path.join(dir.path,  "alt_bn128.cpp")}` +
        ` ${path.join(dir.path,  "splitparstr.cpp")}` +
