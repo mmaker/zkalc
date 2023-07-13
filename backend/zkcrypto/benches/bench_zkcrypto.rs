@@ -111,6 +111,9 @@ fn bench_jubjub(c: &mut Criterion) {
     bench_add_ec::<jubjub::ExtendedPoint, _>(&mut group);
     bench_dbl_ec::<jubjub::ExtendedPoint, _>(&mut group);
     bench_mul_ec::<jubjub::ExtendedPoint, _>(&mut group);
+    // XXX MSM not implemented until
+    // https://github.com/zkcrypto/group/issues/25
+    // is fixed.
     group.finish();
 }
 
