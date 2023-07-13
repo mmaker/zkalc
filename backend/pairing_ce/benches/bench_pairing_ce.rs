@@ -76,6 +76,9 @@ where
     });
 }
 
+// XXX. MSM not exposed publicly.
+// Waiting for https://github.com/matter-labs/bellman/issues/51 to be solved.
+//
 // // The MSM algorithm of bellman_ce can be found here: https://github.com/matter-labs/bellman/blob/dev/src/multiexp.rs#L60
 // // Currently, this uses a fork of bellman_ce, as multiexp as not exposed by bellman_ce
 // // Uses a Worker pool for multi threading
