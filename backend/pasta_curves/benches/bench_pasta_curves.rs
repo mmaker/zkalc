@@ -69,7 +69,7 @@ fn bench_msm<C: CurveAffine, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
             c.sample_size(10);
         }
 
-        c.bench_with_input(BenchmarkId::new("msm", size), &size, |b, &size| {
+        c.bench_with_input(BenchmarkId::new("msm/G1", size), &size, |b, &size| {
             let scalars = (0..size)
                 .map(|_| C::Scalar::random(&mut rng))
                 .collect::<Vec<_>>();
