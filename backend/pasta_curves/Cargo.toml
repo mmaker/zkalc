@@ -6,9 +6,6 @@ authors = [
     "Jack Grigg <thestr4d@gmail.com>",
 ]
 
-[lib]
-bench = false
-
 [[bench]]
 name = "bench_pasta_curves"
 harness = false
