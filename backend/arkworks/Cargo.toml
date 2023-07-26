@@ -18,6 +18,7 @@ ark-ff = {version = "0.4.0", features = ["std", "asm", "parallel"] }
 ark-poly = {version = "0.4.0", features = ["std", "parallel"] }
 ark-relations = "0.4.0"
 # curves support
+ark-bn254 = "0.4.0"
 ark-bls12-377 = "0.4.0"
 ark-bls12-381 = "0.4.0"
 ark-curve25519 = "0.4.0"
