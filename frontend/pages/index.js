@@ -178,6 +178,11 @@ const Home = () => {
 
   const groth16_estimate = (r1cs) => {
     let est = (op) => estimator("bls12_381", "arkworks", "aws_m5.2xlarge", op);
+    // for an implementation of Groth16, we have:
+    // - arkworks's which leads to function create_proof_with_assignment
+    //    https://github.com/arkworks-rs/groth16/blob/HEAD/src/prover.rs#L54
+    // - gnark's which leads to function create_proof_with_assignment
+    //    https://github.com/Consensys/gnark/blob/v0.8.1/internal/backend/bls12-381/groth16/prove.go#L116
     return (
         est('msm_G1')(r1cs["mult"]) +
         4 * est('fft_ff')(r1cs["add"]) +
