@@ -29,6 +29,14 @@ const estimate_gnark_plonk = {
 };
 
 const estimate_groth16 = {
+  verify: (est, r1cs) =>
+    // in arkworks, the verifier does not need to prepare inputs every time
+    // In gnark, this part is also computed
+    // function prepare_inputs
+    // est("msm_G1")(r1cs["instance_size"]) +
+    // function verify_proof_with_prepared_inputs
+    est("pairing")(3),
+
   prove: (est, r1cs) =>
     // for an implementation of Groth16, we have:
     // - arkworks's which leads to function create_proof_with_assignment
@@ -36,12 +44,13 @@ const estimate_groth16 = {
     // - gnark's which leads to function create_proof_with_assignment
     //    https://github.com/Consensys/gnark/blob/v0.8.1/internal/backend/bls12-381/groth16/prove.go#L116
     est("msm_G1")(r1cs["mult"]) +
-    4 * est("fft_ff")(r1cs["add"]) +
-    1 * est("mul_ff")(r1cs["add"]) +
+    1 * est("fft_ff")(r1cs["add"]) +
+    // negl. check how many there are
+    // 1 * est("mul_ff")(r1cs["add"]) +
     2 * est("msm_G1")(r1cs["instance_size"] + r1cs["witness_size"]) +
-    2 * est("msm_G2")(r1cs["instance_size"] + r1cs["witness_size"]) +
+    1 * est("msm_G2")(r1cs["instance_size"] + r1cs["witness_size"]) +
     4 * est("mul_G1")(4) +
-    2 * est("mul_G2")(4),
+    est("mul_G2")(4),
 };
 
 export const zkp_est = {

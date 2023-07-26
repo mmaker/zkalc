@@ -3,7 +3,6 @@ import argparse
 from . import criterion
 from . import golang
 
-
 def main():
     parser = argparse.ArgumentParser(prog="parser")
     parser.add_argument('benchmark_engine', choices=['criterion', 'golang'])
