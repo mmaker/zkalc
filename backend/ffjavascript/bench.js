@@ -47,12 +47,6 @@ function bench_pairing(curve) {
   const g2 = curve.G2.timesScalar(curve.G2.g, y);
   return () => {
     curve.pairing(g1, g2);
-    // Alternative way of performing the pairing operation
-    // the performance is pretty much the same
-    //const pre1 = curve.prepareG1(g1);
-    //const pre2 = curve.prepareG2(g2);
-    //const r1 = curve.millerLoop(pre1, pre2);
-    //const r2 = curve.finalExponentiation(r1);
   };
 }
 
