@@ -176,10 +176,24 @@ const Home = () => {
     }
   };
 
+  const groth16_estimate = (r1cs) => {
+    let est = (op) => estimator("bls12_381", "arkworks", "aws_m5.2xlarge", op);
+    return (
+        est('msm_G1')(r1cs["mult"]) +
+        4 * est('fft_ff')(r1cs["add"]) +
+        1 * est('mul_ff')(r1cs["add"]) +
+        2 * est('msm_G1')(r1cs["instance_size"] + r1cs["witness_size"]) +
+        2 * est('msm_G2')(r1cs["instance_size"] + r1cs["witness_size"]) +
+        4 * est('mul_G1')(4) + 2 * est('mul_G2')(4)
+    )
+  }
+
   const BackendSelection = () => {
     const lib = cfg.lib;
     const curve = cfg.curve;
     const machine = cfg.machine;
+
+    console.g = groth16_estimate;
 
     return (
       <>
