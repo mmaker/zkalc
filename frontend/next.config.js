@@ -20,8 +20,12 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     unoptimized: true,
-  }
+  },
+  // god only knows what the fuck this thing does
+  // https://github.com/plouc/nivo/issues/1941
+  transpilePackages: ["@nivo"], experimental: { esmExternals: "loose"}
 };
+
 
 // Merge MDX config with Next.js config
 module.exports = withMDX(nextConfig);
