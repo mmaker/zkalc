@@ -30,6 +30,25 @@ export const operations = {
       </>
     ),
   },
+  fft_ff: {
+    label: (
+      <>
+        FFT over <InlineMath math="\mathbb{F}_p" />
+      </>
+    ),
+    description: (
+      <>
+        FFT <InlineMath math="\mathbb{F}_p" />
+      </>
+    ),
+    tooltip_width: 500,
+    tooltip: (
+      <>
+        Compute
+        <InlineMath math="\operatorname{FFT}(\vec a)" />
+      </>
+    ),
+  },
   msm_G1: {
     label: (
       <>
