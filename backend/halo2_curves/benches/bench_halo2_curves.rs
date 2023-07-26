@@ -68,7 +68,7 @@ fn bench_msm(group: &mut BenchmarkGroup<'_, criterion::measurement::WallTime>) {
         let points = &points[..size];
         let mut r1 = bn256::G1::identity();
 
-        group.bench_with_input(BenchmarkId::new("G1", size), &size, |b, _| {
+        group.bench_with_input(BenchmarkId::new("msm/G1", size), &size, |b, _| {
             b.iter(|| {
                 bn256::msm::MSM::evaluate(scalars, points, &mut r1);
             });

@@ -104,6 +104,21 @@ fn bench_fft<F: FftField, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     }
 }
 
+fn bench_bn254(c: &mut Criterion) {
+    use ark_bn254::{Bn254, Fr, G1Projective as G1, G2Projective as G2};
+    type Gt = ark_ec::pairing::PairingOutput<Bn254>;
+
+    let mut group = c.benchmark_group("bn254");
+    bench_msm::<G1, _>(&mut group, "G1");
+    bench_msm::<G2, _>(&mut group, "G2");
+    bench_mul::<Gt, _>(&mut group, "Gt");
+    bench_multi_pairing::<Bn254, _>(&mut group);
+    bench_pairing::<Bn254, _>(&mut group);
+    bench_sum_of_products::<Fr, _>(&mut group);
+    bench_fft::<Fr, _>(&mut group);
+    group.finish();
+}
+
 fn bench_bls12_381(c: &mut Criterion) {
     use ark_bls12_381::{Bls12_381, Fr, G1Projective, G2Projective};
     type Gt = ark_ec::pairing::PairingOutput<Bls12_381>;
@@ -172,11 +187,6 @@ fn bench_vesta(c: &mut Criterion) {
 
 criterion_group!(
     benches,
-    bench_bls12_381,
-    bench_bls12_377,
-    bench_curve25519,
-    bench_secp256k1,
-    bench_pallas,
-    bench_vesta
+    bench_bn254
 );
 criterion_main!(benches);
