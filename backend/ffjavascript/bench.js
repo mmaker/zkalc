@@ -105,9 +105,9 @@ async function run() {
       .add(name + "/add_G1", bench_add_ec(c.G1, c.Fr))
       .add(name + "/add_G2", bench_add_ec(c.G2, c.Fr));
 
-    bench_msm(bench, name + "/msm_G1", c.G1, c.Fr, [1, 15]);
-    bench_msm(bench, name + "/msm_G2", c.G2, c.Fr, [1, 15]);
-    bench_fft(bench, name + "/fft", c.Fr, [1, 15]);
+    bench_msm(bench, name + "/msm_G1", c.G1, c.Fr, [1, 21]);
+    bench_msm(bench, name + "/msm_G2", c.G2, c.Fr, [1, 21]);
+    bench_fft(bench, name + "/fft", c.Fr, [1, 21]);
   }
 
   await bench.run();
