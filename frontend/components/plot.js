@@ -1,7 +1,6 @@
 import { ResponsiveLine } from "@nivo/line";
 import { InlineMath } from "react-katex";
 import { humanTime } from "../lib/time";
-import { area, curveMonotoneX } from "d3-shape";
 
 import { estimates, estimator } from "../lib/estimates";
 import { filterSamples, samplesToPlotData } from "../lib/samples";
@@ -51,6 +50,10 @@ const denser = (xs) => {
   // concat and sort
   return [...xs, ...ys].sort((a, b) => a - b);
 };
+
+const getEstimates = (curve, lib, machine) => {
+  return require('../data/' + estimates[curve][lib][machine]);
+}
 
 export const functionToPlotData = (range, f, id = "foo") => {
   const xs = range;
@@ -113,7 +116,7 @@ export const PlotPointsAndEstimates = ({ ...kwargs }) => {
   let curve = defaults.curve;
   let machine = defaults.machine;
   let op = "msm_G1";
-  let samples = estimates[curve][lib][machine][op];
+  let samples = getEstimates(curve, lib, machine)[op];
 
   let smaller_samples = filterSamples(
     samples,
@@ -160,7 +163,7 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
   let curve = defaults.curve;
   let machine = defaults.machine;
   let op = "msm_G1";
-  let samples = estimates[curve][lib][machine][op];
+  let samples = getEstimates(curve, lib, machine)[op];
   const start = 1 << 2;
   const end = 1 << 30;
 
@@ -250,7 +253,7 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
 };
 
 export const PlotPoints = ({ ...kwargs }) => {
-  let samples = estimates[defaults.curve][defaults.lib][defaults.machine]["msm_G1"];
+  let samples = getEstimates(defaults.curve, defaults.lib, defaults.machine)["msm_G1"];
   let smaller_samples = filterSamples(
     samples,
     ([i, x, y]) => x > 2 && x < 1 << 22

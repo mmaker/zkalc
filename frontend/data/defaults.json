@@ -3,4 +3,4 @@
     "machine": "aws_m5.2xlarge",
     "curve": "curve25519",
     "op": "msm_G1"
-  }
+}
