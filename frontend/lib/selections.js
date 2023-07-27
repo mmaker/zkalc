@@ -30,7 +30,7 @@ export const operations = {
       </>
     ),
   },
-  fft_ff: {
+  fft: {
     label: (
       <>
         FFT over <InlineMath math="\mathbb{F}_p" />
@@ -38,14 +38,14 @@ export const operations = {
     ),
     description: (
       <>
-        FFT <InlineMath math="\mathbb{F}_p" />
+        FFT over <InlineMath math="\mathbb{F}_p" />
       </>
     ),
-    tooltip_width: 500,
+    tooltip_width: 380,
     tooltip: (
       <>
-        Compute
-        <InlineMath math="\operatorname{FFT}(\vec a)" />
+        Compute the number-theoretic transform of a vector{" "}
+        <InlineMath math="\vec a" />
       </>
     ),
   },

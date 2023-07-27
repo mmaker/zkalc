@@ -25,6 +25,7 @@ op_ids = [
     "mul_ff",
     "add_ff",
     "msm_ff",
+    "fft",
     "invert",
 
     # G1
