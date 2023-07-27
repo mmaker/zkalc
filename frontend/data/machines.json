@@ -1,0 +1,20 @@
+{
+    "aws_m5.2xlarge": {
+        "cpu": "8-core Intel(R) Xeon(R) Platinum 8259CL CPU @ 2.50GHz",
+        "label": "AWS EC2 m5.2xlarge",
+        "os": "Amazon Linux 2",
+        "ram": "32GB"
+    },
+    "aws_m6g.8xlarge": {
+        "cpu": "32-core Neoverse-N1 AWS Graviton2",
+        "label": "AWS EC2 m6g.8xlarge",
+        "os": "Amazon Linux 2",
+        "ram": "128GB"
+    },
+    "aws_m6i.8xlarge": {
+        "cpu": "32-core Intel Xeon Scalable Ice Lake 8375C @ 3.50GHz",
+        "label": "AWS EC2 m6i.8xlarge",
+        "os": "Amazon Linux 2",
+        "ram": "128GB"
+    }
+}

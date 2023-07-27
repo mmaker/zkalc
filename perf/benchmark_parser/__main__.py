@@ -50,16 +50,16 @@ def main():
 
                 if benchmark_engine(benchmark_files, outs, curve):
                     print('Parsed ' + output_path, file=sys.stderr)
-                    estimates[curve][library][machine] = output_path
+                    estimates[curve][library][machine] = os.path.join(curve, library, machine + '.json')
     else:
         with open(os.path.join(dest_dir, 'estimates.json'), 'w+') as estimates_file:
             print(json.dumps(estimates, indent=4, sort_keys=True), file=estimates_file)
         with open(os.path.join(dest_dir, 'libraries.json'), 'w+') as libraries_file:
-            print(json.dumps(libraries, indent=4, sort_keys=True), file=estimates_file)
+            print(json.dumps(libraries, indent=4, sort_keys=True), file=libraries_file)
         with open(os.path.join(dest_dir, 'machines.json'), 'w+') as machines_file:
-            print(json.dumps(machines, indent=4, sort_keys=True), file=estimates_file)
+            print(json.dumps(machines, indent=4, sort_keys=True), file=machines_file)
         with open(os.path.join(dest_dir, 'curves.json'), 'w+') as curves_file:
-            print(json.dumps(curves, indent=4, sort_keys=True), file=estimates_file)
+            print(json.dumps(curves, indent=4, sort_keys=True), file=curves_file)
 
 
 

@@ -1,0 +1,26 @@
+{
+    "bls12_377": {
+        "key": "bls12_377",
+        "label": "BLS12-377"
+    },
+    "bls12_381": {
+        "key": "bls12_381",
+        "label": "BLS12-381"
+    },
+    "curve25519": {
+        "key": "curve25519",
+        "label": "curve25519"
+    },
+    "pallas": {
+        "key": "pallas",
+        "label": "pallas"
+    },
+    "secp256k1": {
+        "key": "secp256k1",
+        "label": "secp256k1"
+    },
+    "vesta": {
+        "key": "vesta",
+        "label": "vesta"
+    }
+}

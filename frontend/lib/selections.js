@@ -292,7 +292,7 @@ export const operations_selection = Object.keys(operations).map((operation) => {
 export const libraries_selection = Object.fromEntries(Object.keys(curves).map((curve) => [
   curve,
   Object.keys(libraries).map(lib => ({label: libraries[lib].label, key: lib,
-      disabled: libraries[lib].disabled || !(lib in estimates[curve]) || false}))
+      disabled: libraries[lib].disabled || !(curve in estimates) || !(lib in estimates[curve]) || false}))
 ]));
 
 export const machines_selection = Object.fromEntries(

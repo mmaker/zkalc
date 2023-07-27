@@ -1,0 +1,32 @@
+{
+    "arkworks": {
+        "benchmark_with": "criterion",
+        "label": "arkworks-rs",
+        "url": "https://arkworks.rs/",
+        "version": "0.4 (rustc: 1.68.0-nightly) "
+    },
+    "blstrs": {
+        "benchmark_with": "criterion",
+        "label": "blstrs",
+        "url": "https://github.com/filecoin-project/blstrs",
+        "version": "0.6.1 (rustc: 1.68.0-nightly)"
+    },
+    "curve25519-dalek": {
+        "benchmark_with": "criterion",
+        "label": "curve25519-dalek-ng",
+        "url": "dalek.rs",
+        "version": "4 (rustc: 1.68.0-nightly)"
+    },
+    "gnark_crypto": {
+        "benchmark_with": "golang",
+        "label": "gnark",
+        "url": "https://github.com/ConsenSys/gnark-crypto/",
+        "version": "0.9.0 (branch: zkalc)"
+    },
+    "zkcrypto": {
+        "benchmark_with": "criterion",
+        "label": "zcash",
+        "url": "https://github.com/zcash/pasta_curves",
+        "version": "0.5"
+    }
+}

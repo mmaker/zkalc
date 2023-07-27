@@ -95,10 +95,12 @@ def extract_measurements(benchmarks):
 
 
 def main(ins=[sys.stdin], outs=sys.stdout, curve=None):
-    benchmarks = chain(*(load_benchmarks(i)
-                       for i in ins if curve.lower() in i.name.lower()))
-    if not benchmarks:
+    filtered_files = [i for i in ins if curve.lower() in i.name.lower().replace('-', '_')]
+    if not filtered_files:
+        outs.write('{}')
         return False
+    # we expect only one file to match the curve
+    benchmarks = load_benchmarks(filtered_files[0])
     measurements = extract_measurements(benchmarks)
 
     # Re-format the measurements into a dictionary: {operation : {range: [sizes], results: [times]}
