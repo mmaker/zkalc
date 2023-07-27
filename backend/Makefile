@@ -35,8 +35,8 @@ halo2_curves:
 gnark:
 	git clone -b zkalc https://github.com/ConsenSys/gnark-crypto.git || true
 	cd gnark-crypto && \
-	bash ./zkalc.sh bls12-381 | tee ../$(OUTDIR)/gnark-bls12-381.txt && \
-	bash ./zkalc.sh bls12-377 | tee ../$(OUTDIR)/gnark-bls12-377.txt && \
+	bash ./zkalc.sh bls12-381 | tee ../$(OUTDIR)/gnark-bls12_381.txt && \
+	bash ./zkalc.sh bls12-377 | tee ../$(OUTDIR)/gnark-bls12_377.txt && \
 	bash ./zkalc.sh bn254     | tee ../$(OUTDIR)/gnark-bn254.txt && \
 	bash ./zkalc.sh secp256k1 | tee ../$(OUTDIR)/gnark-secp256k1.txt
 
