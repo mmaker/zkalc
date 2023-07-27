@@ -37,7 +37,7 @@ def load_benchmarks(f):
     benchmarks = []
 
     # For each line, attempt to read a benchmark
-    for line in f.readlines():
+    for line in f:
         bl = parse_benchline(line)
         if bl is not None:
             benchmarks.append(bl)

@@ -95,7 +95,7 @@ def extract_measurements(bench_output):
 
 
 def main(ins=sys.stdin, outs=sys.stdout):
-    bench_output = [json.loads(line) for line in sys.stdin if line.strip()]
+    bench_output = [json.loads(line) for line in ins if line.strip()]
     # Dictionary of results in format: { operation : measurements }
     results = {}
     # Extract measurements into a nested dictionary: { operation : {size : time_in_microseconds }}
