@@ -3,6 +3,8 @@ import re
 import sys
 import json
 import os.path
+from collections import defaultdict
+from itertools import chain
 
 
 from . import criterion
@@ -28,6 +30,7 @@ def main():
     curves = json.load(open(os.path.join(base_dir, 'curves.json')))
 
     dest_dir = os.path.join('..', 'frontend', 'data')
+    estimates = defaultdict(lambda: defaultdict(dict))
 
     for curve in curves:
         for library in libraries:
@@ -39,25 +42,25 @@ def main():
                     pass
 
                 current_folder = os.path.join(benchmark_path, machine, library, '')
-                benchmark_files = [current_folder + x for x in os.listdir(current_folder)]
-                for benchmark_file in benchmark_files:
-                    if not os.path.isfile(benchmark_file):
-                        continue
-                    print("found: ", benchmark_file, file=sys.stderr)
-                    benchmark_engine = parsers[libraries[library]['benchmark_with']]
+                output_path = os.path.join(dest_dir, curve, library, machine + '.json')
 
-                    ins = (x for x in open(benchmark_file) if curve.lower() in x.lower())
-                    outs = open(os.path.join(dest_dir, curve, library, machine + '.json'), 'w+')
+                benchmark_engine = parsers[libraries[library]['benchmark_with']]
+                benchmark_files = [open(current_folder + x) for x in os.listdir(current_folder)]
+                outs = open(output_path, 'w+')
 
-                    benchmark_engine(ins, outs)
+                if benchmark_engine(benchmark_files, outs, curve):
+                    print('Parsed ' + output_path, file=sys.stderr)
+                    estimates[curve][library][machine] = output_path
+    else:
+        with open(os.path.join(dest_dir, 'estimates.json'), 'w+') as estimates_file:
+            print(json.dumps(estimates, indent=4, sort_keys=True), file=estimates_file)
+        with open(os.path.join(dest_dir, 'libraries.json'), 'w+') as libraries_file:
+            print(json.dumps(libraries, indent=4, sort_keys=True), file=estimates_file)
+        with open(os.path.join(dest_dir, 'machines.json'), 'w+') as machines_file:
+            print(json.dumps(machines, indent=4, sort_keys=True), file=estimates_file)
+        with open(os.path.join(dest_dir, 'curves.json'), 'w+') as curves_file:
+            print(json.dumps(curves, indent=4, sort_keys=True), file=estimates_file)
 
-    # pattern = re.compile(args.filter)
-    # ins = (line for line in sys.stdin if pattern.match(line))
-
-    # if args.benchmark_engine == 'criterion':
-        # criterion.main(ins)
-    # else:
-        # golang.main(ins)
 
 
 if __name__ == '__main__':

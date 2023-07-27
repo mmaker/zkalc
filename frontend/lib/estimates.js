@@ -101,7 +101,7 @@ export const estimates = {
     "zcash": {
       "aws_a1.2xlarge": estPallasZcashAwsA12xlarge,
       "aws_c5.9xlarge": estPallasZcashAwsC59xlarge,
-      "aws_m5.2xlarge": estPallasZcashAwsM52xlarge,
+      "aws_m5.2xlarge": require("../data/pallas/zcash/aws_m5.2xlarge.json"),
     }
   },
   "vesta": {

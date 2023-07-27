@@ -94,8 +94,9 @@ def extract_measurements(bench_output):
     return measurements
 
 
-def main(ins=sys.stdin, outs=sys.stdout):
-    bench_output = [json.loads(line) for line in ins if line.strip()]
+def main(ins=[sys.stdin], outs=sys.stdout, curve=None):
+    bench_output = [json.loads(line) for i in ins for line in i if line.strip() and (curve is None or curve.lower() in line.lower())]
+    if not bench_output: return False
     # Dictionary of results in format: { operation : measurements }
     results = {}
     # Extract measurements into a nested dictionary: { operation : {size : time_in_microseconds }}
@@ -108,4 +109,5 @@ def main(ins=sys.stdin, outs=sys.stdout):
     json_data = json.dumps(results)
     # Write the JSON object to the file
     outs.write(json_data)
+    return True
 
