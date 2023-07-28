@@ -109,7 +109,7 @@ def main(ins=[sys.stdin], outs=sys.stdout, curve=None):
         measurements[operation]) for operation in measurements}
 
     # Encode the functions as a JSON object
-    json_data = json.dumps(results)
+    json_data = json.dumps(results, indent=2)
     # Write the JSON object to the file
     outs.write(json_data)
     return True
