@@ -2,7 +2,8 @@
     "bls12_377": {
         "arkworks": {
             "aws_m5.2xlarge": "bls12_377/arkworks/aws_m5.2xlarge.json",
-            "aws_m6g.8xlarge": "bls12_377/arkworks/aws_m6g.8xlarge.json"
+            "aws_m6g.8xlarge": "bls12_377/arkworks/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "bls12_377/arkworks/aws_m6i.8xlarge.json"
         },
         "gnark_crypto": {
             "aws_m5.2xlarge": "bls12_377/gnark_crypto/aws_m5.2xlarge.json",
@@ -13,7 +14,8 @@
     "bls12_381": {
         "arkworks": {
             "aws_m5.2xlarge": "bls12_381/arkworks/aws_m5.2xlarge.json",
-            "aws_m6g.8xlarge": "bls12_381/arkworks/aws_m6g.8xlarge.json"
+            "aws_m6g.8xlarge": "bls12_381/arkworks/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "bls12_381/arkworks/aws_m6i.8xlarge.json"
         },
         "blstrs": {
             "aws_m5.2xlarge": "bls12_381/blstrs/aws_m5.2xlarge.json",
@@ -34,7 +36,8 @@
     "curve25519": {
         "arkworks": {
             "aws_m5.2xlarge": "curve25519/arkworks/aws_m5.2xlarge.json",
-            "aws_m6g.8xlarge": "curve25519/arkworks/aws_m6g.8xlarge.json"
+            "aws_m6g.8xlarge": "curve25519/arkworks/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "curve25519/arkworks/aws_m6i.8xlarge.json"
         },
         "curve25519-dalek": {
             "aws_m5.2xlarge": "curve25519/curve25519-dalek/aws_m5.2xlarge.json",
