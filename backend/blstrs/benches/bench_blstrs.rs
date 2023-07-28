@@ -3,10 +3,10 @@
 use blstrs::{Bls12, G2Prepared, Gt};
 use blstrs::{G1Affine, G1Projective, G2Projective, Scalar};
 use criterion::*;
-use group::ff::Field;
 use group::{Curve, Group};
 use pairing_lib::{MillerLoopResult, MultiMillerLoop, PairingCurveAffine};
 use std::ops::Add;
+use ff::Field;
 
 fn bench_mul(c: &mut Criterion) {
     let mut rng = rand::thread_rng();

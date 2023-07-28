@@ -13,4 +13,4 @@ harness = false
 criterion = "0.3.5"
 rand = "0.8.5"
 rayon = {version = "1.5", optional = true}
-curve25519-dalek = { package = "curve25519-dalek-ng", version = "4", features = ["std", "simd_backend"] }
+curve25519-dalek = { package = "curve25519-dalek-ng", version = "4.1.1", features = ["std", "simd_backend"] }

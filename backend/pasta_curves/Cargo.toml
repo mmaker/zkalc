@@ -12,8 +12,8 @@ harness = false
 
 [dependencies]
 group = "0.13"
-halo2_proofs = { git = "https://github.com/zcash/halo2.git", rev = "94b454ca2f073bd6bfd39041a2b8f42afb726c7b" }
-pasta_curves = "0.5"
+halo2_proofs = { git = "https://github.com/zcash/halo2.git", rev = "263356784042d7d4c1c17d357c94c1acaeb75ab5" }
+pasta_curves = "0.5.1"
 rand = "0.8"
 
 [dev-dependencies]
