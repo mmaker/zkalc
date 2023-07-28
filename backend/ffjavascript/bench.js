@@ -17,6 +17,14 @@ function bench_add_ff(F) {
   };
 }
 
+function bench_mul_ff(F) {
+  const x = F.random();
+  const y = F.random();
+  return () => {
+    F.mul(x, y);
+  };
+}
+
 function bench_invert(F) {
   const x = F.random();
   return () => {
@@ -89,9 +97,13 @@ async function run() {
     if (name == "bls12381") {
         name = "bls12_381";
     }
+    if (name == "bn128") {
+        name = "bn254";
+    }
 
     bench
       .add(name + "/add_ff", bench_add_ff(c.Fr))
+      .add(name + "/mul_ff", bench_mul_ff(c.Fr))
       .add(name + "/invert", bench_invert(c.Fr))
       .add(name + "/mul_G1", bench_mul_ec(c.G1, c.Fr))
       .add(name + "/mul_G2", bench_mul_ec(c.G2, c.Fr))
