@@ -12,10 +12,10 @@ name = "bench_zkcrypto"
 harness = false
 
 [dependencies]
-group = "0.12"
-pairing = "0.22"
-bls12_381 = "0.7"
-jubjub = "0.9"
+group = "0.13"
+pairing = "0.23"
+bls12_381 = "0.8"
+jubjub = "0.10"
 rand = "0.8"
 
 [dev-dependencies]
