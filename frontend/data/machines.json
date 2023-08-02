@@ -5,6 +5,12 @@
         "os": "Amazon Linux 2",
         "ram": "32GB"
     },
+    "aws_m5.large": {
+        "cpu": "Intel(R) Xeon(R) Platinum 8175M CPU @ 2.50GHz",
+        "label": "AWS EC2 m5.large",
+        "os": "Amazon Linux 2",
+        "ram": "8GB"
+    },
     "aws_m6g.8xlarge": {
         "cpu": "32-core Neoverse-N1 AWS Graviton2",
         "label": "AWS EC2 m6g.8xlarge",

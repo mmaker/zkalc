@@ -14,6 +14,11 @@ def parse_benchmark_description(description, probes):
         print(f"❌ no probe found for '{description}'", file=sys.stderr)
         raise NotImplementedError
 
+def export_measurement(measurement):
+    """Export this measurement in json"""
+    # Get the sizes and times from the data
+    sizes, times = zip(*measurement.items())
+    return {"range": sizes, "results": times}
 
 def to_nanoseconds(num, unit_str):
     """Convert `num` in `unit_str` to nanoseconds"""

@@ -7,6 +7,7 @@
         },
         "gnark_crypto": {
             "aws_m5.2xlarge": "bls12_377/gnark_crypto/aws_m5.2xlarge.json",
+            "aws_m5.large": "bls12_377/gnark_crypto/aws_m5.large.json",
             "aws_m6g.8xlarge": "bls12_377/gnark_crypto/aws_m6g.8xlarge.json",
             "aws_m6i.8xlarge": "bls12_377/gnark_crypto/aws_m6i.8xlarge.json"
         }
@@ -19,18 +20,59 @@
         },
         "blstrs": {
             "aws_m5.2xlarge": "bls12_381/blstrs/aws_m5.2xlarge.json",
+            "aws_m5.large": "bls12_381/blstrs/aws_m5.large.json",
             "aws_m6g.8xlarge": "bls12_381/blstrs/aws_m6g.8xlarge.json",
             "aws_m6i.8xlarge": "bls12_381/blstrs/aws_m6i.8xlarge.json"
         },
+        "ffjavascript": {
+            "aws_m5.2xlarge": "bls12_381/ffjavascript/aws_m5.2xlarge.json",
+            "aws_m5.large": "bls12_381/ffjavascript/aws_m5.large.json",
+            "aws_m6g.8xlarge": "bls12_381/ffjavascript/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "bls12_381/ffjavascript/aws_m6i.8xlarge.json"
+        },
         "gnark_crypto": {
             "aws_m5.2xlarge": "bls12_381/gnark_crypto/aws_m5.2xlarge.json",
+            "aws_m5.large": "bls12_381/gnark_crypto/aws_m5.large.json",
             "aws_m6g.8xlarge": "bls12_381/gnark_crypto/aws_m6g.8xlarge.json",
             "aws_m6i.8xlarge": "bls12_381/gnark_crypto/aws_m6i.8xlarge.json"
         },
+        "pairing_ce": {
+            "aws_m5.2xlarge": "bls12_381/pairing_ce/aws_m5.2xlarge.json",
+            "aws_m5.large": "bls12_381/pairing_ce/aws_m5.large.json",
+            "aws_m6g.8xlarge": "bls12_381/pairing_ce/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "bls12_381/pairing_ce/aws_m6i.8xlarge.json"
+        },
         "zkcrypto": {
             "aws_m5.2xlarge": "bls12_381/zkcrypto/aws_m5.2xlarge.json",
+            "aws_m5.large": "bls12_381/zkcrypto/aws_m5.large.json",
             "aws_m6g.8xlarge": "bls12_381/zkcrypto/aws_m6g.8xlarge.json",
             "aws_m6i.8xlarge": "bls12_381/zkcrypto/aws_m6i.8xlarge.json"
+        }
+    },
+    "bn254": {
+        "arkworks": {
+            "aws_m5.large": "bn254/arkworks/aws_m5.large.json",
+            "aws_m6i.8xlarge": "bn254/arkworks/aws_m6i.8xlarge.json"
+        },
+        "ffjavascript": {
+            "aws_m5.2xlarge": "bn254/ffjavascript/aws_m5.2xlarge.json",
+            "aws_m6g.8xlarge": "bn254/ffjavascript/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "bn254/ffjavascript/aws_m6i.8xlarge.json"
+        },
+        "gnark_crypto": {
+            "aws_m5.2xlarge": "bn254/gnark_crypto/aws_m5.2xlarge.json",
+            "aws_m5.large": "bn254/gnark_crypto/aws_m5.large.json",
+            "aws_m6g.8xlarge": "bn254/gnark_crypto/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "bn254/gnark_crypto/aws_m6i.8xlarge.json"
+        },
+        "halo2_curves": {
+            "aws_m5.2xlarge": "bn254/halo2_curves/aws_m5.2xlarge.json",
+            "aws_m6g.8xlarge": "bn254/halo2_curves/aws_m6g.8xlarge.json"
+        },
+        "pairing_ce": {
+            "aws_m5.2xlarge": "bn254/pairing_ce/aws_m5.2xlarge.json",
+            "aws_m5.large": "bn254/pairing_ce/aws_m5.large.json",
+            "aws_m6i.8xlarge": "bn254/pairing_ce/aws_m6i.8xlarge.json"
         }
     },
     "curve25519": {
@@ -41,15 +83,41 @@
         },
         "curve25519-dalek": {
             "aws_m5.2xlarge": "curve25519/curve25519-dalek/aws_m5.2xlarge.json",
+            "aws_m5.large": "curve25519/curve25519-dalek/aws_m5.large.json",
             "aws_m6g.8xlarge": "curve25519/curve25519-dalek/aws_m6g.8xlarge.json",
             "aws_m6i.8xlarge": "curve25519/curve25519-dalek/aws_m6i.8xlarge.json"
+        }
+    },
+    "jubjub": {
+        "zkcrypto": {
+            "aws_m5.2xlarge": "jubjub/zkcrypto/aws_m5.2xlarge.json",
+            "aws_m5.large": "jubjub/zkcrypto/aws_m5.large.json",
+            "aws_m6g.8xlarge": "jubjub/zkcrypto/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "jubjub/zkcrypto/aws_m6i.8xlarge.json"
+        }
+    },
+    "pallas": {
+        "pasta_curves": {
+            "aws_m5.2xlarge": "pallas/pasta_curves/aws_m5.2xlarge.json",
+            "aws_m5.large": "pallas/pasta_curves/aws_m5.large.json",
+            "aws_m6g.8xlarge": "pallas/pasta_curves/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "pallas/pasta_curves/aws_m6i.8xlarge.json"
         }
     },
     "secp256k1": {
         "gnark_crypto": {
             "aws_m5.2xlarge": "secp256k1/gnark_crypto/aws_m5.2xlarge.json",
+            "aws_m5.large": "secp256k1/gnark_crypto/aws_m5.large.json",
             "aws_m6g.8xlarge": "secp256k1/gnark_crypto/aws_m6g.8xlarge.json",
             "aws_m6i.8xlarge": "secp256k1/gnark_crypto/aws_m6i.8xlarge.json"
+        }
+    },
+    "vesta": {
+        "pasta_curves": {
+            "aws_m5.2xlarge": "vesta/pasta_curves/aws_m5.2xlarge.json",
+            "aws_m5.large": "vesta/pasta_curves/aws_m5.large.json",
+            "aws_m6g.8xlarge": "vesta/pasta_curves/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "vesta/pasta_curves/aws_m6i.8xlarge.json"
         }
     }
 }

@@ -7,9 +7,17 @@
         "key": "bls12_381",
         "label": "BLS12-381"
     },
+    "bn254": {
+        "key": "bn254",
+        "label": "BN254"
+    },
     "curve25519": {
         "key": "curve25519",
         "label": "curve25519"
+    },
+    "jubjub": {
+        "key": "jubjub",
+        "label": "jubjub"
     },
     "pallas": {
         "key": "pallas",

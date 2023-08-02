@@ -42,8 +42,8 @@ import {
   curves_selection,
 } from "../lib/selections";
 import {
-  zkp_est,
-} from "../lib/zkp";
+  cookbook,
+} from "../lib/cookbook";
 // import renderMathInElement from "katex/contrib/auto-render";
 
 import curves from "../data/curves.json";
@@ -186,7 +186,7 @@ const Home = () => {
 
     /// XX. For debugging purposes
     console.est = (op) => estimator("bls12_381", "arkworks", "aws_m5.2xlarge", op);
-    console.zkp_estimator = zkp_est;
+    console.zkp_estimator = cookbook;
 
     return (
       <>

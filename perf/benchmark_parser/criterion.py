@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
-"""
-Usage:
-    cat sources*.json | grep -i curve_name | ./fit.py > results.json
-"""
+
 import sys
 import json
 from collections import defaultdict
 
-from .common import to_nanoseconds, parse_benchmark_description
+from .common import to_nanoseconds, parse_benchmark_description, export_measurement
 
 ark_names = {
     'Double': 'double',
@@ -46,7 +43,7 @@ probes = {
     # zkalc naming convention
 
     # arkworks probes
-    r'.*/msm/(G[12t]|ff)/(\d+)': lambda x, y: (f"msm_{x}", int(y)),
+    r'.*/msm_(G[12t]|ff)/(\d+)': lambda x, y: (f"msm_{x}", int(y)),
     r'.*/fft/(\d+)': lambda x: (f"fft", int(x)),
 
     f'.*/({"|".join(op_ids)})': lambda x: (x, 1),
@@ -59,18 +56,12 @@ probes = {
 
     # compatibility with arkworks ark-bench naming
     f'Arithmetic for .*::(G[12])/({"|".join(ark_names.keys())})': lambda x, y: (f"{ark_names[y]}_{x}", 1),
-    ## ::G should be ::G1
+    # ::G should be ::G1
     f'Arithmetic for .*::G/({"|".join(ark_names.keys())})': lambda x: (f"{ark_names[x]}_G1", 1),
     r'Arithmetic for .*::Fr/Sum of products of size (\d)': lambda x: (f"ip_ff", int(x)),
 
     f'Arithmetic for .*::Fr/({"|".join(ark_names.keys())})': lambda y: (f"{ark_names[y]}_ff", 1),
 }
-
-def export_measurement(measurement):
-    """Export this measurement in json"""
-    # Get the sizes and times from the data
-    sizes, times = zip(*measurement.items())
-    return {"range": sizes, "results": times}
 
 
 def extract_measurements(bench_output):
@@ -84,7 +75,8 @@ def extract_measurements(bench_output):
 
         # Extra data from json
         try:
-            operation, size = parse_benchmark_description(measurement["id"], probes)
+            operation, size = parse_benchmark_description(
+                measurement["id"], probes)
         except NotImplementedError:
             continue
 
@@ -96,9 +88,11 @@ def extract_measurements(bench_output):
 
 
 def main(ins=[sys.stdin], outs=sys.stdout, curve=None):
-    bench_output = [json.loads(line) for i in ins for line in i if line.strip() and (curve is None or curve.lower() in line.lower())]
+    bench_output = [json.loads(line) for i in ins for line in i if line.strip() and (
+        curve is None or curve.lower() in line.lower())]
     if not bench_output:
-        outs.write("{}")
+        if curve == 'bls12_377': print("Porco dio", ins, file=sys.stderr)
+        # outs.write("{}")
         return False
     # Dictionary of results in format: { operation : measurements }
     results = {}
@@ -113,4 +107,3 @@ def main(ins=[sys.stdin], outs=sys.stdout, curve=None):
     # Write the JSON object to the file
     outs.write(json_data)
     return True
-

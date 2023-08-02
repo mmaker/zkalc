@@ -1,6 +1,6 @@
 {
     "lib": "arkworks",
     "machine": "aws_m5.2xlarge",
-    "curve": "curve25519",
+    "curve": "bls12_381",
     "op": "msm_G1"
 }

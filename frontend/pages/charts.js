@@ -7,7 +7,7 @@ import { Layout } from "../components/layout";
 import { Plot, formatTimeTick } from "../components/plot";
 import { ResponsiveBar } from "@nivo/bar";
 
-import { estimates, estimator } from "../lib/estimates";
+import { getEstimates } from "../lib/estimates";
 import libraries from "../data/libraries.json";
 import curves from "../data/curves.json";
 import defaults from "../data/defaults.json";
@@ -97,42 +97,42 @@ const Home = () => {
 
   const SelectGraph = () => {
     return (
-    <Row align="center">
-      <Space align="baseline">
-    <SwapOutlined onClick={() => setFixLib(!fixLib)} />
-    <Text>
-      Showing results for:
-      {/* {fixLib ? `On backend ${lib}, showing results for` : `Showing results for ${curve}`} */}
-    </Text>
-    <Dropdown
-          menu={{
-            items: getParameterSelection(),
-            onClick: ({ key }) => handleParamChange(key),
-          }}
-        >
-          <a onClick={(e) => e.preventDefault()}>
-            <Space>
-              {fixLib? libraries[lib].label : curves[curve].label}{" "}
-              <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
-              &nbsp;
-            </Space>
-          </a>
-        </Dropdown>
-    <Select
-      style={{width: 200}}
-      defaultValue={op}
-      options={operations_selection}
-      onChange={setOp}
-    />
-    </Space>
-    </Row>);
+      <Row align="center">
+        <Space align="baseline">
+          <SwapOutlined onClick={() => setFixLib(!fixLib)} />
+          <Text>
+            Showing results for:
+            {/* {fixLib ? `On backend ${lib}, showing results for` : `Showing results for ${curve}`} */}
+          </Text>
+          <Dropdown
+            menu={{
+              items: getParameterSelection(),
+              onClick: ({ key }) => handleParamChange(key),
+            }}
+          >
+            <a onClick={(e) => e.preventDefault()}>
+              <Space>
+                {fixLib ? libraries[lib].label : curves[curve].label}{" "}
+                <DownOutlined style={{ fontSize: "10px", margin: "-10px" }} />
+                &nbsp;
+              </Space>
+            </a>
+          </Dropdown>
+          <Select
+            style={{ width: 200 }}
+            defaultValue={op}
+            options={operations_selection}
+            onChange={setOp}
+          />
+        </Space>
+      </Row>
+    );
   };
 
-
   const ZkalcGraph = () => {
-    let samples = estimates[defaultCurve][defaultLib][defaultMachine][op];
+    let samples = getEstimates(defaultCurve, defaultLib, defaultMachine)[op];
     if (typeof samples === "undefined") {
-      return <Row align={"center"}>Unavailable</Row>
+      return <Row align={"center"}>Unavailable</Row>;
     }
     if (samples.range.length > 1) {
       return <ZkalcPlot />;
@@ -144,21 +144,18 @@ const Home = () => {
   const baseData = (f) => {
     if (fixLib) {
       return Object.keys(curves)
-        .filter((x, i) => {
-          return lib in estimates[x];
-        })
-        .map((x, i) => f(estimates[x][lib][machine][op], x))
-        .filter(x => x !== null);
+        .map((x) => { try { return f(getEstimates(x, lib, machine)[op], x) } catch { return null }})
+        .filter((x) => x !== null);
     } else {
       return Object.keys(libraries)
-        .filter((x) => x in estimates[curve])
-        .map((x, i) => f(estimates[curve][x][machine][op], x))
-        .filter(x => x !== null);
+        .map((x) => { try { return f(getEstimates(curve, x, machine)[op], x) } catch { return null }})
+        .filter((x) => x !== null);
     }
   };
 
   const ZkalcPlot = () => {
     let data = baseData(samplesToPlotData);
+
     return (
       <Plot
         data={data}

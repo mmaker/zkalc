@@ -97,7 +97,7 @@ def extract_measurements(benchmarks):
 def main(ins=[sys.stdin], outs=sys.stdout, curve=None):
     filtered_files = [i for i in ins if curve.lower() in i.name.lower().replace('-', '_')]
     if not filtered_files:
-        outs.write('{}')
+        # outs.write('{}')
         return False
     # we expect only one file to match the curve
     benchmarks = load_benchmarks(filtered_files[0])

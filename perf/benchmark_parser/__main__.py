@@ -9,11 +9,13 @@ from itertools import chain
 
 from . import criterion
 from . import golang
+from . import tinybench
 
 
 parsers = {
     'criterion': criterion.main,
     'golang': golang.main,
+    'tinybench': tinybench.main,
 }
 
 def main():
@@ -45,12 +47,16 @@ def main():
                 output_path = os.path.join(dest_dir, curve, library, machine + '.json')
 
                 benchmark_engine = parsers[libraries[library]['benchmark_with']]
+                print("ℹ Parsing " + current_folder, file=sys.stderr)
                 benchmark_files = [open(current_folder + x) for x in os.listdir(current_folder)]
                 outs = open(output_path, 'w+')
 
                 if benchmark_engine(benchmark_files, outs, curve):
                     print('Parsed ' + output_path, file=sys.stderr)
                     estimates[curve][library][machine] = os.path.join(curve, library, machine + '.json')
+                # else:
+                    # print(f"❗️ no output found: {benchmark_files} and curve {curve}", file=sys.stderr)
+
     else:
         with open(os.path.join(dest_dir, 'estimates.json'), 'w+') as estimates_file:
             print(json.dumps(estimates, indent=4, sort_keys=True), file=estimates_file)
