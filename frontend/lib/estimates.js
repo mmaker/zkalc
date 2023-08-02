@@ -47,11 +47,7 @@ const nLognEstimation = (samples) => {
         n < range[0]
           ? range.slice(0, regressionSet)
           : range.slice(-regressionSet);
-      let ys =
-        n < range[0]
-          ? results.slice(0, regressionSet)
-          : results.slice(-regressionSet);
-      ys = ys.map((x) => x * Math.log2(n));
+      const ys = xs.map((x) => x * Math.log2(n));
       const extrapolate = linearRegression(xs, ys);
       return extrapolate(n) / Math.log2(n);
     } else if (n < range[0]) { // extrapolate to the left (use the first lagrange poly)
@@ -112,6 +108,7 @@ const estimating_functions = {
   msm_G1: nLognEstimation,
   msm_G2: nLognEstimation,
   msm_Gt: linearEstimation,
+  fft: nLognEstimation,
 };
 
 export const estimator = (curve, lib, machine, op) => {
