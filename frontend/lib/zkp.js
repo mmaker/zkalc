@@ -1,15 +1,44 @@
 const estimate_kzg = {
-  setup: (est, n) => {
-    est["mul_G1"](n);
-  },
-  commit: (est, n) => {
-    est["msm_G1"](n);
-  },
-  open: (est, n) => {
-    est["msm_G1"](n - 1);
-  },
+  setup: (est, n) => est("mul_G1")(n),
+  commit: (est, n) => est("msm_G1")(n),
+  open: (est, n) => est("mul_ff")(n) + est("add_ff")(n) + est("msm_G1")(n - 1),
+  verify: (est, n) => est("add_G1")(1) + est("mul_G1")(1) + est("pairing")(2),
+};
+
+const estimate_bulletproof = {
   verify: (est, n) => {
-    est["pairing"](2);
+    const n = Math.ceil(Math.log2(n));
+    return (
+      // fold the generators
+      est("mul_G1")(2 * n) +
+      est("add_G1")(n) +
+      // fold the statement
+      est("mul_G1")(n) +
+      est("add_G1")(n) +
+      // comparison in the last round
+      est("add_G1")(4) +
+      est("mul_G1")(3)
+    );
+  },
+  prove: (est, n) => {
+    const n = Math.ceil(Math.log2(n));
+    return (
+      // fold the witness vectors
+      est("mul_ff")(n / 2) +
+      est("add_ff")(n / 2) +
+      // commit to the folded witness (the cross terms + new IP
+      est("mul_G1")(n / 2) +
+      est("msm_G1")(n) +
+      // challenge computation
+      est("invert")(n / 2) +
+      // fold the generators
+      est("mul_G1")(n) +
+      est("add_G1")(n) +
+      est("mul_G1")(2 * n) +
+      est("add_G1")(2 * n) +
+      // squares
+      est("mul_ff")(1)
+    );
   },
 };
 
@@ -56,5 +85,6 @@ const estimate_groth16 = {
 export const zkp_est = {
   kzg: estimate_kzg,
   groth16: estimate_groth16,
+  bulletproof: estimate_bulletproof,
   gnark_plonk: estimate_gnark_plonk,
 };

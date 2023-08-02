@@ -30,7 +30,7 @@ fn bench_msm<G: CurveGroup, M: Measurement>(c: &mut BenchmarkGroup<'_, M>, group
             .map(|_| G::rand(rng).into_affine())
             .collect::<Vec<_>>();
         c.bench_with_input(
-            BenchmarkId::new(format!("msm/{}", group_name), size),
+            BenchmarkId::new(format!("msm_{}", group_name), size),
             &logsize,
             |b, _| b.iter(|| G::msm(&gs, &scalars)),
         );
@@ -47,7 +47,7 @@ fn bench_multi_pairing<P: Pairing, M: Measurement>(c: &mut BenchmarkGroup<'_, M>
         let g2s = (0..size)
             .map(|_| P::G2::rand(rng).into_affine())
             .collect::<Vec<_>>();
-        c.bench_with_input(BenchmarkId::new("msm/Gt", size), &logsize, |b, _| {
+        c.bench_with_input(BenchmarkId::new("msm_Gt", size), &logsize, |b, _| {
             b.iter(|| P::multi_pairing(&g1s, &g2s))
         });
     }
@@ -55,7 +55,7 @@ fn bench_multi_pairing<P: Pairing, M: Measurement>(c: &mut BenchmarkGroup<'_, M>
 
 fn bench_sum_of_products<F: Field, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let rng = &mut test_rng();
-    c.bench_function("msm/ff", |b| {
+    c.bench_function("msm_ff", |b| {
         const SIZE: usize = 256;
         let lhs: [F; SIZE] = (0..SIZE)
             .map(|_| F::rand(rng))
