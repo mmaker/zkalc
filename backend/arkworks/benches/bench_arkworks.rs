@@ -187,6 +187,12 @@ fn bench_vesta(c: &mut Criterion) {
 
 criterion_group!(
     benches,
+    bench_vesta,
+    bench_pallas,
+    bench_secp256k1,
+    bench_curve25519,
+    bench_bls12_377,
+    bench_bls12_381,
     bench_bn254
 );
 criterion_main!(benches);
