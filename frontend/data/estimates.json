@@ -51,6 +51,7 @@
     },
     "bn254": {
         "arkworks": {
+            "aws_m5.2xlarge": "bn254/arkworks/aws_m5.2xlarge.json",
             "aws_m5.large": "bn254/arkworks/aws_m5.large.json",
             "aws_m6i.8xlarge": "bn254/arkworks/aws_m6i.8xlarge.json"
         },
