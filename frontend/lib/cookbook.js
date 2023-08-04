@@ -43,6 +43,22 @@ const estimate_bulletproof = {
 };
 
 const estimate_gnark_plonk = {
+  verify: (est, r1cs) =>
+    // implemented in:
+    // https://github.com/Consensys/gnark/blob/master/internal/backend/bls12-381/plonk/verify.go
+    //
+    // field division on the instance size
+    // https://github.com/Consensys/gnark/blob/master/internal/backend/bls12-381/plonk/verify.go#L106
+    est("invert")(r1cs["instance_size"]) +
+    // folded commit
+    // https://github.com/Consensys/gnark/blob/master/internal/backend/bls12-381/plonk/verify.go#L149
+    est("mul_G2")(2) + est("add_G2")(2) +
+    // folding of the proof for batching
+    // https://github.com/Consensys/gnark/blob/master/internal/backend/bls12-381/plonk/verify.go#L203
+    est("msm")(7) +
+    /// kzg verification
+    est("pairing")(2),
+
   prove: (est, r1cs) =>
     est("msm_G1")(r1cs["mul"]) +
     est("fft_ff")(r1cs["add"]) +
