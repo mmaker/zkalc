@@ -6,9 +6,10 @@ import { cookbook } from './cookbook';
 test('error', () => {
     let results = require('./../result.json');
     results
-        .filter((sample) => sample.framework === "gnark" && (sample.operation === "prove" || sample.operation === "verify"))
+        .filter((sample) => sample.framework === "gnark" && (sample.operation === "prove"))
         .map((sample) => {
         const curve = sample.curve;
+            const input = sample.input;
         const operation = sample.operation;
         const circuit = {
             'constraints': sample.nbConstraints,
@@ -17,9 +18,9 @@ test('error', () => {
         };
         const expected = sample['time(ms)'] * 1000000;
         let e = (op) => estimator(curve, "gnark_crypto", "aws_m5.2xlarge", op);
-        const got = cookbook.groth16[operation](e, circuit);
+        const got = cookbook.gnark_plonk[operation](e, circuit);
         const relative_error = Math.abs(expected - got) / expected * 100;
-        console.log(`${curve} ${sample.circuit} ${operation} ${relative_error.toFixed(2)}%: ${expected} vs ${got}`);
+        console.log(`${curve} ${sample.circuit} ${operation} ${relative_error.toFixed(2)}%: ${expected} vs ${got} (${input})`);
     } )
     expect(1+2).toBe(3)
   })

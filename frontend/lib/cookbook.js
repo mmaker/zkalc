@@ -60,17 +60,18 @@ const estimate_gnark_plonk = {
     est("pairing")(2),
 
   prove: (est, r1cs) =>
-    est("msm_G1")(r1cs["constraints"]) +
-    est("fft_ff")(r1cs["instance_size"] + r1cs["witness_size"]) +
-    // skipping batch inversion for now
-    // commitment to z
-    3 * est("msm_G1")(r1cs["instance_size"] + r1cs["witness_size"]) +
-    // commitment to (h): za zb zc
-    3 * est("msm_G1")(r1cs["instance_size"] + r1cs["witness_size"]) +
-    // commitment to the linearized polynomial
-    est("msm_G1")(r1cs["constraints"]) +
-    // batch opening (skipping field operations for now)
-    est("msm_G1")(Math.max(r1cs["constraints"], (r1cs["instance_size"] + r1cs["witness_size"]))),
+    // 3 MSMs in commitToLRO()
+    3 * est("msm_G1")(r1cs["constraints"]) +
+    // 1 msm commit to z
+    1 * est("msm_G1")(r1cs["constraints"]) +
+    // 3 MSMs in commitToQuotient(): h1, h2, h3
+    3 * est("msm_G1")(r1cs["constraints"]) +
+    // 1 msm to the linearized poly
+    1 * est("msm_G1")(r1cs["constraints"]) +
+
+    // A bunch of FFTs from https://scroll.io/blog/proofGeneration
+    2 * est("fft_ff")(r1cs["constraints"]) +
+    2 * est("fft_ff")(2 * r1cs["constraints"])
 };
 
 const estimate_groth16 = {
