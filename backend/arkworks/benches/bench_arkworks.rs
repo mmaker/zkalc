@@ -94,13 +94,17 @@ fn bench_fft<F: FftField, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let mut rng = rand::thread_rng();
     for logsize in 1..=21 {
         let degree = 1 << logsize;
-        let domain = GeneralEvaluationDomain::<F>::new(degree).unwrap();
-        c.bench_with_input(BenchmarkId::new("fft", degree), &logsize, |b, _| {
-            let a = DensePolynomial::<F>::rand(degree, &mut rng)
-                .coeffs()
-                .to_vec();
-            b.iter(|| domain.fft(&a))
-        });
+        match GeneralEvaluationDomain::<F>::new(degree) {
+            Some(domain) =>  {
+                c.bench_with_input(BenchmarkId::new("fft", degree), &logsize, |b, _| {
+                    let a = DensePolynomial::<F>::rand(degree, &mut rng)
+                        .coeffs()
+                        .to_vec();
+                    b.iter(|| domain.fft(&a))
+                });
+            },
+            None => continue,
+        }
     }
 }
 
