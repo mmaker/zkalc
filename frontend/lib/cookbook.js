@@ -88,7 +88,7 @@ const estimate_groth16 = {
     //    https://github.com/arkworks-rs/groth16/blob/HEAD/src/prover.rs#L54
     // - gnark's which leads to function create_proof_with_assignment
     //    https://github.com/Consensys/gnark/blob/v0.8.1/internal/backend/bls12-381/groth16/prove.go#L116
-    est("msm_G1")(r1cs["mult"]) +
+    est("msm_G1")(r1cs["constraints"]) +
     1 * est("fft_ff")(r1cs["instance_size"] + r1cs["witness_size"]) +
     // negl. check how many there are
     // 1 * est("mul_ff")(r1cs["instance_size"] + r1cs["witness_size"]) +
