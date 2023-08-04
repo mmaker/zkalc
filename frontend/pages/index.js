@@ -69,6 +69,7 @@ const Home = () => {
     ingredientForm.getFieldInstance("op").focus();
     window.estimator = estimator;
     window.estimates = estimates;
+    window.zkp_estimator = cookbook;
   });
   const [ingredientForm] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);
@@ -183,10 +184,6 @@ const Home = () => {
     const lib = cfg.lib;
     const curve = cfg.curve;
     const machine = cfg.machine;
-
-    /// XX. For debugging purposes
-    console.est = (op) => estimator("bls12_381", "arkworks", "aws_m5.2xlarge", op);
-    console.zkp_estimator = cookbook;
 
     return (
       <>
