@@ -69,7 +69,7 @@ const Home = () => {
     ingredientForm.getFieldInstance("op").focus();
     window.estimator = estimator;
     window.estimates = estimates;
-    window.zkp_estimator = cookbook;
+    window.cookbook = cookbook;
   });
   const [ingredientForm] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);

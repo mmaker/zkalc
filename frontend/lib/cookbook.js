@@ -82,7 +82,7 @@ const estimate_groth16 = {
     est("mul_G2")(4),
 };
 
-export const zkp_est = {
+export const cookbook = {
   kzg: estimate_kzg,
   groth16: estimate_groth16,
   bulletproof: estimate_bulletproof,
