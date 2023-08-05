@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 import { estimator } from './estimates';
 import { cookbook } from './cookbook';
+import { humanTime } from './time';
 
 
 test('error', () => {
@@ -19,7 +20,7 @@ test('error', () => {
         let e = (op) => estimator(curve, "gnark_crypto", "aws_m5.2xlarge", op);
         const got = cookbook.groth16[operation](e, circuit);
         const relative_error = Math.abs(expected - got) / expected * 100;
-        console.log(`${curve} ${sample.circuit} ${operation} ${relative_error.toFixed(2)}%: ${expected} vs ${got} (${sample.input})`);
+        console.log(`${curve} ${sample.circuit} ${operation} ${relative_error.toFixed(2)}%: ${humanTime(expected)} vs ${humanTime(got)} (${sample.input})`);
     } )
     expect(1+2).toBe(3)
   })

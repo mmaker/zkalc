@@ -78,9 +78,9 @@ const estimate_groth16 = {
     // in arkworks, the verifier does not need to prepare inputs every time
     // In gnark, this part is also computed
     // function prepare_inputs
-    // est("msm_G1")(r1cs["instance_size"]) +
+    est("msm_G1")(r1cs["instance_size"])  +
     // function verify_proof_with_prepared_inputs
-    est("pairing")(3),
+    est("pairing")(3) - est("pairing")(3) * 1.10 / 2.21,
 
   prove: (est, r1cs) =>
     // for an implementation of Groth16, we have:
@@ -88,10 +88,12 @@ const estimate_groth16 = {
     //    https://github.com/arkworks-rs/groth16/blob/HEAD/src/prover.rs#L54
     // - gnark's which leads to function create_proof_with_assignment
     //    https://github.com/Consensys/gnark/blob/v0.8.1/internal/backend/bls12-381/groth16/prove.go#L116
-    est("msm_G1")(r1cs["constraints"]) +
-    1 * est("fft_ff")(r1cs["instance_size"] + r1cs["witness_size"]) +
+    6 * est("mul_ff")(r1cs["instance_size"] + r1cs["witness_size"]) +
+    7 * est("fft_ff")(r1cs["instance_size"] + r1cs["witness_size"]) +
+    est("mul_G1")(3) +
+    2 * est("msm_G1")(r1cs["constraints"]) +
     // negl. check how many there are
-    // 1 * est("mul_ff")(r1cs["instance_size"] + r1cs["witness_size"]) +
+    1 * est("mul_ff")(r1cs["instance_size"] + r1cs["witness_size"]) +
     2 * est("msm_G1")(r1cs["instance_size"] + r1cs["witness_size"]) +
     1 * est("msm_G2")(r1cs["instance_size"] + r1cs["witness_size"]) +
     4 * est("mul_G1")(4) +
