@@ -60,18 +60,39 @@ const estimate_gnark_plonk = {
     est("pairing")(2),
 
   prove: (est, r1cs) =>
-    // 3 MSMs in commitToLRO()
+    // We have three advice columns so:
+
+    // Commit to column polynomials: commitToLRO()
     3 * est("msm_G1")(r1cs["constraints"]) +
-    // 1 msm commit to z
-    1 * est("msm_G1")(r1cs["constraints"]) +
-    // 3 MSMs in commitToQuotient(): h1, h2, h3
-    3 * est("msm_G1")(r1cs["constraints"]) +
-    // 1 msm to the linearized poly
+
+    // Work on permutation argument:
+    // IFFT in BuildRatioCopyConstraint
+    1 * est("fft_ff")(r1cs["constraints"]) +
+    // 1 msm commit to z: permutation poly
     1 * est("msm_G1")(r1cs["constraints"]) +
 
-    // A bunch of FFTs from https://scroll.io/blog/proofGeneration
-    2 * est("fft_ff")(r1cs["constraints"]) +
-    2 * est("fft_ff")(2 * r1cs["constraints"])
+
+    // IFFT for qkCompletedCanonical
+    1 * est("fft_ff")(r1cs["constraints"]) +
+
+
+    // Convert column polys to expanded eval form: bwliop.ToLagrangeCoset() and below
+    3 * est("fft_ff")(2* r1cs["constraints"]) +
+    // Convert column polys to coeff form: widiop, bwsziop, wloneiop
+    3 * est("fft_ff")(r1cs["constraints"]) +
+
+    // Convert quotient poly to coeff form
+    1 * est("fft_ff")(r1cs["constraints"]) +
+    // 3 MSMs in commitToQuotient(): h1, h2, h3
+    3 * est("msm_G1")(r1cs["constraints"]) +
+
+    // 1 MSM in kzg.open for ZShiftedOpening
+    1 * est("msm_G1")(r1cs["constraints"]) +
+    // 1 msm to commit to linearized poly
+    1 * est("msm_G1")(r1cs["constraints"]) +
+
+    // Create evaluation proof: 1 msm in BatchOpenSinglePoint
+    1 * est("msm_G1")(r1cs["constraints"])
 };
 
 const estimate_groth16 = {
