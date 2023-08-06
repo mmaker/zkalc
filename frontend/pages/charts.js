@@ -28,15 +28,15 @@ import { humanTime } from "../lib/time";
 
 const { Text } = Typography;
 const compStrategyOptions = [
-  { value: false, label: "Fix curve to:" },
-  { value: true, label: "Fix library to" },
+  { value: false, label: "Curve:" },
+  { value: true, label: "Library:" },
 ];
 
 const Home = () => {
   let defaultLib = defaults.lib;
   let defaultCurve = defaults.curve;
   let defaultMachine = defaults.machine;
-  let defaultOp = "msm_G1";
+  let defaultOp = defaults.op;
   let defaultFixLib = false;
 
   let [curve, setCurve] = useState(defaultCurve);

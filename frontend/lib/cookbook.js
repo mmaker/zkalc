@@ -87,17 +87,25 @@ const estimate_groth16 = {
     // - arkworks's which leads to function create_proof_with_assignment
     //    https://github.com/arkworks-rs/groth16/blob/HEAD/src/prover.rs#L54
     // - gnark's which leads to function create_proof_with_assignment
-    //    https://github.com/Consensys/gnark/blob/v0.8.1/internal/backend/bls12-381/groth16/prove.go#L116
-    6 * est("mul_ff")(r1cs["instance_size"] + r1cs["witness_size"]) +
+    // https://github.com/Consensys/gnark/blob/v0.8.1/internal/backend/bls12-381/groth16/prove.go#L83
+    est("msm_G1")(r1cs["witness_size"]) +
+    // https://github.com/Consensys/gnark/blob/v0.8.1/internal/backend/bls12-381/groth16/prove.go#L116
     7 * est("fft_ff")(r1cs["instance_size"] + r1cs["witness_size"]) +
-    est("mul_G1")(3) +
+    // https://github.com/Consensys/gnark/blob/v0.8.1/internal/backend/bls12-381/groth16/prove.go#L166
+    6 * est("mul_ff")(r1cs["instance_size"] + r1cs["witness_size"]) +
+    est("mul_G2")(3) +
+    // https://github.com/Consensys/gnark/blob/v0.8.1/internal/backend/bls12-381/groth16/prove.go#L173
     2 * est("msm_G1")(r1cs["constraints"]) +
-    // negl. check how many there are
-    1 * est("mul_ff")(r1cs["instance_size"] + r1cs["witness_size"]) +
-    2 * est("msm_G1")(r1cs["instance_size"] + r1cs["witness_size"]) +
-    1 * est("msm_G2")(r1cs["instance_size"] + r1cs["witness_size"]) +
-    4 * est("mul_G1")(4) +
-    est("mul_G2")(4),
+    4 * est("add_G1")(r1cs["constraints"]) +
+    // https://github.com/Consensys/gnark/blob/v0.8.1/internal/backend/bls12-381/groth16/prove.go#L207
+    est("msm_G1")(r1cs["instance_size"] + r1cs["witness_size"]) +
+    // https://github.com/Consensys/gnark/blob/v0.8.1/internal/backend/bls12-381/groth16/prove.go#L214
+    est("msm_G1")(r1cs["instance_size"]) +
+    // https://github.com/Consensys/gnark/blob/v0.8.1/internal/backend/bls12-381/groth16/prove.go#L220
+    est("add_G1")(9) + est("mul_G1")(6) +
+    // https://github.com/Consensys/gnark/blob/v0.8.1/internal/backend/bls12-381/groth16/prove.go#L260C1-L261C1
+    est("msm_G2")(r1cs["constraints"]) +
+    est("mul_G2")(1),
 };
 
 export const cookbook = {
