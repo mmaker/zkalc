@@ -1,32 +1,118 @@
 {
     "arkworks": {
+        "benchmark_with": "criterion",
+        "compiler/interpreter": "rustc 1.73.0-nightly (0d95f9132 2023-07-26)",
+        "framework": [
+            {
+                "name": "arkworks",
+                "url": "https://github.com/arkworks-rs/snark"
+            }
+        ],
         "label": "arkworks-rs",
-        "version": "0.4 (rustc: 1.68.0-nightly) ",
-        "url": "https://arkworks.rs/"
+        "language": "Rust",
+        "url": "https://arkworks.rs/",
+        "version": "0.4.2"
     },
     "blstrs": {
+        "benchmark_with": "criterion",
+        "compiler/interpreter": "rustc 1.73.0-nightly (0d95f9132 2023-07-26)",
+        "framework": [],
         "label": "blstrs",
-        "version": "0.6.1 (rustc: 1.68.0-nightly)",
-        "url": "https://github.com/filecoin-project/blstrs"
+        "language": "Rust",
+        "url": "https://github.com/filecoin-project/blstrs",
+        "version": "0.7.0"
     },
-    "curve25519_dalek": {
+    "curve25519-dalek": {
+        "benchmark_with": "criterion",
+        "compiler/interpreter": "rustc 1.73.0-nightly (0d95f9132 2023-07-26)",
+        "framework": [],
         "label": "curve25519-dalek-ng",
-        "version": "4 (rustc: 1.68.0-nightly)",
-        "url": "dalek.rs"
+        "language": "Rust",
+        "url": "dalek.rs",
+        "version": "4.1.1"
+    },
+    "ffjavascript": {
+        "benchmark_with": "tinybench",
+        "compiler/interpreter": "nodejs: 18.17.0",
+        "framework": [
+            {
+                "name": "snarkjs",
+                "url": "https://github.com/iden3/snarkjs"
+            }
+        ],
+        "label": "ffjavascript",
+        "language": "JavaScript/WASM",
+        "url": "https://github.com/iden3/ffjavascript",
+        "version": "0.2.59"
+    },
+    "gnark_crypto": {
+        "benchmark_with": "golang",
+        "compiler/interpreter": "rustc 1.73.0-nightly (0d95f9132 2023-07-26)",
+        "framework": [
+            {
+                "name": "gnark",
+                "url": "https://github.com/Consensys/gnark"
+            }
+        ],
+        "label": "gnark-crypto",
+        "language": "golang",
+        "url": "https://github.com/ConsenSys/gnark-crypto/",
+        "version": "0.11.1 (branch: zkalc)"
+    },
+    "halo2_curves": {
+        "benchmark_with": "criterion",
+        "compiler/interpreter": "rustc 1.73.0-nightly (0d95f9132 2023-07-26)",
+        "framework": [
+            {
+                "name": "halo2-PSE",
+                "url": "https://github.com/privacy-scaling-explorations/halo2"
+            }
+        ],
+        "label": "halo2_curves",
+        "language": "Rust",
+        "url": "https://github.com/privacy-scaling-explorations/halo2curves",
+        "version": "0.3.1 (branch: msm)"
+    },
+    "pairing_ce": {
+        "benchmark_with": "criterion",
+        "compiler/interpreter": "rustc 1.73.0-nightly (0d95f9132 2023-07-26)",
+        "framework": [
+            {
+                "name": "bellman-ce",
+                "url": "https://github.com/matter-labs/bellman"
+            }
+        ],
+        "label": "Pairing Community Edition",
+        "language": "Rust",
+        "url": "https://github.com/matter-labs/pairing",
+        "version": "0.28.5"
+    },
+    "pasta_curves": {
+        "benchmark_with": "criterion",
+        "compiler/interpreter": "rustc 1.73.0-nightly (0d95f9132 2023-07-26)",
+        "framework": [
+            {
+                "name": "halo2",
+                "url": "https://github.com/zcash/halo2"
+            }
+        ],
+        "label": "pasta_curves",
+        "language": "Rust",
+        "url": "https://github.com/zcash/pasta_curves",
+        "version": "0.5.1"
     },
     "zkcrypto": {
+        "benchmark_with": "criterion",
+        "compiler/interpreter": "rustc 1.73.0-nightly (0d95f9132 2023-07-26)",
+        "framework": [
+            {
+                "name": "bellman",
+                "url": "https://github.com/zkcrypto/bellman"
+            }
+        ],
         "label": "zkcrypto",
-        "version": "0.4 (rustc: 1.68.0-nightly)",
-        "url": "https://github.com/zkcrypto/"
-    },
-    "gnark": {
-        "label": "gnark",
-        "version": "0.9.0 (branch: zkalc)",
-        "url": "https://github.com/ConsenSys/gnark-crypto/"
-    },
-    "zcash": {
-        "label": "zcash",
-        "version": "0.5",
-        "url": "https://github.com/zcash/pasta_curves"
+        "language": "Rust",
+        "url": "https://github.com/zkcrypto",
+        "version": "group=0.13 pairing=0.23 bls12_381=0.8 jubjub=0.10"
     }
 }

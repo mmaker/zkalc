@@ -1,9 +1,8 @@
 import { ResponsiveLine } from "@nivo/line";
 import { InlineMath } from "react-katex";
 import { humanTime } from "../lib/time";
-import { area, curveMonotoneX } from "d3-shape";
 
-import { estimates, estimator } from "../lib/estimates";
+import { getEstimates, estimator } from "../lib/estimates";
 import { filterSamples, samplesToPlotData } from "../lib/samples";
 import defaults from "../data/defaults.json";
 
@@ -112,8 +111,8 @@ export const PlotPointsAndEstimates = ({ ...kwargs }) => {
   let lib = defaults.lib;
   let curve = defaults.curve;
   let machine = defaults.machine;
-  let op = "msm_G1";
-  let samples = estimates[curve][lib][machine][op];
+  let op = defaults.op;
+  let samples = getEstimates(curve, lib, machine)[op];
 
   let smaller_samples = filterSamples(
     samples,
@@ -160,7 +159,7 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
   let curve = defaults.curve;
   let machine = defaults.machine;
   let op = "msm_G1";
-  let samples = estimates[curve][lib][machine][op];
+  let samples = getEstimates(curve, lib, machine)[op];
   const start = 1 << 2;
   const end = 1 << 30;
 
@@ -250,7 +249,7 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
 };
 
 export const PlotPoints = ({ ...kwargs }) => {
-  let samples = estimates[defaults.curve][defaults.lib][defaults.machine]["msm_G1"];
+  let samples = getEstimates(defaults.curve, defaults.lib, defaults.machine)["msm_G1"];
   let smaller_samples = filterSamples(
     samples,
     ([i, x, y]) => x > 2 && x < 1 << 22
@@ -294,6 +293,7 @@ export const PlotPoints = ({ ...kwargs }) => {
 //   };
 
 export const Plot = ({ data, height, ...kwargs }) => {
+  let max_x = Math.max(...data.map((x) => Math.max(...x.data.map((y) => y.x))));
   return (
     // we must make sure parent container have a defined height when using
     // responsive component, otherwise height will be 0 and
@@ -312,8 +312,8 @@ export const Plot = ({ data, height, ...kwargs }) => {
         xScale={{
           type: "log",
           base: 2,
-          min: "auto",
-          max: "auto",
+          min: 2,
+          max: max_x,
         }}
         // yScale={{
         //     type: 'log',

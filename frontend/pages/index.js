@@ -41,6 +41,9 @@ import {
   libraries_selection,
   curves_selection,
 } from "../lib/selections";
+import {
+  cookbook,
+} from "../lib/cookbook";
 // import renderMathInElement from "katex/contrib/auto-render";
 
 import curves from "../data/curves.json";
@@ -66,6 +69,7 @@ const Home = () => {
     ingredientForm.getFieldInstance("op").focus();
     window.estimator = estimator;
     window.estimates = estimates;
+    window.cookbook = cookbook;
   });
   const [ingredientForm] = Form.useForm();
   const [recipe, setRecipe] = React.useState([]);

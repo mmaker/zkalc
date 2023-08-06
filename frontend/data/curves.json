@@ -1,26 +1,38 @@
 {
-    "bls12_381": {
-        "label": "BLS12-381",
-        "key": "bls12_381"
-    },
-    "curve25519": {
-        "label": "curve25519",
-        "key": "curve25519"
+    "CP6_782": {
+        "key": "CP6_782",
+        "label": "CP6-782"
     },
     "bls12_377": {
-        "label": "BLS12-377",
-        "key": "bls12_377"
+        "key": "bls12_377",
+        "label": "BLS12-377"
+    },
+    "bls12_381": {
+        "key": "bls12_381",
+        "label": "BLS12-381"
+    },
+    "bn254": {
+        "key": "bn254",
+        "label": "BN254"
+    },
+    "curve25519": {
+        "key": "curve25519",
+        "label": "curve25519"
+    },
+    "jubjub": {
+        "key": "jubjub",
+        "label": "jubjub"
     },
     "pallas": {
-        "label": "pallas",
-        "key": "pallas"
-    },
-    "vesta": {
-        "label": "vesta",
-        "key": "vesta"
+        "key": "pallas",
+        "label": "pallas"
     },
     "secp256k1": {
-        "label": "secp256k1",
-        "key": "secp256k1"
+        "key": "secp256k1",
+        "label": "secp256k1"
+    },
+    "vesta": {
+        "key": "vesta",
+        "label": "vesta"
     }
 }

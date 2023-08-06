@@ -30,7 +30,7 @@ fn bench_msm<G: CurveGroup, M: Measurement>(c: &mut BenchmarkGroup<'_, M>, group
             .map(|_| G::rand(rng).into_affine())
             .collect::<Vec<_>>();
         c.bench_with_input(
-            BenchmarkId::new(format!("msm/{}", group_name), size),
+            BenchmarkId::new(format!("msm_{}", group_name), size),
             &logsize,
             |b, _| b.iter(|| G::msm(&gs, &scalars)),
         );
@@ -47,7 +47,7 @@ fn bench_multi_pairing<P: Pairing, M: Measurement>(c: &mut BenchmarkGroup<'_, M>
         let g2s = (0..size)
             .map(|_| P::G2::rand(rng).into_affine())
             .collect::<Vec<_>>();
-        c.bench_with_input(BenchmarkId::new("msm/Gt", size), &logsize, |b, _| {
+        c.bench_with_input(BenchmarkId::new("msm_Gt", size), &logsize, |b, _| {
             b.iter(|| P::multi_pairing(&g1s, &g2s))
         });
     }
@@ -55,7 +55,7 @@ fn bench_multi_pairing<P: Pairing, M: Measurement>(c: &mut BenchmarkGroup<'_, M>
 
 fn bench_sum_of_products<F: Field, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let rng = &mut test_rng();
-    c.bench_function("msm/ff", |b| {
+    c.bench_function("msm_ff", |b| {
         const SIZE: usize = 256;
         let lhs: [F; SIZE] = (0..SIZE)
             .map(|_| F::rand(rng))
@@ -94,13 +94,17 @@ fn bench_fft<F: FftField, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let mut rng = rand::thread_rng();
     for logsize in 1..=21 {
         let degree = 1 << logsize;
-        let domain = GeneralEvaluationDomain::<F>::new(degree).unwrap();
-        c.bench_with_input(BenchmarkId::new("fft", degree), &logsize, |b, _| {
-            let a = DensePolynomial::<F>::rand(degree, &mut rng)
-                .coeffs()
-                .to_vec();
-            b.iter(|| domain.fft(&a))
-        });
+        match GeneralEvaluationDomain::<F>::new(degree) {
+            Some(domain) =>  {
+                c.bench_with_input(BenchmarkId::new("fft", degree), &logsize, |b, _| {
+                    let a = DensePolynomial::<F>::rand(degree, &mut rng)
+                        .coeffs()
+                        .to_vec();
+                    b.iter(|| domain.fft(&a))
+                });
+            },
+            None => continue,
+        }
     }
 }
 
@@ -187,12 +191,12 @@ fn bench_vesta(c: &mut Criterion) {
 
 criterion_group!(
     benches,
-    bench_bn254,
-    bench_bls12_381,
-    bench_bls12_377,
-    bench_curve25519,
-    bench_secp256k1,
+    bench_vesta,
     bench_pallas,
-    bench_vesta
+    bench_secp256k1,
+    bench_curve25519,
+    bench_bls12_377,
+    bench_bls12_381,
+    bench_bn254
 );
 criterion_main!(benches);

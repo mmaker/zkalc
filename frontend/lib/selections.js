@@ -30,7 +30,7 @@ export const operations = {
       </>
     ),
   },
-  fft_ff: {
+  fft: {
     label: (
       <>
         FFT over <InlineMath math="\mathbb{F}_p" />
@@ -38,14 +38,14 @@ export const operations = {
     ),
     description: (
       <>
-        FFT <InlineMath math="\mathbb{F}_p" />
+        FFT over <InlineMath math="\mathbb{F}_p" />
       </>
     ),
-    tooltip_width: 500,
+    tooltip_width: 380,
     tooltip: (
       <>
-        Compute
-        <InlineMath math="\operatorname{FFT}(\vec a)" />
+        Compute the number-theoretic transform of a vector{" "}
+        <InlineMath math="\vec a" />
       </>
     ),
   },
@@ -292,7 +292,7 @@ export const operations_selection = Object.keys(operations).map((operation) => {
 export const libraries_selection = Object.fromEntries(Object.keys(curves).map((curve) => [
   curve,
   Object.keys(libraries).map(lib => ({label: libraries[lib].label, key: lib,
-      disabled: libraries[lib].disabled || !(lib in estimates[curve]) || false}))
+      disabled: libraries[lib].disabled || !(curve in estimates) || !(lib in estimates[curve]) || false}))
 ]));
 
 export const machines_selection = Object.fromEntries(

@@ -1,34 +1,26 @@
 {
-    "aws_c5.9xlarge": {
-        "label": "AWS EC2 c5.9xlarge",
-        "cpu": "36-core Intel(R) Xeon(R) Platinum 8124M CPU @ 3.00GHz",
-        "ram": "72GB",
-        "os": "Ubuntu 18.04.6 LTS (Bionic Beaver)"
-    },
     "aws_m5.2xlarge": {
-        "label": "AWS EC2 m5.2xlarge",
         "cpu": "8-core Intel(R) Xeon(R) Platinum 8259CL CPU @ 2.50GHz",
-        "ram": "72GB",
-        "os": "Amazon Linux 2"
+        "label": "AWS EC2 m5.2xlarge",
+        "os": "Amazon Linux 2",
+        "ram": "32GB"
     },
-    "aws_a1.2xlarge": {
-        "label": "AWS EC2 a1.2xlarge",
-        "cpu": "8-core AWS Graviton Processor (Arm)",
-        "ram": "16GB",
-        "os": "Amazon Linux 2"
+    "aws_m5.large": {
+        "cpu": "Intel(R) Xeon(R) Platinum 8175M CPU @ 2.50GHz",
+        "label": "AWS EC2 m5.large",
+        "os": "Amazon Linux 2",
+        "ram": "8GB"
     },
-    "m1pro": {
-        "label": "M1 Pro 2021",
-        "description": "Macbook Pro 2022 14\"",
-        "cpu": "Apple M1 Pro",
-        "ram": "16GB",
-        "os": "MacOS 13.1 (Ventura)"
+    "aws_m6g.8xlarge": {
+        "cpu": "32-core Neoverse-N1 AWS Graviton2",
+        "label": "AWS EC2 m6g.8xlarge",
+        "os": "Amazon Linux 2",
+        "ram": "128GB"
     },
-    "thinkpad_t450": {
-        "label": "ThinkPad T450",
-        "description": "ThinkPad T450",
-        "cpu": "4-core i7-5600U CPU @ 2.6 GHz",
-        "ram": "8GB",
-        "os": "Debian bookworm/sid"
+    "aws_m6i.8xlarge": {
+        "cpu": "32-core Intel Xeon Scalable Ice Lake 8375C @ 3.50GHz",
+        "label": "AWS EC2 m6i.8xlarge",
+        "os": "Amazon Linux 2",
+        "ram": "128GB"
     }
 }

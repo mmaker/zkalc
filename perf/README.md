@@ -1,8 +1,8 @@
-This folder contains all raw benchmarks results and is meant to be handled by zkalc's maintainers.
-Check the [AUTHORS](../AUTHORS) file for contact information.
+This folder contains parsers for benchmarks from https://github.com/zkCollective/bench-data/.
 
-For now, you can do something like:
+To parse them, run:
 
 ```bash
-    $ cat data/new/ark* | grep -i bls12_381 | python -m benchmark_parser criterion > results.json
+    $ python3 -m benchmark_parser ../../bench-data
+    $ find ../frontend/data -empty -delete  # remove empty files without benchmarks
 ```

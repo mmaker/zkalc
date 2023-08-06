@@ -106,14 +106,14 @@ where
 //         let g1 = black_box(g1);
 //         let g2 = black_box(g2);
 
-//         group.bench_with_input(BenchmarkId::new("G1", size), &size, |b, _| {
+//         group.bench_with_input(BenchmarkId::new("msm_G1", size), &size, |b, _| {
 //             b.iter(|| {
 //                 let result = multiexp(&pool, (g1.clone(), 0), FullDensity, v.clone());
 //                 futures::executor::block_on(result).unwrap();
 //             });
 //         });
 
-//         group.bench_with_input(BenchmarkId::new("G2", size), &size, |b, _| {
+//         group.bench_with_input(BenchmarkId::new("msm_G2", size), &size, |b, _| {
 //             b.iter(|| {
 //                 let result = multiexp(&pool, (g2.clone(), 0), FullDensity, v.clone());
 //                 futures::executor::block_on(result).unwrap();
@@ -143,8 +143,8 @@ fn bench_bls12_381(c: &mut Criterion) {
     bench_pairing::<Bls12, _>(&mut group);
 }
 
-fn bench_bn256(c: &mut Criterion) {
-    let mut group = c.benchmark_group("bn256");
+fn bench_bn254(c: &mut Criterion) {
+    let mut group = c.benchmark_group("bn254");
     bench_add_ff::<pairing_ce::bn256::fr::Fr, _>(&mut group);
     bench_mul_ff::<pairing_ce::bn256::fr::Fr,_>(&mut group);
     bench_add_ec::<pairing_ce::bn256::G1, _>(&mut group);
@@ -155,7 +155,7 @@ fn bench_bn256(c: &mut Criterion) {
 
 criterion_group!(
     benches,
-    bench_bn256,
+    bench_bn254,
     bench_bls12_381
 );
 criterion_main!(benches);

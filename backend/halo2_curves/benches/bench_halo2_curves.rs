@@ -68,7 +68,7 @@ fn bench_msm(group: &mut BenchmarkGroup<'_, criterion::measurement::WallTime>) {
         let points = &points[..size];
         let mut r1 = bn256::G1::identity();
 
-        group.bench_with_input(BenchmarkId::new("msm/G1", size), &size, |b, _| {
+        group.bench_with_input(BenchmarkId::new("msm_G1", size), &size, |b, _| {
             b.iter(|| {
                 bn256::msm::MSM::evaluate(scalars, points, &mut r1);
             });
@@ -84,8 +84,8 @@ fn bench_pairing<M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     });
 }
 
-fn bench_bn256(c: &mut Criterion) {
-    let mut group = c.benchmark_group("bn256");
+fn bench_bn254(c: &mut Criterion) {
+    let mut group = c.benchmark_group("bn254");
     bench_add_ff::<bn256::Fr, _>(&mut group);
     bench_mul_ff::<bn256::Fr, _>(&mut group);
     bench_add_ec::<bn256::G1, _>(&mut group);
@@ -96,5 +96,5 @@ fn bench_bn256(c: &mut Criterion) {
     bench_pairing::<_>(&mut group);
 }
 
-criterion_group!(benches, bench_bn256);
+criterion_group!(benches, bench_bn254);
 criterion_main!(benches);
