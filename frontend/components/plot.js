@@ -111,7 +111,7 @@ export const PlotPointsAndEstimates = ({ ...kwargs }) => {
   let lib = defaults.lib;
   let curve = defaults.curve;
   let machine = defaults.machine;
-  let op = "msm_G1";
+  let op = defaults.op;
   let samples = getEstimates(curve, lib, machine)[op];
 
   let smaller_samples = filterSamples(
@@ -293,6 +293,7 @@ export const PlotPoints = ({ ...kwargs }) => {
 //   };
 
 export const Plot = ({ data, height, ...kwargs }) => {
+  let max_x = Math.max(...data.map((x) => Math.max(...x.data.map((y) => y.x))));
   return (
     // we must make sure parent container have a defined height when using
     // responsive component, otherwise height will be 0 and
@@ -311,8 +312,8 @@ export const Plot = ({ data, height, ...kwargs }) => {
         xScale={{
           type: "log",
           base: 2,
-          min: "auto",
-          max: "auto",
+          min: 2,
+          max: max_x,
         }}
         // yScale={{
         //     type: 'log',

@@ -48,7 +48,9 @@ def main():
 
                 benchmark_engine = parsers[libraries[library]['benchmark_with']]
                 print("ℹ Parsing " + current_folder, file=sys.stderr)
-                benchmark_files = [open(current_folder + x) for x in os.listdir(current_folder)]
+                # read all elements, but exclude data points for control and testing
+                benchmark_files = [open(current_folder + x) for x in os.listdir(current_folder)
+                                   if '-control' not in x]
                 outs = open(output_path, 'w+')
 
                 if benchmark_engine(benchmark_files, outs, curve):
