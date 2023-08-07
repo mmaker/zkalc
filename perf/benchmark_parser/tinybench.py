@@ -46,14 +46,24 @@ probes = {
 }
 
 def extract_measurements(bench_output):
-    measurements = defaultdict(dict)
+    measurements = defaultdict(lambda: defaultdict(list))
 
     # Parse benchmarks and make them ready for fitting
     for measurement in itertools.chain(*bench_output):
-        # Extra data from json
-        operation, size = parse_benchmark_description(measurement["Task Name"], probes)
-        measurement_in_ns = measurement["Average Time (ns)"]
-        measurements[operation][size] = measurement_in_ns
+        # DEPRECATED: Extra data from json if in table format
+        if "Average Time (ns)" in measurement:
+            operation, size = parse_benchmark_description(measurement["Task Name"], probes)
+            measurement_in_ns = measurement["Average Time (ns)"]
+            measurements[operation]["range"].append(size)
+            measurements[operation]["results"].append(measurement_in_ns)
+        else: # if "mean" in measurement:
+            to_ns = 1000 * 1000
+            operation, size = parse_benchmark_description(measurement["name"], probes)
+            measurement_in_ns = to_ns * measurement["mean"]
+            measurements[operation]["range"].append(size)
+            measurements[operation]["results"].append(measurement_in_ns)
+            measurements[operation]["stddev"].append(to_ns * measurement["sd"])
+
     return measurements
 
 
