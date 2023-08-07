@@ -42,7 +42,7 @@ gnark:
 	bash ./zkalc.sh secp256k1 | tee ../$(OUTDIR)/gnark_crypto/gnark-secp256k1.txt
 
 ffjavascript:
-	cd ffjavascript; node bench.js > ../$(OUTDIR)/ffjavascript/ffjavascript.json
+	cd ffjavascript; node bench.js 2> ../$(OUTDIR)/ffjavascript/ffjavascript.json
 
 clean:
 	@rm -rf curves

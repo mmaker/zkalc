@@ -4,10 +4,7 @@
 import { BigBuffer, buildBn128, buildBls12381, F1Field } from "ffjavascript";
 import { Bench } from "tinybench";
 
-const curves = [
-  buildBn128(false),
-  buildBls12381(false),
-];
+const curves = [buildBn128(false), buildBls12381(false)];
 
 function bench_add_ff(F) {
   const x = F.random();
@@ -66,24 +63,24 @@ function bench_fft(bench, name, F, range) {
       x.set(F.random(), i * F.n8);
     }
     bench.add(name + "/" + n, async () => {
-      await F.fft(x)
+      await F.fft(x);
     });
   }
 }
 
 function bench_msm(bench, name, G, Fr, range) {
-    for (var i = range[0]; i < range[1]; i++) {
-      let n = Math.pow(2, i);
-      const scalars = new BigBuffer(n*Fr.n8);
-      const bases = new BigBuffer(n*G.F.n8*2);
-      for (let i = 0; i < n; i++) {
-        scalars.set(Fr.random(), i * Fr.n8);
-        bases.set(G.toAffine(G.timesFr(G.g, Fr.random())), i * G.F.n8 * 2);
-      }
-      bench.add(name + "/" + n, async () => {
-        await G.multiExpAffine(bases, scalars, false, "");
-      });
+  for (var i = range[0]; i < range[1]; i++) {
+    let n = Math.pow(2, i);
+    const scalars = new BigBuffer(n * Fr.n8);
+    const bases = new BigBuffer(n * G.F.n8 * 2);
+    for (let i = 0; i < n; i++) {
+      scalars.set(Fr.random(), i * Fr.n8);
+      bases.set(G.toAffine(G.timesFr(G.g, Fr.random())), i * G.F.n8 * 2);
     }
+    bench.add(name + "/" + n, async () => {
+      await G.multiExpAffine(bases, scalars, false, "");
+    });
+  }
 }
 
 async function run() {
@@ -95,10 +92,10 @@ async function run() {
     // properly.
     let name = c.name;
     if (name == "bls12381") {
-        name = "bls12_381";
+      name = "bls12_381";
     }
     if (name == "bn128") {
-        name = "bn254";
+      name = "bn254";
     }
 
     bench
@@ -117,9 +114,13 @@ async function run() {
   }
 
   await bench.run();
-  //console.table(bench.table());
-  process.stdout.write(JSON.stringify(bench.table()));
-  return bench.results;
+  console.table(bench.table());
+  const results = bench.tasks.map((x) => {
+    // remove samples to avoid the dataset from exploding
+    let { ["samples"]: unused, ...info } = x.result;
+    return { name: x.name, ...info };
+  });
+  process.stderr.write(JSON.stringify(results));
 }
 
 run().then(() => {
