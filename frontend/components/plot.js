@@ -294,7 +294,6 @@ export const PlotPoints = ({ ...kwargs }) => {
 
 export const Plot = ({ data, height, ...kwargs }) => {
   let max_x = Math.max(...data.map((x) => Math.max(...x.data.map((y) => y.x))));
-  console.log(data.map(x => x));
   return (
     // we must make sure parent container have a defined height when using
     // responsive component, otherwise height will be 0 and
