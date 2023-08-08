@@ -108,50 +108,32 @@ fn bench_fft<F: FftField, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     }
 }
 
-fn bench_bn254(c: &mut Criterion) {
-    use ark_bn254::{Bn254, Fr, G1Projective as G1, G2Projective as G2};
-    type Gt = ark_ec::pairing::PairingOutput<Bn254>;
+macro_rules ! bench_pairing {
+    ($name: ident, $lib: path, $pairing: ident, $id: expr) => {
+        fn $name(c: &mut Criterion) {
+            use $lib::{$pairing, Fr, G1Projective as G1, G2Projective as G2};
+            type Gt = ark_ec::pairing::PairingOutput<$pairing>;
 
-    let mut group = c.benchmark_group("bn254");
-    bench_msm::<G1, _>(&mut group, "G1");
-    bench_msm::<G2, _>(&mut group, "G2");
-    bench_mul::<Gt, _>(&mut group, "Gt");
-    bench_multi_pairing::<Bn254, _>(&mut group);
-    bench_pairing::<Bn254, _>(&mut group);
-    bench_sum_of_products::<Fr, _>(&mut group);
-    bench_fft::<Fr, _>(&mut group);
-    group.finish();
+            let mut group = c.benchmark_group($id);
+            bench_msm::<G1, _>(&mut group, "G1");
+            bench_msm::<G2, _>(&mut group, "G2");
+            bench_mul::<Gt, _>(&mut group, "Gt");
+            bench_multi_pairing::<$pairing, _>(&mut group);
+            bench_pairing::<$pairing, _>(&mut group);
+            bench_sum_of_products::<Fr, _>(&mut group);
+            bench_fft::<Fr, _>(&mut group);
+            group.finish();
+        }
+    };
 }
 
-fn bench_bls12_381(c: &mut Criterion) {
-    use ark_bls12_381::{Bls12_381, Fr, G1Projective, G2Projective};
-    type Gt = ark_ec::pairing::PairingOutput<Bls12_381>;
+bench_pairing!(bench_bn254, ark_bn254, Bn254, "bn254");
+bench_pairing!(bench_bls12_381, ark_bls12_381, Bls12_381, "bls12_381");
+bench_pairing!(bench_bls12_377, ark_bls12_377, Bls12_377, "bls12_377");
+bench_pairing!(bench_mnt4_298, ark_mnt4_298, MNT4_298, "mnt4_298");
+bench_pairing!(bench_mnt6_298, ark_mnt6_298, MNT6_298, "mnt6_298");
 
-    let mut group = c.benchmark_group("bls12_381");
-    bench_msm::<G1Projective, _>(&mut group, "G1");
-    bench_msm::<G2Projective, _>(&mut group, "G2");
-    bench_mul::<Gt, _>(&mut group, "Gt");
-    bench_multi_pairing::<Bls12_381, _>(&mut group);
-    bench_pairing::<Bls12_381, _>(&mut group);
-    bench_sum_of_products::<Fr, _>(&mut group);
-    bench_fft::<Fr, _>(&mut group);
-    group.finish();
-}
 
-fn bench_bls12_377(c: &mut Criterion) {
-    use ark_bls12_377::{Bls12_377, Fr, G1Projective, G2Projective};
-    type Gt = ark_ec::pairing::PairingOutput<Bls12_377>;
-
-    let mut group = c.benchmark_group("bls12_377");
-    bench_msm::<G1Projective, _>(&mut group, "G1");
-    bench_msm::<G2Projective, _>(&mut group, "G2");
-    bench_mul::<Gt, _>(&mut group, "Gt");
-    bench_multi_pairing::<Bls12_377, _>(&mut group);
-    bench_pairing::<Bls12_377, _>(&mut group);
-    bench_sum_of_products::<Fr, _>(&mut group);
-    bench_fft::<Fr, _>(&mut group);
-    group.finish();
-}
 
 fn bench_curve25519(c: &mut Criterion) {
     use ark_curve25519::{EdwardsProjective as G, Fr};
@@ -197,6 +179,8 @@ criterion_group!(
     bench_curve25519,
     bench_bls12_377,
     bench_bls12_381,
-    bench_bn254
+    bench_bn254,
+    bench_mnt4_298,
+    bench_mnt6_298
 );
 criterion_main!(benches);

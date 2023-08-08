@@ -121,6 +121,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "ark-mnt4-298"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ecb284f9f38cbedcae7e78f33e9a1f813db4e6b8103dacc3a143c2ddf32941aa"
+dependencies = [
+ "ark-ec",
+ "ark-ff",
+ "ark-std",
+]
+
+[[package]]
+name = "ark-mnt6-298"
+version = "0.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0b476521074ed1ccfec7277bbe5c6fcf76be15fe1aa63f23f2545f0c8ae6ae73"
+dependencies = [
+ "ark-ec",
+ "ark-ff",
+ "ark-mnt4-298",
+ "ark-std",
+]
+
+[[package]]
 name = "ark-pallas"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -223,6 +246,8 @@ dependencies = [
  "ark-curve25519",
  "ark-ec",
  "ark-ff",
+ "ark-mnt4-298",
+ "ark-mnt6-298",
  "ark-pallas",
  "ark-poly",
  "ark-relations",
