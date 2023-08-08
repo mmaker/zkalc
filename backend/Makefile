@@ -1,6 +1,6 @@
 OUTDIR=../perf/data/new/
 
-all: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto gnark pairing_ce halo2_curves gnark ffjavascript
+all: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto gnark pairing_ce halo2_curves ffjavascript
 
 init:
 	cargo install cargo-criterion
@@ -15,7 +15,7 @@ arkworks: arkworks_curves
 	cd arkworks; cargo criterion --message-format=json 1> ../$(OUTDIR)/arkworks/arkworks.json
 
 arkworks_curves:
-	git clone https://github.com/arkworks-rs/curves.git || true
+	git clone -b releases https://github.com/arkworks-rs/curves.git || true
 	cd curves; cargo criterion --features ark-ec/parallel,ark-ff/asm --message-format=json 1> ../$(OUTDIR)/arkworks/ark-curves.json
 
 curve25519-dalek:
