@@ -56,7 +56,7 @@ fn bench_msm(group: &mut BenchmarkGroup<'_, criterion::measurement::WallTime>) {
         })
         .unzip();
 
-    for logsize in 11..=MAX_SIZE {
+    for logsize in 1..=MAX_SIZE {
         // Dynamically control sample size so that big MSMs don't bench eternally
         if logsize > 20 {
             group.sample_size(10);

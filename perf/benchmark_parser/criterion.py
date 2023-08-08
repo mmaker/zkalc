@@ -64,25 +64,35 @@ probes = {
 }
 
 
+def stddev(bench):
+    iterations = bench["iteration_count"]
+    samples = bench["measured_values"]
+    average = to_nanoseconds(bench["mean"]["estimate"], bench["mean"]["unit"])
+    averages = [to_nanoseconds(x/y, bench["unit"]) for x, y in zip(samples, iterations)]
+    return (sum((x - average)**2 for x in averages) / len(averages))**.5
+
+
 def extract_measurements(bench_output):
-    measurements = defaultdict(dict)
+    measurements = defaultdict(lambda: defaultdict(list))
 
     # Parse benchmarks and make them ready for fitting
-    for measurement in bench_output:
+    for bench in bench_output:
         # Skip useless non-benchmark lines
-        if "id" not in measurement:
+        if "id" not in bench:
             continue
 
         # Extra data from json
         try:
-            operation, size = parse_benchmark_description(
-                measurement["id"], probes)
+            id = bench["id"]
+            operation, size = parse_benchmark_description(id, probes)
         except NotImplementedError:
             continue
 
-        measurement_in_ns = to_nanoseconds(
-            measurement["mean"]["estimate"], measurement["mean"]["unit"])
-        measurements[operation][size] = measurement_in_ns
+        measurement_in_ns = to_nanoseconds(bench["mean"]["estimate"], bench["mean"]["unit"])
+        stddev_in_ns = stddev(bench)
+        measurements[operation]["range"].append(size)
+        measurements[operation]["results"].append(measurement_in_ns)
+        measurements[operation]["stddev"].append(stddev_in_ns)
 
     return measurements
 
@@ -91,19 +101,15 @@ def main(ins=[sys.stdin], outs=sys.stdout, curve=None):
     bench_output = [json.loads(line) for i in ins for line in i if line.strip() and (
         curve is None or curve.lower() in line.lower())]
     if not bench_output:
-        if curve == 'bls12_377': print("Porco dio", ins, file=sys.stderr)
         # outs.write("{}")
         return False
     # Dictionary of results in format: { operation : measurements }
     results = {}
     # Extract measurements into a nested dictionary: { operation : {size : time_in_microseconds }}
     measurements = extract_measurements(bench_output)
-    # Re-format the measurements into a dictionary: {operation : {range: [sizes], results: [times]}
-    results = {operation: export_measurement(
-        measurements[operation]) for operation in measurements}
 
     # Encode the functions as a JSON object
-    json_data = json.dumps(results, indent=2)
+    json_data = json.dumps(measurements, indent=2)
     # Write the JSON object to the file
     outs.write(json_data)
     return True

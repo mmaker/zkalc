@@ -182,6 +182,7 @@ const Home = () => {
 
   const ZkalcBar = () => {
     let data = baseData(samplesToBarData);
+    data.sort((a, b) => b.value - a.value);
 
     return (
       <div
@@ -205,7 +206,6 @@ const Home = () => {
           colors={["#cce4f2"]}
           colorBy="indexValue"
           groupMode="grouped"
-          enableGridX={false}
           enableGridY={false}
           borderRadius={1}
           padding={0.2}

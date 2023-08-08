@@ -1,4 +1,32 @@
 {
+    "BW6_761": {
+        "arkworks": {
+            "aws_m5.2xlarge": "BW6_761/arkworks/aws_m5.2xlarge.json",
+            "aws_m6g.8xlarge": "BW6_761/arkworks/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "BW6_761/arkworks/aws_m6i.8xlarge.json"
+        }
+    },
+    "CP6_782": {
+        "arkworks": {
+            "aws_m5.2xlarge": "CP6_782/arkworks/aws_m5.2xlarge.json",
+            "aws_m6g.8xlarge": "CP6_782/arkworks/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "CP6_782/arkworks/aws_m6i.8xlarge.json"
+        }
+    },
+    "MNT4_298": {
+        "arkworks": {
+            "aws_m5.2xlarge": "MNT4_298/arkworks/aws_m5.2xlarge.json",
+            "aws_m6g.8xlarge": "MNT4_298/arkworks/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "MNT4_298/arkworks/aws_m6i.8xlarge.json"
+        }
+    },
+    "MNT6_298": {
+        "arkworks": {
+            "aws_m5.2xlarge": "MNT6_298/arkworks/aws_m5.2xlarge.json",
+            "aws_m6g.8xlarge": "MNT6_298/arkworks/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "MNT6_298/arkworks/aws_m6i.8xlarge.json"
+        }
+    },
     "bls12_377": {
         "arkworks": {
             "aws_m5.2xlarge": "bls12_377/arkworks/aws_m5.2xlarge.json",
@@ -53,6 +81,7 @@
         "arkworks": {
             "aws_m5.2xlarge": "bn254/arkworks/aws_m5.2xlarge.json",
             "aws_m5.large": "bn254/arkworks/aws_m5.large.json",
+            "aws_m6g.8xlarge": "bn254/arkworks/aws_m6g.8xlarge.json",
             "aws_m6i.8xlarge": "bn254/arkworks/aws_m6i.8xlarge.json"
         },
         "ffjavascript": {
@@ -99,7 +128,9 @@
     },
     "pallas": {
         "arkworks": {
-            "aws_m5.2xlarge": "pallas/arkworks/aws_m5.2xlarge.json"
+            "aws_m5.2xlarge": "pallas/arkworks/aws_m5.2xlarge.json",
+            "aws_m6g.8xlarge": "pallas/arkworks/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "pallas/arkworks/aws_m6i.8xlarge.json"
         },
         "pasta_curves": {
             "aws_m5.2xlarge": "pallas/pasta_curves/aws_m5.2xlarge.json",
@@ -109,9 +140,6 @@
         }
     },
     "secp256k1": {
-        "arkworks": {
-            "aws_m5.2xlarge": "secp256k1/arkworks/aws_m5.2xlarge.json"
-        },
         "gnark_crypto": {
             "aws_m5.2xlarge": "secp256k1/gnark_crypto/aws_m5.2xlarge.json",
             "aws_m5.large": "secp256k1/gnark_crypto/aws_m5.large.json",
@@ -121,7 +149,9 @@
     },
     "vesta": {
         "arkworks": {
-            "aws_m5.2xlarge": "vesta/arkworks/aws_m5.2xlarge.json"
+            "aws_m5.2xlarge": "vesta/arkworks/aws_m5.2xlarge.json",
+            "aws_m6g.8xlarge": "vesta/arkworks/aws_m6g.8xlarge.json",
+            "aws_m6i.8xlarge": "vesta/arkworks/aws_m6i.8xlarge.json"
         },
         "pasta_curves": {
             "aws_m5.2xlarge": "vesta/pasta_curves/aws_m5.2xlarge.json",
