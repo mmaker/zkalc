@@ -7,6 +7,7 @@ use group::{Curve, Group};
 use pairing_lib::{MillerLoopResult, MultiMillerLoop, PairingCurveAffine};
 use std::ops::Add;
 use ff::Field;
+use rand::RngCore;
 
 fn bench_mul(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
@@ -68,13 +69,11 @@ fn bench_msm(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
 
     let mut group = c.benchmark_group("bls12_381/msm");
-    for logsize in 1..=21 {
+    for logsize in (10..=21).chain(24..25) {
         // Dynamically control sample size so that big MSMs don't bench eternally
-        if logsize > 20 {
-            group.sample_size(10);
-        }
+        group.sample_size(10);
 
-        let size = 1 << logsize;
+        let size = (1 << logsize) + (rng.next_u64() % (1 << logsize)) as usize;
         let vec_a: Vec<_> = (0..size).map(|_| Scalar::random(&mut rng)).collect();
         // G1 benchmarks
         let vec_B_G1: Vec<_> = (0..size).map(|_| G1Projective::random(&mut rng)).collect();
@@ -112,8 +111,8 @@ fn bench_pairing(c: &mut Criterion) {
 fn bench_multi_pairing(c: &mut Criterion) {
     let mut rng = rand::thread_rng();
     let mut group = c.benchmark_group("bls12_381/msm_Gt");
-    for d in 1..=10 {
-        let size = 1 << d;
+    for d in (4..=10).chain(11..13) {
+        let size = (1 << d) + (rng.next_u64() % (1 << d)) as usize;
         let mut v: Vec<(G1Affine, G2Prepared)> = Vec::new();
         for _ in 0..size {
             let g1 = G1Affine::from(G1Projective::random(&mut rng));
@@ -134,12 +133,12 @@ fn bench_multi_pairing(c: &mut Criterion) {
 
 criterion_group!(
     blstrs_benchmarks,
-    bench_mul,
-    bench_add,
+    // bench_mul,
+    // bench_add,
     bench_msm,
-    bench_invert,
-    bench_pairing,
     bench_multi_pairing,
+    // bench_invert,
+    // bench_pairing,
 );
 
 criterion_main!(blstrs_benchmarks);

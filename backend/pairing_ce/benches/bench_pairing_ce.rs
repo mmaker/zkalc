@@ -145,12 +145,12 @@ fn bench_bls12_381(c: &mut Criterion) {
 
 fn bench_bn254(c: &mut Criterion) {
     let mut group = c.benchmark_group("bn254");
-    bench_add_ff::<pairing_ce::bn256::fr::Fr, _>(&mut group);
-    bench_mul_ff::<pairing_ce::bn256::fr::Fr,_>(&mut group);
-    bench_add_ec::<pairing_ce::bn256::G1, _>(&mut group);
-    bench_mul_ec::<pairing_ce::bn256::G1, _>(&mut group);
+    // bench_add_ff::<pairing_ce::bn256::fr::Fr, _>(&mut group);
+    // bench_mul_ff::<pairing_ce::bn256::fr::Fr,_>(&mut group);
+    // bench_add_ec::<pairing_ce::bn256::G1, _>(&mut group);
+    // bench_mul_ec::<pairing_ce::bn256::G1, _>(&mut group);
     // bench_msm::<Bn256>(&mut group);
-    bench_pairing::<Bn256, _>(&mut group);
+    // bench_pairing::<Bn256, _>(&mut group);
 }
 
 criterion_group!(

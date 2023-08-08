@@ -4,6 +4,7 @@ use criterion::{
 };
 use group::{ff::Field, Curve, Group};
 use pairing::{MillerLoopResult, MultiMillerLoop};
+use rand::RngCore;
 
 fn bench_add_ff<G: Group, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let mut rng = rand::thread_rng();
@@ -70,8 +71,8 @@ fn bench_pairing_product<P: pairing::Engine + MultiMillerLoop, M: Measurement>(
     c: &mut BenchmarkGroup<'_, M>,
 ) {
     let mut rng = rand::thread_rng();
-    for d in 1..=10 {
-        let size = 1 << d;
+    for logsize in (7..=12).chain(11..13) {
+        let size = (1 << logsize) + (rng.next_u64() % (1 << logsize)) as usize;
         let mut v: Vec<(P::G1Affine, P::G2Prepared)> = Vec::new();
         for _ in 0..size {
             let g1 = P::G1::random(&mut rng).to_affine();
@@ -84,7 +85,7 @@ fn bench_pairing_product<P: pairing::Engine + MultiMillerLoop, M: Measurement>(
             v_ref.push((&v[i].0, &v[i].1));
         }
 
-        c.bench_with_input(BenchmarkId::new("msm_Gt", size), &d, |b, _| {
+        c.bench_with_input(BenchmarkId::new("msm_Gt", size), &logsize, |b, _| {
             b.iter(|| P::multi_miller_loop(&v_ref).final_exponentiation())
         });
     }
@@ -92,25 +93,25 @@ fn bench_pairing_product<P: pairing::Engine + MultiMillerLoop, M: Measurement>(
 
 fn bench_bls12_381(c: &mut Criterion) {
     let mut group = c.benchmark_group("bls12_381");
-    bench_add_ff::<bls12_381::G1Projective, _>(&mut group);
-    bench_mul_ff::<bls12_381::G1Projective, _>(&mut group);
-    bench_invert::<bls12_381::G1Projective, _>(&mut group);
-    bench_add_ec::<bls12_381::G1Projective, _>(&mut group);
-    bench_dbl_ec::<bls12_381::G1Projective, _>(&mut group);
-    bench_mul_ec::<bls12_381::G1Projective, _>(&mut group);
-    bench_pairing::<bls12_381::Bls12, _>(&mut group);
+    // bench_add_ff::<bls12_381::G1Projective, _>(&mut group);
+    // bench_mul_ff::<bls12_381::G1Projective, _>(&mut group);
+    // bench_invert::<bls12_381::G1Projective, _>(&mut group);
+    // bench_add_ec::<bls12_381::G1Projective, _>(&mut group);
+    // bench_dbl_ec::<bls12_381::G1Projective, _>(&mut group);
+    // bench_mul_ec::<bls12_381::G1Projective, _>(&mut group);
+    // bench_pairing::<bls12_381::Bls12, _>(&mut group);
     bench_pairing_product::<bls12_381::Bls12, _>(&mut group);
     group.finish();
 }
 
 fn bench_jubjub(c: &mut Criterion) {
     let mut group = c.benchmark_group("jubjub");
-    bench_add_ff::<jubjub::ExtendedPoint, _>(&mut group);
-    bench_mul_ff::<jubjub::ExtendedPoint, _>(&mut group);
-    bench_invert::<jubjub::ExtendedPoint, _>(&mut group);
-    bench_add_ec::<jubjub::ExtendedPoint, _>(&mut group);
-    bench_dbl_ec::<jubjub::ExtendedPoint, _>(&mut group);
-    bench_mul_ec::<jubjub::ExtendedPoint, _>(&mut group);
+    // bench_add_ff::<jubjub::ExtendedPoint, _>(&mut group);
+    // bench_mul_ff::<jubjub::ExtendedPoint, _>(&mut group);
+    // bench_invert::<jubjub::ExtendedPoint, _>(&mut group);
+    // bench_add_ec::<jubjub::ExtendedPoint, _>(&mut group);
+    // bench_dbl_ec::<jubjub::ExtendedPoint, _>(&mut group);
+    // bench_mul_ec::<jubjub::ExtendedPoint, _>(&mut group);
     // XXX MSM not implemented until
     // https://github.com/zkcrypto/group/issues/25
     // is fixed.

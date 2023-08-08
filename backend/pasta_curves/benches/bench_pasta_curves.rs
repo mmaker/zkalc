@@ -5,6 +5,7 @@ use criterion::{
 use group::{ff::Field, Curve, Group};
 use halo2_proofs::arithmetic::{best_fft, best_multiexp};
 use pasta_curves::{arithmetic::CurveAffine, pallas, vesta};
+use rand::RngCore;
 
 fn bench_add_ff<G: Group, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let mut rng = rand::thread_rng();
@@ -61,13 +62,10 @@ fn bench_mul_ec<G: Group, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
 fn bench_msm<C: CurveAffine, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let mut rng = rand::thread_rng();
 
-    for logsize in 1..=21 {
-        let size = 1 << logsize;
-
+    for logsize in (10..=21).chain(24..25) {
         // Dynamically control sample size so that big MSMs don't bench eternally
-        if logsize > 20 {
-            c.sample_size(10);
-        }
+        c.sample_size(10);
+        let size = (1 << logsize) + (rng.next_u64() % (1 << logsize)) as usize;
 
         c.bench_with_input(BenchmarkId::new("msm_G1", size), &size, |b, &size| {
             let scalars = (0..size)
@@ -84,13 +82,9 @@ fn bench_msm<C: CurveAffine, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
 fn bench_fft<Scalar: Field, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let mut rng = rand::thread_rng();
 
-    for logsize in 1..=21 {
-        let degree = 1 << logsize;
-
-        // Dynamically control sample size so that big FFTs don't bench eternally
-        if logsize > 20 {
-            c.sample_size(10);
-        }
+    for logsize in (15..=21).chain(22..23) {
+        let degree = (1 << logsize) + (rng.next_u64() % (1 << logsize)) as usize;
+        c.sample_size(10);
 
         c.bench_with_input(BenchmarkId::new("fft", degree), &degree, |b, &degree| {
             let mut scalars = (0..degree)
@@ -104,12 +98,12 @@ fn bench_fft<Scalar: Field, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
 
 fn bench_pallas(c: &mut Criterion) {
     let mut group = c.benchmark_group("pallas");
-    bench_add_ff::<pallas::Point, _>(&mut group);
-    bench_mul_ff::<pallas::Point, _>(&mut group);
-    bench_invert::<pallas::Point, _>(&mut group);
-    bench_add_ec::<pallas::Point, _>(&mut group);
-    bench_dbl_ec::<pallas::Point, _>(&mut group);
-    bench_mul_ec::<pallas::Point, _>(&mut group);
+    // bench_add_ff::<pallas::Point, _>(&mut group);
+    // bench_mul_ff::<pallas::Point, _>(&mut group);
+    // bench_invert::<pallas::Point, _>(&mut group);
+    // bench_add_ec::<pallas::Point, _>(&mut group);
+    // bench_dbl_ec::<pallas::Point, _>(&mut group);
+    // bench_mul_ec::<pallas::Point, _>(&mut group);
     bench_msm::<pallas::Affine, _>(&mut group);
     bench_fft::<pallas::Scalar, _>(&mut group);
     group.finish();
@@ -117,12 +111,12 @@ fn bench_pallas(c: &mut Criterion) {
 
 fn bench_vesta(c: &mut Criterion) {
     let mut group = c.benchmark_group("vesta");
-    bench_add_ff::<vesta::Point, _>(&mut group);
-    bench_mul_ff::<vesta::Point, _>(&mut group);
-    bench_invert::<vesta::Point, _>(&mut group);
-    bench_add_ec::<vesta::Point, _>(&mut group);
-    bench_dbl_ec::<vesta::Point, _>(&mut group);
-    bench_mul_ec::<vesta::Point, _>(&mut group);
+    // bench_add_ff::<vesta::Point, _>(&mut group);
+    // bench_mul_ff::<vesta::Point, _>(&mut group);
+    // bench_invert::<vesta::Point, _>(&mut group);
+    // bench_add_ec::<vesta::Point, _>(&mut group);
+    // bench_dbl_ec::<vesta::Point, _>(&mut group);
+    // bench_mul_ec::<vesta::Point, _>(&mut group);
     bench_msm::<vesta::Affine, _>(&mut group);
     bench_fft::<vesta::Scalar, _>(&mut group);
     group.finish();

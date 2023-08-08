@@ -56,8 +56,8 @@ function bench_pairing(curve) {
 }
 
 function bench_fft(bench, name, F, range) {
-  for (var i = range[0]; i < range[1]; i++) {
-    const n = Math.pow(2, i);
+  for (var i = 10; i < 23; i++) {
+    let n = Math.pow(2, i) + Math.floor(Math.random() * Math.pow(2, i+1));
     const x = new BigBuffer(n * F.n8);
     for (let i = 0; i < n; i++) {
       x.set(F.random(), i * F.n8);
@@ -69,8 +69,8 @@ function bench_fft(bench, name, F, range) {
 }
 
 function bench_msm(bench, name, G, Fr, range) {
-  for (var i = range[0]; i < range[1]; i++) {
-    let n = Math.pow(2, i);
+  for (var i = 10; i < 23; i++) {
+    let n = Math.pow(2, i) + Math.floor(Math.random() * Math.pow(2, i+1));
     const scalars = new BigBuffer(n * Fr.n8);
     const bases = new BigBuffer(n * G.F.n8 * 2);
     for (let i = 0; i < n; i++) {
@@ -98,15 +98,15 @@ async function run() {
       name = "bn254";
     }
 
-    bench
-      .add(name + "/add_ff", bench_add_ff(c.Fr))
-      .add(name + "/mul_ff", bench_mul_ff(c.Fr))
-      .add(name + "/invert", bench_invert(c.Fr))
-      .add(name + "/mul_G1", bench_mul_ec(c.G1, c.Fr))
-      .add(name + "/mul_G2", bench_mul_ec(c.G2, c.Fr))
-      .add(name + "/pairing", bench_pairing(c))
-      .add(name + "/add_G1", bench_add_ec(c.G1, c.Fr))
-      .add(name + "/add_G2", bench_add_ec(c.G2, c.Fr));
+    // bench
+    //   .add(name + "/add_ff", bench_add_ff(c.Fr))
+    //   .add(name + "/mul_ff", bench_mul_ff(c.Fr))
+    //   .add(name + "/invert", bench_invert(c.Fr))
+    //   .add(name + "/mul_G1", bench_mul_ec(c.G1, c.Fr))
+    //   .add(name + "/mul_G2", bench_mul_ec(c.G2, c.Fr))
+    //   .add(name + "/pairing", bench_pairing(c))
+    //   .add(name + "/add_G1", bench_add_ec(c.G1, c.Fr))
+    //   .add(name + "/add_G2", bench_add_ec(c.G2, c.Fr));
 
     bench_msm(bench, name + "/msm_G1", c.G1, c.Fr, [1, 21]);
     bench_msm(bench, name + "/msm_G2", c.G2, c.Fr, [1, 21]);

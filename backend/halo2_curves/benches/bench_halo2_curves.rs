@@ -8,6 +8,7 @@ use ff::{Field, PrimeField};
 use halo2curves::{bn256, pairing, CurveExt};
 use pairing::Engine;
 use rand_core::OsRng;
+use rand::RngCore;
 
 fn bench_add_ff<F: PrimeField, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     c.bench_function("add_ff", |b| {
@@ -47,7 +48,7 @@ fn bench_mul_ec<G: CurveExt, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
 
 // The MSM algorithm of halo2_curve can be found here: https://github.com/privacy-scaling-explorations/halo2curves/pull/29
 fn bench_msm(group: &mut BenchmarkGroup<'_, criterion::measurement::WallTime>) {
-    const MAX_SIZE: usize = 21;
+    const MAX_SIZE: usize = 25;
     let (points, scalars): (Vec<_>, Vec<_>) = (0..1<<MAX_SIZE)
         .map(|_| {
             let point = bn256::G1Affine::random(OsRng);
@@ -56,13 +57,10 @@ fn bench_msm(group: &mut BenchmarkGroup<'_, criterion::measurement::WallTime>) {
         })
         .unzip();
 
-    for logsize in 1..=MAX_SIZE {
-        // Dynamically control sample size so that big MSMs don't bench eternally
-        if logsize > 20 {
-            group.sample_size(10);
-        }
-
-        let size = 1 << logsize;
+        for logsize in (10..=21).chain(24..25) {
+            // Dynamically control sample size so that big MSMs don't bench eternally
+            c.sample_size(10);
+            let size = (1 << logsize) + (rng.next_u64() % (1 << logsize)) as usize;
 
         let scalars = &scalars[..size];
         let points = &points[..size];
@@ -86,14 +84,14 @@ fn bench_pairing<M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
 
 fn bench_bn254(c: &mut Criterion) {
     let mut group = c.benchmark_group("bn254");
-    bench_add_ff::<bn256::Fr, _>(&mut group);
-    bench_mul_ff::<bn256::Fr, _>(&mut group);
-    bench_add_ec::<bn256::G1, _>(&mut group);
-    bench_add_ec::<bn256::G2, _>(&mut group);
-    bench_mul_ec::<bn256::G1, _>(&mut group);
-    bench_mul_ec::<bn256::G2, _>(&mut group);
+    // bench_add_ff::<bn256::Fr, _>(&mut group);
+    // bench_mul_ff::<bn256::Fr, _>(&mut group);
+    // bench_add_ec::<bn256::G1, _>(&mut group);
+    // bench_add_ec::<bn256::G2, _>(&mut group);
+    // bench_mul_ec::<bn256::G1, _>(&mut group);
+    // bench_mul_ec::<bn256::G2, _>(&mut group);
     bench_msm(&mut group);
-    bench_pairing::<_>(&mut group);
+    // bench_pairing::<_>(&mut group);
 }
 
 criterion_group!(benches, bench_bn254);

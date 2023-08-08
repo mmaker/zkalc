@@ -11,17 +11,15 @@ use ark_std::UniformRand;
 use criterion::measurement::Measurement;
 use criterion::BenchmarkGroup;
 use criterion::{BenchmarkId, Criterion};
+use rand::RngCore;
 
 fn bench_msm<G: CurveGroup, M: Measurement>(c: &mut BenchmarkGroup<'_, M>, group_name: &str) {
     let rng = &mut test_rng();
 
-    for logsize in 1..=21 {
-        let size = 1 << logsize;
-
+    for logsize in (10..=21).chain(24..25) {
         // Dynamically control sample size so that big MSMs don't bench eternally
-        if logsize > 20 {
-            c.sample_size(10);
-        }
+        c.sample_size(10);
+        let size = (1 << logsize) + (rng.next_u64() % (1 << logsize)) as usize;
 
         let scalars = (0..size)
             .map(|_| G::ScalarField::rand(rng))
@@ -39,8 +37,8 @@ fn bench_msm<G: CurveGroup, M: Measurement>(c: &mut BenchmarkGroup<'_, M>, group
 
 fn bench_multi_pairing<P: Pairing, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let rng = &mut test_rng();
-    for logsize in 1..=18 {
-        let size = 1 << logsize;
+    for logsize in (7..=12).chain(11..13) {
+        let size = (1 << logsize) + (rng.next_u64() % (1 << logsize)) as usize;
         let g1s = (0..size)
             .map(|_| P::G1::rand(rng).into_affine())
             .collect::<Vec<_>>();
@@ -53,23 +51,6 @@ fn bench_multi_pairing<P: Pairing, M: Measurement>(c: &mut BenchmarkGroup<'_, M>
     }
 }
 
-fn bench_sum_of_products<F: Field, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
-    let rng = &mut test_rng();
-    c.bench_function("msm_ff", |b| {
-        const SIZE: usize = 256;
-        let lhs: [F; SIZE] = (0..SIZE)
-            .map(|_| F::rand(rng))
-            .collect::<Vec<_>>()
-            .try_into()
-            .unwrap();
-        let rhs: [F; SIZE] = (0..SIZE)
-            .map(|_| F::rand(rng))
-            .collect::<Vec<_>>()
-            .try_into()
-            .unwrap();
-        b.iter(|| F::sum_of_products(&lhs, &rhs))
-    });
-}
 
 fn bench_mul<G: ScalarMul, M: Measurement>(c: &mut BenchmarkGroup<'_, M>, group_name: &str) {
     let rng = &mut test_rng();
@@ -92,8 +73,9 @@ fn bench_pairing<P: Pairing, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
 
 fn bench_fft<F: FftField, M: Measurement>(c: &mut BenchmarkGroup<'_, M>) {
     let mut rng = rand::thread_rng();
-    for logsize in 1..=21 {
-        let degree = 1 << logsize;
+    for logsize in (15..=21).chain(22..23) {
+        let degree = (1 << logsize) + (rng.next_u64() % (1 << logsize)) as usize;
+        c.sample_size(10);
         match GeneralEvaluationDomain::<F>::new(degree) {
             Some(domain) =>  {
                 c.bench_with_input(BenchmarkId::new("fft", degree), &logsize, |b, _| {
@@ -117,10 +99,10 @@ macro_rules ! bench_pairing {
             let mut group = c.benchmark_group($id);
             bench_msm::<G1, _>(&mut group, "G1");
             bench_msm::<G2, _>(&mut group, "G2");
-            bench_mul::<Gt, _>(&mut group, "Gt");
+            // bench_mul::<Gt, _>(&mut group, "Gt");
             bench_multi_pairing::<$pairing, _>(&mut group);
-            bench_pairing::<$pairing, _>(&mut group);
-            bench_sum_of_products::<Fr, _>(&mut group);
+            // bench_pairing::<$pairing, _>(&mut group);
+            // bench_sum_of_products::<Fr, _>(&mut group);
             bench_fft::<Fr, _>(&mut group);
             group.finish();
         }
@@ -139,7 +121,7 @@ fn bench_curve25519(c: &mut Criterion) {
     use ark_curve25519::{EdwardsProjective as G, Fr};
     let mut group = c.benchmark_group("curve25519");
     bench_msm::<G, _>(&mut group, "G1");
-    bench_sum_of_products::<Fr, _>(&mut group);
+    // bench_sum_of_products::<Fr, _>(&mut group);
     bench_fft::<Fr, _>(&mut group);
     group.finish();
 }
@@ -148,7 +130,7 @@ fn bench_secp256k1(c: &mut Criterion) {
     use ark_secp256k1::{Fr, Projective as G};
     let mut group = c.benchmark_group("secp256k1");
     bench_msm::<G, _>(&mut group, "G1");
-    bench_sum_of_products::<Fr, _>(&mut group);
+    // bench_sum_of_products::<Fr, _>(&mut group);
     bench_fft::<Fr, _>(&mut group);
     group.finish();
 }
@@ -157,7 +139,7 @@ fn bench_pallas(c: &mut Criterion) {
     use ark_pallas::{Fr, Projective as G};
     let mut group = c.benchmark_group("pallas");
     bench_msm::<G, _>(&mut group, "G1");
-    bench_sum_of_products::<Fr, _>(&mut group);
+    // bench_sum_of_products::<Fr, _>(&mut group);
     bench_fft::<Fr, _>(&mut group);
     group.finish();
 }
@@ -166,7 +148,7 @@ fn bench_vesta(c: &mut Criterion) {
     use ark_pallas::{Fr, Projective as G};
     let mut group = c.benchmark_group("vesta");
     bench_msm::<G, _>(&mut group, "G1");
-    bench_sum_of_products::<Fr, _>(&mut group);
+    // bench_sum_of_products::<Fr, _>(&mut group);
     bench_fft::<Fr, _>(&mut group);
     group.finish();
 }

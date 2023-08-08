@@ -6,6 +6,7 @@ use curve25519_dalek::ristretto::RistrettoPoint;
 use curve25519_dalek::scalar::Scalar;
 use curve25519_dalek::traits::MultiscalarMul;
 use rand::rngs::OsRng;
+use rand::RngCore;
 
 fn bench_add_ff(c: &mut Criterion) {
     let mut rng = OsRng;
@@ -45,14 +46,12 @@ fn bench_mul_ff(c: &mut Criterion) {
 
 fn bench_msm(c: &mut Criterion) {
     let mut rng = OsRng;
-    for logsize in 1..=21 {
-        let mut group = c.benchmark_group("curve25519/msm");
-        let size = 1 << logsize;
-
+    for logsize in (10..=21).chain(24..25) {
         // Dynamically control sample size so that big MSMs don't bench eternally
-        if logsize > 20 {
-            group.sample_size(10);
-        }
+        let size = (1 << logsize) + (rng.next_u64() % (1 << logsize)) as usize;
+
+        let mut group = c.benchmark_group("curve25519/msm");
+        group.sample_size(10);
 
         group.bench_with_input(BenchmarkId::new("G1", size), &size, |b, &size| {
             let scalars = (0..size)
@@ -68,11 +67,11 @@ fn bench_msm(c: &mut Criterion) {
 
 criterion_group!(
     msm_benchmarks,
-    bench_mul_ff,
-    bench_mul_ec,
-    bench_add_ff,
+    // bench_mul_ff,
+    // bench_mul_ec,
+    // bench_add_ff,
     bench_msm,
-    bench_invert_ff
+    // bench_invert_ff
 );
 
 criterion_main!(msm_benchmarks);
