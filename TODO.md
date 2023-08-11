@@ -20,4 +20,4 @@ Here is a bunch of stuff we could add to zkalc in the future:
 - **Support new functions**
   - Fp: Square, Sqrt
   - G1/2: Subgroup membership check, cofactor clearing
-  - GT: Square (cyclotomic), MSM
+  - GT: Square (cyclotomic)
