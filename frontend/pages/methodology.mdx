@@ -47,9 +47,9 @@ We store our benchmarking results in JSON inside [`frontend/data`](https://githu
 
 Given a curve key `curve` (available in `curves.json`), a library key `lib` that supports the given curve (available in `libraries.json`) and a machine key `machine` (available in `machines.json`), it is possible to fetch the samples in the file `data/{curve}/{library}/{machine}.json`.
 
-For instance, this is the file reporting the benchmarks for curve BLS12-381 using arkworks on an M1 Pro 2021:
+For instance, this is the file reporting the benchmarks for curve BLS12-381 using zkcrypto's pairing on an AWS m5.2xlarge instance:
 
-<GitHubFile url="https://github.com/asn-d6/zkalc/blob/main/frontend/data/bls12-381/arkworks/m1pro.json" />
+<GitHubFile url="https://github.com/mmaker/zkalc/blob/main/frontend/data/bls12_381/zkcrypto/aws_m5.2xlarge.json" />
 
 
 ## Estimating the running time
