@@ -9,7 +9,6 @@ Here is a bunch of stuff we could add to zkalc in the future:
   - Barycentric evaluation
   - Sumcheck
 - **extend supportedlibraries**:
-  - [gnark](https://github.com/ConsenSys/gnark)
   - [constantine](https://github.com/mratsim/constantine)
   - [miracl](https://github.com/miracl/core)
   - [relic](https://github.com/relic-toolkit/relic)
