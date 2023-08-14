@@ -13,6 +13,11 @@
   margin-top: auto;
 }
 
+
+body,html {
+  margin: 0;
+}
+
 .invalid-ingredient {
   background-color: #ffdada;
 }
