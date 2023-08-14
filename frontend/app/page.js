@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect } from "react";
 
 import "katex/dist/katex.min.css";
@@ -60,7 +62,7 @@ const katexSettings = {
   ],
 };
 
-const Home = () => {
+const HomePage = () => {
   let ingredientsList = React.useRef(null);
 
   useEffect(() => {
@@ -317,4 +319,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

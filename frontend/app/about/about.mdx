@@ -1,12 +1,12 @@
 import "katex/dist/katex.min.css";
 
 import { Col } from "antd";
-import { Layout } from "../components/layout";
+import { Layout } from "../../components/layout";
 import { InlineMath } from "react-katex";
 
 import Link from "next/link";
 import Image from "next/image";
-import logo from "../public/logo.png";
+import logo from "../../public/logo.png";
 
 <Col span={16} offset={4} style={{ fontSize: "15px"}}>
 
@@ -81,7 +81,7 @@ consider modifying the benchmark parameters (e.g. increase/decrease the size of
 the MSMs) and get in touch with us!
 
 ### Testing new curves and libraries
-  
+
 To add benchmarks for a different elliptic curve, write benchmarks for the new
 curve in the `backend/` directory following the
 [already existing conventions](https://github.com/asn-d6/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs).

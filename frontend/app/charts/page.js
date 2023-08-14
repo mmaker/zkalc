@@ -1,30 +1,32 @@
+'use client'
+
 import "katex/dist/katex.min.css";
 
 import { Select, Row, Space, Typography, Dropdown } from "antd";
 import { SwapOutlined, DownOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { Layout } from "../components/layout";
-import { Plot, formatTimeTick } from "../components/plot";
+import { Layout } from "../../components/layout";
+import { Plot, formatTimeTick } from "../../components/plot";
 import { ResponsiveBar } from "@nivo/bar";
 
-import { getEstimates } from "../lib/estimates";
-import libraries from "../data/libraries.json";
-import curves from "../data/curves.json";
-import defaults from "../data/defaults.json";
+import { getEstimates } from "../../lib/estimates";
+import libraries from "../../data/libraries.json";
+import curves from "../../data/curves.json";
+import defaults from "../../data/defaults.json";
 
 import {
   filterSamples,
   samplesToBarData,
   samplesToPlotData,
-} from "../lib/samples";
+} from "../../lib/samples";
 
 import {
   libraries_selection,
   operations,
   operations_selection,
   curves_selection,
-} from "../lib/selections";
-import { humanTime } from "../lib/time";
+} from "../../lib/selections";
+import { humanTime } from "../../lib/time";
 
 const { Text } = Typography;
 const compStrategyOptions = [
