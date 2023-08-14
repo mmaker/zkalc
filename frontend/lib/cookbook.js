@@ -2,7 +2,7 @@ const estimate_kzg = {
   setup: (est, n) => est("mul_G1")(n),
   commit: (est, n) => est("msm_G1")(n),
   open: (est, n) => est("mul_ff")(n) + est("add_ff")(n) + est("msm_G1")(n - 1),
-  verify: (est, n) => est("add_G1")(1) + est("mul_G1")(1) + est("pairing")(2),
+  verify: (est, _n) => est("add_G1")(1) + est("mul_G1")(1) + est("pairing")(2),
 };
 
 const estimate_bulletproof = {

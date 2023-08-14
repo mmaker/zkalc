@@ -15,24 +15,18 @@ import curves from "../../data/curves.json";
 import defaults from "../../data/defaults.json";
 
 import {
-  filterSamples,
   samplesToBarData,
   samplesToPlotData,
 } from "../../lib/samples";
 
 import {
   libraries_selection,
-  operations,
   operations_selection,
   curves_selection,
 } from "../../lib/selections";
 import { humanTime } from "../../lib/time";
 
 const { Text } = Typography;
-const compStrategyOptions = [
-  { value: false, label: "Curve:" },
-  { value: true, label: "Library:" },
-];
 
 const Home = () => {
   let defaultLib = defaults.lib;
@@ -43,7 +37,7 @@ const Home = () => {
 
   let [curve, setCurve] = useState(defaultCurve);
   let [lib, setLib] = useState(defaultLib);
-  let [machine, setMachine] = useState(defaultMachine);
+  let [machine, _setMachine] = useState(defaultMachine);
   let [op, setOp] = useState(defaultOp);
   let [fixLib, setFixLib] = useState(defaultFixLib);
 

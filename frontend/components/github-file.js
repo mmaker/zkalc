@@ -1,3 +1,5 @@
+'use client'
+
 import { useEffect, useState } from "react";
 import hljs from "highlight.js";
 //   https://github.com/asn-d6/zkalc/blob/main/backend/arkworks/benches/bench_arkworks.rs#L24-L31

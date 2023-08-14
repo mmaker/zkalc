@@ -40,7 +40,6 @@ const simpleEstimation = (samples) => {
 };
 
 const nOverLognEstimation = (samples) => {
-  let { range, results } = samples;
   return (n) => {
     let { range, results } = samples;
     if (n > range[range.length - 1]) { // extrapolate to the right (do regression)
@@ -79,7 +78,6 @@ const nOverLognEstimation = (samples) => {
 };
 
 const nLognEstimation = (samples) => {
-  let { range, results } = samples;
   return (n) => {
     let { range, results } = samples;
     if (n > range[range.length - 1]) { // extrapolate to the right (do regression)
@@ -174,6 +172,6 @@ export const estimator = (curve, lib, machine, op) => {
     let f = estimating_functions[op] || estimating_functions["default"];
     return f(samples);
   } else {
-    return (n) => null;
+    return (_n) => null;
   }
 };

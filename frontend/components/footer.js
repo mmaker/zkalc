@@ -2,7 +2,7 @@ import React from "react";
 import { Typography } from "antd";
 import { authors } from "../../AUTHORS";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const Authors = () => {
   return (

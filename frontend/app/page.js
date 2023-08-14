@@ -4,24 +4,15 @@ import React, { useEffect } from "react";
 
 import "katex/dist/katex.min.css";
 
-import { InlineMath, BlockMath } from "react-katex";
 import {
-  MinusCircleOutlined,
   PlusOutlined,
   DownOutlined,
-  QuestionCircleOutlined,
-  ExperimentOutlined,
-  GithubOutlined,
 } from "@ant-design/icons";
 import {
-  Alert,
   Button,
   Col,
-  ConfigProvider,
   Form,
   Input,
-  List,
-  Radio,
   Row,
   Select,
   Space,
@@ -53,14 +44,14 @@ import libraries from "../data/libraries.json";
 import machines from "../data/machines.json";
 import defaults from "../data/defaults.json";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
-const katexSettings = {
-  delimiters: [
-    { left: "$$", right: "$$", display: true },
-    { left: "$", right: "$", display: false },
-  ],
-};
+// const katexSettings = {
+//   delimiters: [
+//     { left: "$$", right: "$$", display: true },
+//     { left: "$", right: "$", display: false },
+//   ],
+// };
 
 const HomePage = () => {
   let ingredientsList = React.useRef(null);

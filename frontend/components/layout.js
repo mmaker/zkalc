@@ -3,9 +3,6 @@ import { Footer } from "./footer";
 import { Header } from "./header";
 import * as antd from "antd";
 
-const { Row, Col, Tooltip, Typography } = antd;
-const { Title } = Typography;
-
 export const Layout = (kwargs) => {
   let onClickTitle = kwargs.onClickTitle || (()=>{window.location.href = '/'});
   let children = kwargs.children;

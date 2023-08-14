@@ -1,5 +1,5 @@
 import { List, Col, Tooltip } from "antd";
-import { formatNumber, formatTime, formatFormula } from "../lib/formula";
+import { formatFormula } from "../lib/formula";
 
 import { InlineMath } from "react-katex";
 import { MinusCircleOutlined } from "@ant-design/icons";

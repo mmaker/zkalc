@@ -1,6 +1,5 @@
-import { expect, test } from 'vitest'
+import { test } from 'vitest'
 import { estimates, estimator } from './estimates';
-import { cookbook } from './cookbook';
 import { humanTime } from './time';
 
 
@@ -19,7 +18,7 @@ test('estimation_error', () => {
                 for (let op in controlData) {
                     controlData[op].range.map((n, i) => {
                         const controlResult = controlData[op].results[i];
-                        const controlStdDev = controlData[op].stddev[i];
+                        // const controlStdDev = controlData[op].stddev[i];
                         const estimatedResult = estimator(curve, library, machine, op)(n);
                         if (estimatedResult !== null) {
                             const error = Math.abs(controlResult - estimatedResult) / controlResult * 100;

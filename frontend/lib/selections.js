@@ -1,4 +1,4 @@
-import { InlineMath, BlockMath } from "react-katex";
+import { InlineMath } from "react-katex";
 import { Typography } from "antd";
 import { estimates } from "../lib/estimates";
 

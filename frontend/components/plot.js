@@ -16,10 +16,10 @@ const tooltipStyle = {
   marginBottom: "2px",
 };
 
-const linspace = (start, stop, num) => {
-  const step = (stop - start) / num;
-  return Array.from({ length: num }, (_, i) => start + step * i);
-};
+// const linspace = (start, stop, num) => {
+//   const step = (stop - start) / num;
+//   return Array.from({ length: num }, (_, i) => start + step * i);
+// };
 
 const geomspace = (start, stop, num) => {
   const step = (Math.log(stop) - Math.log(start)) / num;
@@ -36,20 +36,20 @@ const formatSizeTick = (v) => {
   return Math.log2(v).toFixed(0);
 };
 
-/// increase the density of the array by adding the middle elements
-const denser = (xs) => {
-  // get the middle elements
-  var ys = xs.map((x, i) => {
-    if (i === 0) {
-      return x;
-    } else {
-      return (x + xs[i - 1]) / 2;
-    }
-  });
-  ys.shift();
-  // concat and sort
-  return [...xs, ...ys].sort((a, b) => a - b);
-};
+// /// increase the density of the array by adding the middle elements
+// const denser = (xs) => {
+//   // get the middle elements
+//   var ys = xs.map((x, i) => {
+//     if (i === 0) {
+//       return x;
+//     } else {
+//       return (x + xs[i - 1]) / 2;
+//     }
+//   });
+//   ys.shift();
+//   // concat and sort
+//   return [...xs, ...ys].sort((a, b) => a - b);
+// };
 
 export const functionToPlotData = (range, f, id = "foo") => {
   const xs = range;
@@ -116,7 +116,7 @@ export const PlotPointsAndEstimates = ({ ...kwargs }) => {
 
   let smaller_samples = filterSamples(
     samples,
-    ([i, x, y]) => x > 2 && x < 1 << 22
+    ([_i, x, _y]) => x > 2 && x < 1 << 22
   );
   let points = samplesToPlotData(smaller_samples, "datapoints");
   let estimator_f = estimator(curve, lib, machine, op);
@@ -163,8 +163,8 @@ export const PlotExtrapolation = ({ ...kwargs }) => {
   const start = 1 << 2;
   const end = 1 << 30;
 
-  let smaller_samples = filterSamples(samples, ([i, x, y]) => x >= start);
-  let range = geomspace(start, end, 20);
+  let smaller_samples = filterSamples(samples, ([_i, x, _y]) => x >= start);
+  // let range = geomspace(start, end, 20);
   let points = samplesToPlotData(smaller_samples, "interpolation");
   let estimator_f = estimator(curve, lib, machine, op);
 
@@ -252,7 +252,7 @@ export const PlotPoints = ({ ...kwargs }) => {
   let samples = getEstimates(defaults.curve, defaults.lib, defaults.machine)["msm_G1"];
   let smaller_samples = filterSamples(
     samples,
-    ([i, x, y]) => x > 2 && x < 1 << 22
+    ([_i, x, _y]) => x > 2 && x < 1 << 22
   );
   let points = samplesToPlotData(smaller_samples, "datapoints");
   let data = [points];
