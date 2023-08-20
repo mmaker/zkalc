@@ -86,7 +86,6 @@
         },
         "ffjavascript": {
             "aws_m5.2xlarge": "bn254/ffjavascript/aws_m5.2xlarge.json",
-            "aws_m6g.8xlarge": "bn254/ffjavascript/aws_m6g.8xlarge.json",
             "aws_m6i.8xlarge": "bn254/ffjavascript/aws_m6i.8xlarge.json"
         },
         "gnark_crypto": {
@@ -140,6 +139,9 @@
         }
     },
     "secp256k1": {
+        "arkworks": {
+            "aws_m6i.8xlarge": "secp256k1/arkworks/aws_m6i.8xlarge.json"
+        },
         "gnark_crypto": {
             "aws_m5.2xlarge": "secp256k1/gnark_crypto/aws_m5.2xlarge.json",
             "aws_m5.large": "secp256k1/gnark_crypto/aws_m5.large.json",
