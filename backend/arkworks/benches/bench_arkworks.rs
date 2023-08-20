@@ -22,18 +22,18 @@ fn bench_msm<G: CurveGroup, M: Measurement>(c: &mut BenchmarkGroup<'_, M>, group
         if logsize > 20 {
             c.sample_size(10);
         }
-
-        let scalars = (0..size)
-            .map(|_| G::ScalarField::rand(rng))
-            .collect::<Vec<_>>();
-        let gs = (0..size)
-            .map(|_| G::rand(rng).into_affine())
-            .collect::<Vec<_>>();
         c.bench_with_input(
             BenchmarkId::new(format!("msm_{}", group_name), size),
             &logsize,
-            |b, _| b.iter(|| G::msm(&gs, &scalars)),
-        );
+            |b, _| {
+                let scalars = (0..size)
+                    .map(|_| G::ScalarField::rand(rng))
+                    .collect::<Vec<_>>();
+                let gs = (0..size)
+                    .map(|_| G::rand(rng).into_affine())
+                    .collect::<Vec<_>>();
+                b.iter(|| G::msm(&gs, &scalars));
+            });
     }
 }
 
@@ -41,13 +41,13 @@ fn bench_multi_pairing<P: Pairing, M: Measurement>(c: &mut BenchmarkGroup<'_, M>
     let rng = &mut test_rng();
     for logsize in 1..=18 {
         let size = 1 << logsize;
-        let g1s = (0..size)
+        c.bench_with_input(BenchmarkId::new("msm_Gt", size), &logsize, |b, _| {
+            let g1s = (0..size)
             .map(|_| P::G1::rand(rng).into_affine())
             .collect::<Vec<_>>();
         let g2s = (0..size)
             .map(|_| P::G2::rand(rng).into_affine())
             .collect::<Vec<_>>();
-        c.bench_with_input(BenchmarkId::new("msm_Gt", size), &logsize, |b, _| {
             b.iter(|| P::multi_pairing(&g1s, &g2s))
         });
     }
@@ -74,7 +74,6 @@ fn bench_sum_of_products<F: Field, M: Measurement>(c: &mut BenchmarkGroup<'_, M>
 fn bench_mul<G: ScalarMul, M: Measurement>(c: &mut BenchmarkGroup<'_, M>, group_name: &str) {
     let rng = &mut test_rng();
     c.bench_function(format!("mul_{}", group_name), |b| {
-        const SIZE: usize = 256;
         let lhs = G::rand(rng);
         let rhs = G::ScalarField::rand(rng);
         b.iter(|| lhs * &rhs)
