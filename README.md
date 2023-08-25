@@ -35,11 +35,11 @@ The files generated will end up stored in `perf/data/new/`
 
 ## Processing Benchmarks
 
-The produced benchmarks are then post-processed in a simpler and uniform json format.
-For this step, we require `python3`. In order to generate data accordingly, run:
+For this step, we require `python3`. Benchmarks are assumed to be in a parent folder called `bench-data` resembling [our raw data repository](https://github.com/zkCollective/bench-data).
 
 ```bash
-    $ python3 fit.py < json > output.json
+    $ cd perf
+    $ make
 ```
 
 ## Fronted development
@@ -47,6 +47,7 @@ To develop the frontend, `npm` is required.
 Run:
 
 ```bash
+    $ cd frontend
     $ npm i
     $ npm run dev
 ```
