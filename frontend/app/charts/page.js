@@ -13,6 +13,7 @@ import { getEstimates } from "../../lib/estimates";
 import libraries from "../../data/libraries.json";
 import curves from "../../data/curves.json";
 import defaults from "../../data/defaults.json";
+import machines from "../../data/machines.json";
 
 import {
   samplesToBarData,
@@ -21,6 +22,7 @@ import {
 
 import {
   libraries_selection,
+  machines_selection,
   operations_selection,
   curves_selection,
 } from "../../lib/selections";
@@ -120,6 +122,29 @@ const Home = () => {
             options={operations_selection}
             onChange={setOp}
           />
+          using &nbsp;
+          <Dropdown
+            menu={{
+              items: machines_selection[curve][lib].reduce(function (res, selectedMachine) {
+                if (!selectedMachine.disabled) {
+                  res.push({
+                    label: selectedMachine.label,
+                    onClick: () => _setMachine(selectedMachine.key),
+                  })
+                }
+                
+                return res;
+              }, [])
+            }}
+          >
+            <a onClick={(e) => e.preventDefault()}>
+              <Space>
+                {machines[machine].label}
+                <DownOutlined style={{ fontSize: "10px", margin: "0px" }} />
+                &nbsp;
+              </Space>
+            </a>
+          </Dropdown>
         </Space>
       </Row>
     );
