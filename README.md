@@ -1,6 +1,6 @@
 # [zkalc](https://zka.lc) is a cryptographic calculator!
 
-[zkalc](https://zka.lc) helps you calculate how much time cryptographic operations take on a real computer. 
+[zkalc](https://zka.lc) helps you calculate how much time cryptographic operations take on a real computer.
 If you use our software, consider [citing us](/CITATION.bib)!
 
 
@@ -13,7 +13,6 @@ We hope that zkalc can help shorten the gap between cryptography and practice:
 - Protocol designers can more easily tune the parameters of their protocol depending on their requirements
 
 Please see the various pages of [the website](https://zka.lc) for more information on how zkalc works.
-
 
 ## Prerequisites
 

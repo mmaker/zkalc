@@ -86,6 +86,7 @@
         },
         "ffjavascript": {
             "aws_m5.2xlarge": "bn254/ffjavascript/aws_m5.2xlarge.json",
+            "aws_m6g.8xlarge": "bn254/ffjavascript/aws_m6g.8xlarge.json",
             "aws_m6i.8xlarge": "bn254/ffjavascript/aws_m6i.8xlarge.json"
         },
         "gnark_crypto": {
