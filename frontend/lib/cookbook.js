@@ -6,8 +6,7 @@ const estimate_kzg = {
 };
 
 const estimate_bulletproof = {
-  verify: (est, _n) => {
-    const n = Math.ceil(Math.log2(_n));
+  verify: (est, n) => {
     return (
       // fold the generators
       est("mul_G1")(2 * n) +
@@ -20,8 +19,7 @@ const estimate_bulletproof = {
       est("mul_G1")(3)
     );
   },
-  prove: (est, _n) => {
-    const n = Math.ceil(Math.log2(_n));
+  prove: (est, n) => {
     return (
       // fold the witness vectors
       est("mul_ff")(n / 2) +
