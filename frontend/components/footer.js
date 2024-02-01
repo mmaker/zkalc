@@ -17,7 +17,6 @@ const Authors = () => {
 export const Footer = () => {
   return (
     <div id="footer">
-      <Authors />
     </div>
   );
 };
