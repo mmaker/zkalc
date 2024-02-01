@@ -11,7 +11,7 @@ import {
   QuestionCircleOutlined,
   LineChartOutlined,
   ExperimentOutlined,
-  GithubOutlined,
+//  GithubOutlined,
 } from "@ant-design/icons";
 
 export const Header = ({
@@ -45,12 +45,6 @@ export const Header = ({
         <Link href="/methodology">
           <Tooltip title="Methodology">
             <ExperimentOutlined style={{ fontSize: "25px", color: "black" }} />
-          </Tooltip>
-        </Link>
-        &nbsp;&nbsp;&nbsp;
-        <Link href="https://github.com/mmaker/zkalc">
-          <Tooltip title="Github">
-            <GithubOutlined style={{ fontSize: "25px", color: "black" }} />
           </Tooltip>
         </Link>
         &nbsp;&nbsp;&nbsp;
