@@ -21,7 +21,7 @@ Cryptographers tend to be good at cryptography but they can be quite bad at
 estimating the time it takes a computer to run their schemes.
 
 <center>
-_[zkalc](https://github.com/asn-d6/zkalc) helps you calculate how much time
+_[zkalc](https://github.com/mmaker/zkalc) helps you calculate how much time
 cryptographic operations take on a real computer_
 </center>
 
@@ -58,7 +58,7 @@ follow the instructions below:
 
 - Find the existing benchmarks in the `backend/` directory, and add benchmark
   code for the new cryptographic operation following the
-  [already existing conventions](https://github.com/asn-d6/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs).
+  [already existing conventions](https://github.com/mmaker/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs).
 - Run all benchmarks on your machine by running `make` in the `backend/`
   directory.
 
@@ -84,15 +84,15 @@ the MSMs) and get in touch with us!
 
 To add benchmarks for a different elliptic curve, write benchmarks for the new
 curve in the `backend/` directory following the
-[already existing conventions](https://github.com/asn-d6/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs).
+[already existing conventions](https://github.com/mmaker/zkalc/blob/main/backend/blstrs/benches/bench_blstrs.rs).
 
 Note that if your benchmarks do not use the
 [criterion benchmark framework](https://docs.rs/criterion/latest/criterion/) you
 will need to adapt your benchmark framework to output a JSON file that the zkalc
 interpolation script understands (it currently
-[understands a small subset](https://github.com/asn-d6/zkalc/blob/main/perf/fit.py#L128)
+[understands a small subset](https://github.com/mmaker/zkalc/blob/main/perf/fit.py#L128)
 of the
-[format](https://github.com/asn-d6/zkalc/blob/main/perf/blstrs/estimates.json)
+[format](https://github.com/mmaker/zkalc/blob/main/perf/blstrs/estimates.json)
 of criterion's `estimates.json`). If you are confused, get in touch and we will
 help.
 

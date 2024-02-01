@@ -48,7 +48,7 @@ export const Header = ({
           </Tooltip>
         </Link>
         &nbsp;&nbsp;&nbsp;
-        <Link href="https://github.com/asn-d6/zkalc">
+        <Link href="https://github.com/mmaker/zkalc">
           <Tooltip title="Github">
             <GithubOutlined style={{ fontSize: "25px", color: "black" }} />
           </Tooltip>
