@@ -48,6 +48,12 @@ export const Header = ({
           </Tooltip>
         </Link>
         &nbsp;&nbsp;&nbsp;
+        <Link href="https://github.com/asn-d6/zkalc">
+          <Tooltip title="Github">
+            <GithubOutlined style={{ fontSize: "25px", color: "black" }} />
+          </Tooltip>
+        </Link>
+        &nbsp;&nbsp;&nbsp;
         <Link href="/about">
           <Tooltip title="About zkalc">
             <QuestionCircleOutlined
