@@ -12,11 +12,11 @@ blstrs:
 	cd blstrs; \
 		cargo criterion --message-format=json 1> ../$(OUTDIR)/blstrs/blstrs.json
 
-arkworks: arkworks_curves
+arkworks: arkworks_algebra
 	cd arkworks; \
 		cargo criterion --message-format=json 1> ../$(OUTDIR)/arkworks/arkworks.json
 
-arkworks_curves:
+arkworks_algebra:
 	git clone https://github.com/arkworks-rs/algebra.git || true
 	cd algebra/curves; \
 		cargo criterion --features ark-ec/parallel,ark-ff/asm --message-format=json 1> ../../$(OUTDIR)/arkworks/ark-curves.json
@@ -57,4 +57,4 @@ clean:
 	@rm -rf gnark/gnark-crypto
 	@rm -rf $(OUTDIR)
 
-.PHONY: init blstrs arkworks curve25519-dalek gnark pasta_curves zkcrypto pairing_ce halo2_curves arkworks_curves_benchmarks ffjavascript clean
+.PHONY: init blstrs arkworks curve25519-dalek gnark pasta_curves zkcrypto pairing_ce halo2_curves arkworks_algebra ffjavascript clean
