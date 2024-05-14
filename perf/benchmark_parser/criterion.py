@@ -4,7 +4,7 @@ import sys
 import json
 from collections import defaultdict
 
-from .common import to_nanoseconds, parse_benchmark_description, export_measurement
+from .common import to_nanoseconds, parse_benchmark_description
 
 ark_names = {
     'Double': 'double',

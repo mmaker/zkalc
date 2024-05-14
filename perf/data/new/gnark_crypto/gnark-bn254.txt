@@ -1,0 +1,3 @@
+~/Code/zkbench/zkalc/backend/gnark/gnark-crypto/ecc ~/Code/zkbench/zkalc/backend/gnark
+~/Code/zkbench/zkalc/backend/gnark/gnark-crypto/ecc/bn254 ~/Code/zkbench/zkalc/backend/gnark/gnark-crypto/ecc ~/Code/zkbench/zkalc/backend/gnark
+~/Code/zkbench/zkalc/backend/gnark/gnark-crypto/ecc/bn254/fr ~/Code/zkbench/zkalc/backend/gnark/gnark-crypto/ecc/bn254 ~/Code/zkbench/zkalc/backend/gnark/gnark-crypto/ecc ~/Code/zkbench/zkalc/backend/gnark

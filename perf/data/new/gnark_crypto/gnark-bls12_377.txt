@@ -1,0 +1,13 @@
+~/Code/zkbench/zkalc/backend/gnark/gnark-crypto/ecc ~/Code/zkbench/zkalc/backend/gnark
+~/Code/zkbench/zkalc/backend/gnark/gnark-crypto/ecc/bls12-377 ~/Code/zkbench/zkalc/backend/gnark/gnark-crypto/ecc ~/Code/zkbench/zkalc/backend/gnark
+~/Code/zkbench/zkalc/backend/gnark/gnark-crypto/ecc/bls12-377/fr ~/Code/zkbench/zkalc/backend/gnark/gnark-crypto/ecc/bls12-377 ~/Code/zkbench/zkalc/backend/gnark/gnark-crypto/ecc ~/Code/zkbench/zkalc/backend/gnark
+goos: darwin
+goarch: arm64
+pkg: github.com/consensys/gnark-crypto/ecc/bls12-377/fr
+BenchmarkElementAdd-10    	274556007	         5.120 ns/op
+PASS
+ok  	github.com/consensys/gnark-crypto/ecc/bls12-377/fr	1.972s
+goos: darwin
+goarch: arm64
+pkg: github.com/consensys/gnark-crypto/ecc/bls12-377/fr
+BenchmarkElementMul-10    	

@@ -2,165 +2,193 @@
     "BW6_761": {
         "arkworks": {
             "aws_m5.2xlarge": "BW6_761/arkworks/aws_m5.2xlarge.json",
-            "aws_m6g.8xlarge": "BW6_761/arkworks/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "BW6_761/arkworks/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "BW6_761/arkworks/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "BW6_761/arkworks/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "BW6_761/arkworks/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "BW6_761/arkworks/aws_p4d.24xlarge.json"
         }
     },
     "CP6_782": {
         "arkworks": {
             "aws_m5.2xlarge": "CP6_782/arkworks/aws_m5.2xlarge.json",
-            "aws_m6g.8xlarge": "CP6_782/arkworks/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "CP6_782/arkworks/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "CP6_782/arkworks/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "CP6_782/arkworks/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "CP6_782/arkworks/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "CP6_782/arkworks/aws_p4d.24xlarge.json"
         }
     },
     "MNT4_298": {
         "arkworks": {
             "aws_m5.2xlarge": "MNT4_298/arkworks/aws_m5.2xlarge.json",
-            "aws_m6g.8xlarge": "MNT4_298/arkworks/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "MNT4_298/arkworks/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "MNT4_298/arkworks/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "MNT4_298/arkworks/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "MNT4_298/arkworks/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "MNT4_298/arkworks/aws_p4d.24xlarge.json"
         }
     },
     "MNT6_298": {
         "arkworks": {
             "aws_m5.2xlarge": "MNT6_298/arkworks/aws_m5.2xlarge.json",
-            "aws_m6g.8xlarge": "MNT6_298/arkworks/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "MNT6_298/arkworks/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "MNT6_298/arkworks/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "MNT6_298/arkworks/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "MNT6_298/arkworks/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "MNT6_298/arkworks/aws_p4d.24xlarge.json"
         }
     },
     "bls12_377": {
         "arkworks": {
             "aws_m5.2xlarge": "bls12_377/arkworks/aws_m5.2xlarge.json",
-            "aws_m6g.8xlarge": "bls12_377/arkworks/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "bls12_377/arkworks/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "bls12_377/arkworks/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "bls12_377/arkworks/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "bls12_377/arkworks/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "bls12_377/arkworks/aws_p4d.24xlarge.json"
         },
         "gnark_crypto": {
             "aws_m5.2xlarge": "bls12_377/gnark_crypto/aws_m5.2xlarge.json",
-            "aws_m5.large": "bls12_377/gnark_crypto/aws_m5.large.json",
-            "aws_m6g.8xlarge": "bls12_377/gnark_crypto/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "bls12_377/gnark_crypto/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "bls12_377/gnark_crypto/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "bls12_377/gnark_crypto/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "bls12_377/gnark_crypto/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "bls12_377/gnark_crypto/aws_p4d.24xlarge.json"
         }
     },
     "bls12_381": {
         "arkworks": {
             "aws_m5.2xlarge": "bls12_381/arkworks/aws_m5.2xlarge.json",
-            "aws_m6g.8xlarge": "bls12_381/arkworks/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "bls12_381/arkworks/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "bls12_381/arkworks/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "bls12_381/arkworks/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "bls12_381/arkworks/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "bls12_381/arkworks/aws_p4d.24xlarge.json"
         },
         "blstrs": {
             "aws_m5.2xlarge": "bls12_381/blstrs/aws_m5.2xlarge.json",
-            "aws_m5.large": "bls12_381/blstrs/aws_m5.large.json",
-            "aws_m6g.8xlarge": "bls12_381/blstrs/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "bls12_381/blstrs/aws_m6i.8xlarge.json"
-        },
-        "ffjavascript": {
-            "aws_m5.2xlarge": "bls12_381/ffjavascript/aws_m5.2xlarge.json",
-            "aws_m5.large": "bls12_381/ffjavascript/aws_m5.large.json",
-            "aws_m6g.8xlarge": "bls12_381/ffjavascript/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "bls12_381/ffjavascript/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "bls12_381/blstrs/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "bls12_381/blstrs/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "bls12_381/blstrs/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "bls12_381/blstrs/aws_p4d.24xlarge.json"
         },
         "gnark_crypto": {
             "aws_m5.2xlarge": "bls12_381/gnark_crypto/aws_m5.2xlarge.json",
-            "aws_m5.large": "bls12_381/gnark_crypto/aws_m5.large.json",
-            "aws_m6g.8xlarge": "bls12_381/gnark_crypto/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "bls12_381/gnark_crypto/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "bls12_381/gnark_crypto/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "bls12_381/gnark_crypto/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "bls12_381/gnark_crypto/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "bls12_381/gnark_crypto/aws_p4d.24xlarge.json"
         },
         "pairing_ce": {
             "aws_m5.2xlarge": "bls12_381/pairing_ce/aws_m5.2xlarge.json",
-            "aws_m5.large": "bls12_381/pairing_ce/aws_m5.large.json",
-            "aws_m6g.8xlarge": "bls12_381/pairing_ce/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "bls12_381/pairing_ce/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "bls12_381/pairing_ce/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "bls12_381/pairing_ce/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "bls12_381/pairing_ce/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "bls12_381/pairing_ce/aws_p4d.24xlarge.json"
         },
         "zkcrypto": {
             "aws_m5.2xlarge": "bls12_381/zkcrypto/aws_m5.2xlarge.json",
-            "aws_m5.large": "bls12_381/zkcrypto/aws_m5.large.json",
-            "aws_m6g.8xlarge": "bls12_381/zkcrypto/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "bls12_381/zkcrypto/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "bls12_381/zkcrypto/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "bls12_381/zkcrypto/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "bls12_381/zkcrypto/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "bls12_381/zkcrypto/aws_p4d.24xlarge.json"
         }
     },
     "bn254": {
         "arkworks": {
             "aws_m5.2xlarge": "bn254/arkworks/aws_m5.2xlarge.json",
-            "aws_m5.large": "bn254/arkworks/aws_m5.large.json",
-            "aws_m6g.8xlarge": "bn254/arkworks/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "bn254/arkworks/aws_m6i.8xlarge.json"
-        },
-        "ffjavascript": {
-            "aws_m5.2xlarge": "bn254/ffjavascript/aws_m5.2xlarge.json",
-            "aws_m6g.8xlarge": "bn254/ffjavascript/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "bn254/ffjavascript/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "bn254/arkworks/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "bn254/arkworks/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "bn254/arkworks/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "bn254/arkworks/aws_p4d.24xlarge.json"
         },
         "gnark_crypto": {
             "aws_m5.2xlarge": "bn254/gnark_crypto/aws_m5.2xlarge.json",
-            "aws_m5.large": "bn254/gnark_crypto/aws_m5.large.json",
-            "aws_m6g.8xlarge": "bn254/gnark_crypto/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "bn254/gnark_crypto/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "bn254/gnark_crypto/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "bn254/gnark_crypto/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "bn254/gnark_crypto/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "bn254/gnark_crypto/aws_p4d.24xlarge.json"
         },
         "halo2_curves": {
             "aws_m5.2xlarge": "bn254/halo2_curves/aws_m5.2xlarge.json",
-            "aws_m6g.8xlarge": "bn254/halo2_curves/aws_m6g.8xlarge.json"
+            "aws_m7a.8xlarge": "bn254/halo2_curves/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "bn254/halo2_curves/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "bn254/halo2_curves/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "bn254/halo2_curves/aws_p4d.24xlarge.json"
         },
         "pairing_ce": {
             "aws_m5.2xlarge": "bn254/pairing_ce/aws_m5.2xlarge.json",
-            "aws_m5.large": "bn254/pairing_ce/aws_m5.large.json",
-            "aws_m6i.8xlarge": "bn254/pairing_ce/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "bn254/pairing_ce/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "bn254/pairing_ce/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "bn254/pairing_ce/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "bn254/pairing_ce/aws_p4d.24xlarge.json"
         }
     },
     "curve25519": {
         "arkworks": {
             "aws_m5.2xlarge": "curve25519/arkworks/aws_m5.2xlarge.json",
-            "aws_m6g.8xlarge": "curve25519/arkworks/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "curve25519/arkworks/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "curve25519/arkworks/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "curve25519/arkworks/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "curve25519/arkworks/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "curve25519/arkworks/aws_p4d.24xlarge.json"
         },
         "curve25519-dalek": {
             "aws_m5.2xlarge": "curve25519/curve25519-dalek/aws_m5.2xlarge.json",
-            "aws_m5.large": "curve25519/curve25519-dalek/aws_m5.large.json",
-            "aws_m6g.8xlarge": "curve25519/curve25519-dalek/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "curve25519/curve25519-dalek/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "curve25519/curve25519-dalek/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "curve25519/curve25519-dalek/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "curve25519/curve25519-dalek/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "curve25519/curve25519-dalek/aws_p4d.24xlarge.json"
         }
     },
     "jubjub": {
         "zkcrypto": {
             "aws_m5.2xlarge": "jubjub/zkcrypto/aws_m5.2xlarge.json",
-            "aws_m5.large": "jubjub/zkcrypto/aws_m5.large.json",
-            "aws_m6g.8xlarge": "jubjub/zkcrypto/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "jubjub/zkcrypto/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "jubjub/zkcrypto/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "jubjub/zkcrypto/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "jubjub/zkcrypto/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "jubjub/zkcrypto/aws_p4d.24xlarge.json"
         }
     },
     "pallas": {
         "arkworks": {
             "aws_m5.2xlarge": "pallas/arkworks/aws_m5.2xlarge.json",
-            "aws_m6g.8xlarge": "pallas/arkworks/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "pallas/arkworks/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "pallas/arkworks/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "pallas/arkworks/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "pallas/arkworks/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "pallas/arkworks/aws_p4d.24xlarge.json"
         },
         "pasta_curves": {
             "aws_m5.2xlarge": "pallas/pasta_curves/aws_m5.2xlarge.json",
-            "aws_m5.large": "pallas/pasta_curves/aws_m5.large.json",
-            "aws_m6g.8xlarge": "pallas/pasta_curves/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "pallas/pasta_curves/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "pallas/pasta_curves/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "pallas/pasta_curves/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "pallas/pasta_curves/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "pallas/pasta_curves/aws_p4d.24xlarge.json"
         }
     },
     "secp256k1": {
         "arkworks": {
-            "aws_m6i.8xlarge": "secp256k1/arkworks/aws_m6i.8xlarge.json"
+            "aws_m5.2xlarge": "secp256k1/arkworks/aws_m5.2xlarge.json",
+            "aws_m7a.8xlarge": "secp256k1/arkworks/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "secp256k1/arkworks/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "secp256k1/arkworks/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "secp256k1/arkworks/aws_p4d.24xlarge.json"
         },
         "gnark_crypto": {
             "aws_m5.2xlarge": "secp256k1/gnark_crypto/aws_m5.2xlarge.json",
-            "aws_m5.large": "secp256k1/gnark_crypto/aws_m5.large.json",
-            "aws_m6g.8xlarge": "secp256k1/gnark_crypto/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "secp256k1/gnark_crypto/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "secp256k1/gnark_crypto/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "secp256k1/gnark_crypto/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "secp256k1/gnark_crypto/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "secp256k1/gnark_crypto/aws_p4d.24xlarge.json"
         }
     },
     "vesta": {
         "arkworks": {
             "aws_m5.2xlarge": "vesta/arkworks/aws_m5.2xlarge.json",
-            "aws_m6g.8xlarge": "vesta/arkworks/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "vesta/arkworks/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "vesta/arkworks/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "vesta/arkworks/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "vesta/arkworks/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "vesta/arkworks/aws_p4d.24xlarge.json"
         },
         "pasta_curves": {
             "aws_m5.2xlarge": "vesta/pasta_curves/aws_m5.2xlarge.json",
-            "aws_m5.large": "vesta/pasta_curves/aws_m5.large.json",
-            "aws_m6g.8xlarge": "vesta/pasta_curves/aws_m6g.8xlarge.json",
-            "aws_m6i.8xlarge": "vesta/pasta_curves/aws_m6i.8xlarge.json"
+            "aws_m7a.8xlarge": "vesta/pasta_curves/aws_m7a.8xlarge.json",
+            "aws_m7g.8xlarge": "vesta/pasta_curves/aws_m7g.8xlarge.json",
+            "aws_m7i.8xlarge": "vesta/pasta_curves/aws_m7i.8xlarge.json",
+            "aws_p4d.24xlarge": "vesta/pasta_curves/aws_p4d.24xlarge.json"
         }
     }
 }

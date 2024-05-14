@@ -22,12 +22,13 @@ function bench_mul_ff(F) {
   };
 }
 
-function bench_invert(F) {
-  const x = F.random();
-  return () => {
-    F.invert(x);
-  };
-}
+// function bench_invert(F) {
+//   const x = F.random();
+//   return () => {
+//     // XXX. this function does not exist anymore?
+//     F.invert(x);
+//   };
+// }
 
 function bench_add_ec(G, Fr) {
   const x = G.timesScalar(G.g, Fr.random());
@@ -101,7 +102,7 @@ async function run() {
     bench
       .add(name + "/add_ff", bench_add_ff(c.Fr))
       .add(name + "/mul_ff", bench_mul_ff(c.Fr))
-      .add(name + "/invert", bench_invert(c.Fr))
+      // .add(name + "/invert", bench_invert(c.Fr))
       .add(name + "/mul_G1", bench_mul_ec(c.G1, c.Fr))
       .add(name + "/mul_G2", bench_mul_ec(c.G2, c.Fr))
       .add(name + "/pairing", bench_pairing(c))
