@@ -60,10 +60,15 @@ probes = {
     r'G1JacAdd': lambda:   ("add_G1", 1),
     r'G1JacScalarMultiplication': lambda:   ("mul_G1", 1),
     r'MultiExpG1/(\d+)_points': lambda x: ("msm_G1", int(x)),
+    r'G1JacIsInSubGroup': lambda: ("is_in_sub_G1", 1),
+    r'HashToG1': lambda: ("hash_G1", 1),
 
     r'G2JacAdd': lambda:   ("add_G2", 1),
     r'G2JacScalarMultiplication': lambda:   ("mul_G2", 1),
     r'MultiExpG2/(\d+)_points': lambda x: ("msm_G2", int(x)),
+    r'G2JacIsInSubGroup': lambda: ("is_in_sub_G2", 1),
+    r'HashToG2': lambda: ("hash_G2", 1),
+
     r'E12Mul': lambda:  ("add_Gt", 1),
     r'E12Expt': lambda:  ("mul_Gt", 1),
     r'Pairing': lambda:  ("pairing", 1),

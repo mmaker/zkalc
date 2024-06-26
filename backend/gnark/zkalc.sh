@@ -30,12 +30,16 @@ zkalc_benchmarks () {
     go test -run none -bench BenchmarkG1JacIsInSubGroup
     go test -run none -bench BenchmarkG1AffineCofactorClearing
 
+    go test -run none -bench BenchmarkHashToG1
+
     go test -run none -bench 'BenchmarkG2JacAdd\b'
     go test -run none -bench 'BenchmarkG2JacScalarMultiplication\b'
     go test -run none -bench 'BenchmarkMultiExpG2\b'
 
     go test -run none -bench BenchmarkG2JacIsInSubGroup
     go test -run none -bench BenchmarkG2AffineCofactorClearing
+
+    go test -run none -bench BenchmarkHashToG2
 
     if [ -d internal/fptower ]
     then

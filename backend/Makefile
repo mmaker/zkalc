@@ -1,4 +1,5 @@
 OUTDIR=../perf/data/new/
+SHELL=/usr/bin/bash
 
 all: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto gnark pairing_ce halo2_curves ffjavascript
 
