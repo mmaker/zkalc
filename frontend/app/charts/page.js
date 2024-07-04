@@ -151,8 +151,18 @@ const Home = () => {
   };
 
   const ZkalcGraph = () => {
-    let samples = getEstimates(defaultCurve, defaultLib, defaultMachine)[op];
-    if (typeof samples === "undefined") {
+    let allSamples = baseData((x) => x);
+    let samples = undefined;
+    let allUndef = true;
+    for (let i = 0; i < allSamples.length; i++) {
+      if (typeof allSamples[i] !== "undefined") {
+        samples = allSamples[i];
+        allUndef = false;
+        break;
+      }
+    }
+    
+    if (allUndef) {
       return <Row align={"center"}>Unavailable</Row>;
     }
     if (samples.range.length > 1) {
