@@ -13,4 +13,4 @@ harness = false
 criterion = "0.3.5"
 rand = "0.8.5"
 rayon = {version = "1.5", optional = true}
-curve25519-dalek = { version = "4.1.2", features = ["default", "group"] }
+curve25519-dalek = { version = "4.1.3", features = ["default", "group"] }
