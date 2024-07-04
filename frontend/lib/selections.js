@@ -125,6 +125,78 @@ export const operations = {
       </>
     ),
   },
+  is_in_sub_G1: {
+    label: (
+        <>
+            <InlineMath math="\mathbb{G}_1" /> membership test
+        </>
+      ),
+      description: (
+        <>
+          Subgroup membership test for <InlineMath math="\mathbb{G}_1" />
+        </>
+      ),
+      tooltip_width: 500,
+      tooltip: (
+        <>
+            Given a point <InlineMath math="p" /> on the curve, determine if <InlineMath math="p" /> is in <InlineMath math="\mathbb{G}_1" />
+        </>
+      ),
+  },
+  is_in_sub_G2: {
+    label: (
+        <>
+            <InlineMath math="\mathbb{G}_2" /> membership test
+        </>
+      ),
+      description: (
+        <>
+          Subgroup membership test for <InlineMath math="\mathbb{G}_2" />
+        </>
+      ),
+      tooltip_width: 500,
+      tooltip: (
+        <>
+            Given a point <InlineMath math="p" /> on the curve, determine if <InlineMath math="p" /> is in <InlineMath math="\mathbb{G}_2" />
+        </>
+      ),
+  },
+  hash_G1: {
+    label: (
+        <>
+          Hash to <InlineMath math="\mathbb{G}_1" />
+        </>
+      ),
+      description: (
+        <>
+          Hash to <InlineMath math="\mathbb{G}_1" />
+        </>
+      ),
+      tooltip_width: 500,
+      tooltip: (
+        <>
+          Hashes a message to a point on <InlineMath math="\mathbb{G}_1" />
+        </>
+      ),
+  },
+  hash_G2: {
+    label: (
+        <>
+          Hash to <InlineMath math="\mathbb{G}_2" />
+        </>
+      ),
+      description: (
+        <>
+          Hash to <InlineMath math="\mathbb{G}_2" />
+        </>
+      ),
+      tooltip_width: 500,
+      tooltip: (
+        <>
+          Hashes a message to a point on <InlineMath math="\mathbb{G}_2" />
+        </>
+      ),
+  },
   add_ff: {
     label: (
       <>
