@@ -132,7 +132,7 @@ const Home = () => {
                     onClick: () => _setMachine(selectedMachine.key),
                   })
                 }
-                
+
                 return res;
               }, [])
             }}
@@ -161,7 +161,7 @@ const Home = () => {
         break;
       }
     }
-    
+
     if (allUndef) {
       return <Row align={"center"}>Unavailable</Row>;
     }
@@ -203,9 +203,13 @@ const Home = () => {
           format: formatTimeTick(4),
           tickSize: 5,
           tickRotation: 10,
-          // legend: 'time (ns)',
-          legendOffset: -40,
+          legend: 'time',
+          legendPosition: "top",
+        }}
+        axisBottom={{
+          legend: 'number of input elements',
           legendPosition: "middle",
+          legendOffset: 40,
         }}
       />
     );
