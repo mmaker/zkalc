@@ -23,7 +23,7 @@
     "eslint-config-next": "13.1.1",
     "highlight.js": "^11.7.0",
     "highlightjs-line-numbers.js": "^2.8.0",
-    "katex": "^0.16.10",
+    "katex": "^0.16.22",
     "mathjs": "^11.5.0",
     "next": "latest",
     "nextjs-progressbar": "^0.0.16",
@@ -36,6 +36,6 @@
   "devDependencies": {
     "eslint-plugin-unused-imports": "^3.0.0",
     "typescript": "5.1.6",
-    "vitest": "^0.34.1"
+    "vitest": "^3.1.2"
   }
 }
