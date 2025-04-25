@@ -5,7 +5,7 @@ const nextConfig = {
   },
   // god only knows what the fuck this thing does
   // https://github.com/plouc/nivo/issues/1941
-  transpilePackages: ["@nivo"], experimental: { esmExternals: "loose"}
+  transpilePackages: ["@nivo"],
 }
 
 const withMDX = require('@next/mdx')()

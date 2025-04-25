@@ -1,5 +1,6 @@
 'use client'
 
+import '@ant-design/v5-patch-for-react-19';
 import React, { useEffect } from "react";
 
 import "katex/dist/katex.min.css";
@@ -219,7 +220,7 @@ const HomePage = () => {
         <Tooltip
           placement="top"
           title={` ${machines[machine].os} ${machines[machine].cpu}, ${machines[machine].ram}`}
-          overlayInnerStyle={{
+          styles={{
             width: machines[machine].tooltip_width,
           }}
         >
@@ -264,7 +265,7 @@ const HomePage = () => {
           >
             <Select
               style={{ width: 230 }}
-              bordered={false}
+              variant={false}
               placeholder="Operation (e.g. add)"
               showSearch
               options={operations_selection}

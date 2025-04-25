@@ -22,7 +22,7 @@ const RecipeItem = ({
         <Tooltip
           placement="top"
           color="#108ee9"
-          overlayInnerStyle={{
+          styles={{
             width: operation.tooltip_width,
           }}
           title={operation.tooltip}
