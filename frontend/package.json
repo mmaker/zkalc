@@ -11,15 +11,13 @@
     "static-export": "next build && next export"
   },
   "dependencies": {
-    "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@mdx-js/loader": "^2.2.1",
     "@mdx-js/react": "^2.2.1",
     "@next/mdx": "^13.1.1",
-    "@nivo/bar": "^0.86.0",
-    "@nivo/core": "^0.86.0",
-    "@nivo/line": "^0.86.0",
-    "@vercel/analytics": "^0.1.8",
-    "antd": "^5.7.3",
+    "@nivo/bar": "latest",
+    "@nivo/core": "latest",
+    "@nivo/line": "latest",
+    "antd": "latest",
     "eslint": "8.31.0",
     "eslint-config-next": "13.1.1",
     "highlight.js": "^11.7.0",
@@ -30,9 +28,8 @@
     "nextjs-progressbar": "^0.0.16",
     "postscribe": "^2.0.8",
     "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-katex": "^3.0.1",
-    "sharp": "^0.32.6"
+    "react-dom": "latest",
+    "react-katex": "latest"
   },
   "devDependencies": {
     "eslint-plugin-unused-imports": "^3.0.0",
