@@ -1,6 +1,12 @@
 const estimate_maurer09 = {
-  prove: (est, num_equations, num_scalars) => est("msm_G1")(num_equations) + est("mul_ff")(num_scalars),
-  verify: (est, num_equations, num_scalars) => est("msm_G1")(num_equations) + est("mul_G1")(num_scalars),
+  prove: (est,  equations_count) => equations_count.reduce(
+    (sum, count) => sum + est("msm_G1")(count) + est("mul_ff")(count),
+    0
+  ),
+  verify: (est, equations_count) =>     equations_count.reduce(
+    (sum, count) => sum + est("msm_G1")(count) + est("mul_G1")(count),
+    0
+  ),
 };
 
 const estimate_kzg = {
@@ -116,5 +122,5 @@ export const cookbook = {
   groth16: estimate_groth16,
   bulletproof: estimate_bulletproof,
   gnark_plonk: estimate_gnark_plonk,
-  schnorr: estimate_maurer09,
+  maurer09: estimate_maurer09,
 };

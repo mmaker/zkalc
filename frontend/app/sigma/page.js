@@ -59,12 +59,30 @@ const HomePage = () => {
         cfg.machine,
         op
       );
-      let parsed = parseLinearCombination(inputValue);
-      if (parsed.error) {
-        return parsed.error;
-      } else  {
-        const estimated_time = cookbook.schnorr.prove(est, parsed.num_scalars, parsed.num_equations);
-        return formatTime(estimated_time);
+
+      try {
+        const parsed = parseLinearCombination(inputValue);
+        const estimated_prove_time = cookbook.maurer09.prove(est, parsed);
+        const estimated_verify_time = cookbook.maurer09.verify(est, parsed);
+        return (
+          <>
+          <Text strong>Proving time:&nbsp;&nbsp;</Text>
+            <Text italic >
+              {formatTime(estimated_prove_time)}
+            </Text>
+            <br />
+            <Text strong>Verification time:&nbsp;&nbsp;</Text>
+            <Text italic >
+              {formatTime(estimated_verify_time)}
+            </Text>
+          </>
+        )
+      } catch (e) {
+        return (
+          <Text type="danger">
+            Error: {e.message}
+          </Text>
+        );
       }
   };
 
@@ -202,11 +220,8 @@ const HomePage = () => {
       <br />
       <Row align="center" span={24}>
         <Col span={8} offset={4}>
-          <Typography.Paragraph align="right">
-            <Text strong>Total time:&nbsp;&nbsp;</Text>
-            <Text italic onClick={() => setHumanTimeFormat(!humanTimeFormat)}>
-              {estimatedTimeForSigma(inputValue)}
-            </Text>
+          <Typography.Paragraph align="right" onClick={() => setHumanTimeFormat(!humanTimeFormat)}>
+            {estimatedTimeForSigma(inputValue)}
           </Typography.Paragraph>
         </Col>
       </Row>
