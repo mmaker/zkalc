@@ -1,6 +1,6 @@
 const estimate_maurer09 = {
-  prove: (est, n, m) => est("msm_G1")(n) + est("mul_ff")(n),
-  verify: (est, n) => est("msm_G1")(n) + est("mul_G1")(m),
+  prove: (est, num_equations, num_scalars) => est("msm_G1")(num_equations) + est("mul_ff")(num_scalars),
+  verify: (est, num_equations, num_scalars) => est("msm_G1")(num_equations) + est("mul_G1")(num_scalars),
 };
 
 const estimate_kzg = {

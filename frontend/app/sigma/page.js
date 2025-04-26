@@ -5,7 +5,6 @@ import React, { useEffect } from "react";
 import "katex/dist/katex.min.css";
 
 import {
-  PlusOutlined,
   DownOutlined,
 } from "@ant-design/icons";
 import {
@@ -40,11 +39,8 @@ const { Text } = Typography;
 
 
 const HomePage = () => {
-  let ingredientsList = React.useRef(null);
-
   useEffect(() => {
     //   document.getElementById("title").setAttribute('onClick', "resetRecipe");
-    //   renderMathInElement(ingredientsList.current, katex_settings);
     window.estimator = estimator;
     window.estimates = estimates;
     window.cookbook = cookbook;
