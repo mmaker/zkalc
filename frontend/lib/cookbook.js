@@ -1,3 +1,8 @@
+const estimate_maurer09 = {
+  prove: (est, n, m) => est("msm_G1")(n) + est("mul_ff")(n),
+  verify: (est, n) => est("msm_G1")(n) + est("mul_G1")(m),
+};
+
 const estimate_kzg = {
   setup: (est, n) => est("mul_G1")(n),
   commit: (est, n) => est("msm_G1")(n),
@@ -111,4 +116,5 @@ export const cookbook = {
   groth16: estimate_groth16,
   bulletproof: estimate_bulletproof,
   gnark_plonk: estimate_gnark_plonk,
+  schnorr: estimate_maurer09,
 };

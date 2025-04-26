@@ -28,7 +28,7 @@
     "nextjs-progressbar": "^0.0.16",
     "postscribe": "^2.0.8",
     "react": "18.2.0",
-    "react-dom": "latest",
+    "react-dom": "18.2.0",
     "react-katex": "latest"
   },
   "devDependencies": {
