@@ -11,6 +11,10 @@ authors = [
 name = "bench_icicle_cpu"
 harness = false
 
+[[bench]]
+name = "bench_icicle_cuda"
+harness = false
+
 [dependencies]
 icicle-runtime = { git = "https://github.com/ingonyama-zk/icicle" }
 icicle-core = { git = "https://github.com/ingonyama-zk/icicle" }

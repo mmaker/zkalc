@@ -3,6 +3,7 @@ use icicle_benchmarks::{
     bench_add, bench_add_scalars, bench_double, bench_fft, bench_inv_scalars, bench_msm, bench_mul,
     bench_mul_scalars, bench_pairing, bench_square_scalars, bench_sub, bench_sub_scalars,
 };
+use icicle_runtime::Device;
 
 macro_rules! bench_curve {
     ($name: ident, $lib: path, $id: expr) => {
@@ -12,6 +13,9 @@ macro_rules! bench_curve {
                 pairing::PairingTargetField,
             };
 
+            let _ = icicle_runtime::load_backend_from_env_or_default();
+            icicle_runtime::set_device(&Device::new("CUDA", 0))
+                .expect("Failed to set device to GPU");
             let mut group = c.benchmark_group($id);
             bench_add_scalars::<ScalarField, ScalarCfg, _>(&mut group, "ff");
             bench_sub_scalars::<ScalarField, ScalarCfg, _>(&mut group, "ff");
