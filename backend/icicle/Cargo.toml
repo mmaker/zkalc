@@ -1,0 +1,23 @@
+[package]
+name = "icicle-benchmarks"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+authors = [
+    "Roman Palkin <roman@ingonyama.com>",
+]
+
+[[bench]]
+name = "bench_icicle_cpu"
+harness = false
+
+[dependencies]
+icicle-runtime = { git = "https://github.com/ingonyama-zk/icicle" }
+icicle-core = { git = "https://github.com/ingonyama-zk/icicle" }
+icicle-bn254 = { git = "https://github.com/ingonyama-zk/icicle" }
+icicle-bls12-377 = { git = "https://github.com/ingonyama-zk/icicle" }
+icicle-bls12-381 = { git = "https://github.com/ingonyama-zk/icicle" }
+
+rand = "0.8.5"
+rayon = "1.5"
+criterion = "0.5.1"
