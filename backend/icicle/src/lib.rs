@@ -6,7 +6,7 @@ use icicle_core::msm::{msm, MSMConfig, MSM};
 use icicle_core::ntt::{self, NTTConfig, NTTDir, NTTDomain, NTT};
 use icicle_core::pairing::Pairing;
 use icicle_core::traits::{FieldImpl, GenerateRandom};
-use icicle_runtime::memory::HostSlice;
+use icicle_runtime::memory::{DeviceSlice, DeviceVec, HostSlice};
 
 pub fn bench_msm<C: Curve + MSM<C>, FC: GenerateRandom<C::ScalarField>, M: Measurement>(
     c: &mut BenchmarkGroup<'_, M>,
@@ -15,22 +15,30 @@ pub fn bench_msm<C: Curve + MSM<C>, FC: GenerateRandom<C::ScalarField>, M: Measu
     for logsize in 1..=21 {
         let size = 1 << logsize;
 
+        if logsize > 10 {
+            c.sample_size(10);
+        }
+
         c.bench_with_input(
             BenchmarkId::new(format!("msm_{}", group_name), size),
             &logsize,
             |b, _| {
                 let scalars = FC::generate_random(size);
                 let gs = C::generate_random_affine_points(size);
-                let mut result = vec![Projective::<C>::zero(); 1];
+                let mut result = DeviceVec::device_malloc(1).unwrap();
                 let config = MSMConfig::default();
-                b.iter(|| {
-                    msm::<C>(
-                        HostSlice::from_slice(&scalars),
-                        HostSlice::from_slice(&gs),
-                        &config,
-                        HostSlice::from_mut_slice(&mut result),
-                    )
-                });
+
+                let mut device_scalars = DeviceVec::device_malloc(size).unwrap();
+                device_scalars
+                    .copy_from_host(HostSlice::from_slice(&scalars))
+                    .unwrap();
+
+                let mut device_gs = DeviceVec::device_malloc(size).unwrap();
+                device_gs
+                    .copy_from_host(HostSlice::from_slice(&gs))
+                    .unwrap();
+
+                b.iter(|| msm::<C>(&device_scalars, &device_gs, &config, &mut result));
             },
         );
     }
@@ -159,16 +167,11 @@ where
         let size = 1 << logsize;
         c.bench_with_input(BenchmarkId::new("fft", size), &logsize, |b, _| {
             let a = F::Config::generate_random(size);
+            let mut device_a = DeviceVec::device_malloc(size).unwrap();
+            device_a.copy_from_host(HostSlice::from_slice(&a)).unwrap();
             let config = NTTConfig::<F>::default();
-            let mut ntt_results = vec![F::zero(); size];
-            b.iter(|| {
-                ntt::ntt(
-                    HostSlice::from_slice(&a),
-                    NTTDir::kForward,
-                    &config,
-                    HostSlice::from_mut_slice(&mut ntt_results),
-                )
-            })
+            let mut ntt_results = DeviceVec::device_malloc(size).unwrap();
+            b.iter(|| ntt::ntt(&device_a, NTTDir::kForward, &config, &mut ntt_results))
         });
     }
 }
