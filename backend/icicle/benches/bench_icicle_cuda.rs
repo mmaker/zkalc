@@ -17,20 +17,20 @@ macro_rules! bench_curve {
             icicle_runtime::set_device(&Device::new("CUDA", 0))
                 .expect("Failed to set device to GPU");
             let mut group = c.benchmark_group($id);
-            // bench_add_scalars::<ScalarField, ScalarCfg, _>(&mut group, "ff");
-            // bench_sub_scalars::<ScalarField, ScalarCfg, _>(&mut group, "ff");
-            // bench_mul_scalars::<ScalarField, ScalarCfg, _>(&mut group, "ff");
-            // bench_square_scalars::<ScalarField, ScalarCfg, _>(&mut group, "ff");
-            // bench_inv_scalars::<ScalarField, ScalarCfg, _>(&mut group, "ff");
+            bench_add_scalars::<ScalarField, ScalarCfg, _>(&mut group, "ff");
+            bench_sub_scalars::<ScalarField, ScalarCfg, _>(&mut group, "ff");
+            bench_mul_scalars::<ScalarField, ScalarCfg, _>(&mut group, "ff");
+            bench_square_scalars::<ScalarField, ScalarCfg, _>(&mut group, "ff");
+            bench_inv_scalars::<ScalarField, ScalarCfg, _>(&mut group, "ff");
 
-            // bench_add::<CurveCfg, ScalarCfg, _>(&mut group, "G1");
-            // bench_add::<G2CurveCfg, ScalarCfg, _>(&mut group, "G2");
-            // bench_sub::<CurveCfg, ScalarCfg, _>(&mut group, "G1");
-            // bench_sub::<G2CurveCfg, ScalarCfg, _>(&mut group, "G2");
-            // bench_double::<CurveCfg, ScalarCfg, _>(&mut group, "G1");
-            // bench_double::<G2CurveCfg, ScalarCfg, _>(&mut group, "G2");
-            // bench_mul::<CurveCfg, ScalarCfg, _>(&mut group, "G1");
-            // bench_mul::<G2CurveCfg, ScalarCfg, _>(&mut group, "G2");
+            bench_add::<CurveCfg, ScalarCfg, _>(&mut group, "G1");
+            bench_add::<G2CurveCfg, ScalarCfg, _>(&mut group, "G2");
+            bench_sub::<CurveCfg, ScalarCfg, _>(&mut group, "G1");
+            bench_sub::<G2CurveCfg, ScalarCfg, _>(&mut group, "G2");
+            bench_double::<CurveCfg, ScalarCfg, _>(&mut group, "G1");
+            bench_double::<G2CurveCfg, ScalarCfg, _>(&mut group, "G2");
+            bench_mul::<CurveCfg, ScalarCfg, _>(&mut group, "G1");
+            bench_mul::<G2CurveCfg, ScalarCfg, _>(&mut group, "G2");
             bench_msm::<CurveCfg, ScalarCfg, _>(&mut group, "G1");
             bench_msm::<G2CurveCfg, ScalarCfg, _>(&mut group, "G2");
             bench_pairing::<CurveCfg, G2CurveCfg, PairingTargetField, _>(&mut group);
