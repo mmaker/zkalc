@@ -73,6 +73,24 @@
         "url": "https://github.com/privacy-scaling-explorations/halo2curves",
         "version": "0.3.1 (branch: msm)"
     },
+    "icicle-cpu": {
+        "benchmark_with": "criterion",
+        "compiler/interpreter": "rustc 1.81.0 (eeb90cda1 2024-09-04)",
+        "framework": [],
+        "label": "ICICLE CPU",
+        "language": "Rust",
+        "url": "https://github.com/ingonyama-zk/icicle",
+        "version": "3.9.0"
+    },
+    "icicle-cuda": {
+        "benchmark_with": "criterion",
+        "compiler/interpreter": "rustc 1.81.0 (eeb90cda1 2024-09-04)",
+        "framework": [],
+        "label": "ICICLE GPU",
+        "language": "Rust",
+        "url": "https://github.com/ingonyama-zk/icicle",
+        "version": "3.9.0"
+    },
     "pairing_ce": {
         "benchmark_with": "criterion",
         "compiler/interpreter": "rustc 1.73.0-nightly (0d95f9132 2023-07-26)",
