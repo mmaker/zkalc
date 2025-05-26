@@ -17,13 +17,13 @@ arkworks: arkworks_algebra
 	cd arkworks; \
 		cargo criterion --message-format=json 1> ../$(OUTDIR)/arkworks/arkworks.json
 
-icicle_cpu:
-	mkdir -p ../$(OUTDIR)/icicle-cpu; \
+icicle_cpu: init
+	mkdir -p $(OUTDIR)/icicle-cpu; \
 	cd icicle; \
-		cargo criterion --message-format=json 1> --bench bench_icicle_cuda ../$(OUTDIR)/icicle-cpu/icicle.json
+		cargo criterion --message-format=json --bench bench_icicle_cpu 1> ../$(OUTDIR)/icicle-cpu/icicle.json
 
-icicle_cuda:
-	mkdir -p ../$(OUTDIR)/icicle-cuda; \
+icicle_cuda: init
+	mkdir -p $(OUTDIR)/icicle-cuda; \
 	cd icicle; \
 	if [ ! -d "icicle" ]; then ./install.sh; fi; \
 	ICICLE_BACKEND_INSTALL_DIR=icicle/lib/backend/ cargo criterion --bench bench_icicle_cuda --message-format=json 1> ../$(OUTDIR)/icicle-cuda/icicle.json
