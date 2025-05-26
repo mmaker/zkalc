@@ -16,11 +16,11 @@ name = "bench_icicle_cuda"
 harness = false
 
 [dependencies]
-icicle-runtime = { git = "https://github.com/ingonyama-zk/icicle" }
-icicle-core = { git = "https://github.com/ingonyama-zk/icicle" }
-icicle-bn254 = { git = "https://github.com/ingonyama-zk/icicle" }
-icicle-bls12-377 = { git = "https://github.com/ingonyama-zk/icicle" }
-icicle-bls12-381 = { git = "https://github.com/ingonyama-zk/icicle" }
+icicle-runtime = { git = "https://github.com/ingonyama-zk/icicle", tag = "v3.9.0" }
+icicle-core = { git = "https://github.com/ingonyama-zk/icicle", tag = "v3.9.0"  }
+icicle-bn254 = { git = "https://github.com/ingonyama-zk/icicle", features = ["no_ecntt"], tag = "v3.9.0" }
+icicle-bls12-377 = { git = "https://github.com/ingonyama-zk/icicle", features = ["no_ecntt"], tag = "v3.9.0"  }
+icicle-bls12-381 = { git = "https://github.com/ingonyama-zk/icicle", features = ["no_ecntt"], tag = "v3.9.0"  }
 
 rand = "0.8.5"
 rayon = "1.5"
