@@ -44,6 +44,9 @@ def main():
                     pass
 
                 current_folder = os.path.join(benchmark_path, machine, library, '')
+                if not os.path.exists(current_folder):
+                    print(current_folder, "doesn't exist!")
+                    continue
                 output_path = os.path.join(dest_dir, curve, library, machine + '.json')
 
                 benchmark_engine = parsers[libraries[library]['benchmark_with']]

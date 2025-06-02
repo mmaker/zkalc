@@ -1,7 +1,7 @@
 OUTDIR=../perf/data/new/
 SHELL=/usr/bin/bash
 
-all: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto gnark pairing_ce halo2_curves ffjavascript
+all: init blstrs arkworks curve25519-dalek pasta_curves zkcrypto gnark pairing_ce halo2_curves ffjavascript icicle_cpu icicle_cuda
 
 init:
 	cargo install cargo-criterion
@@ -16,6 +16,17 @@ blstrs:
 arkworks: arkworks_algebra
 	cd arkworks; \
 		cargo criterion --message-format=json 1> ../$(OUTDIR)/arkworks/arkworks.json
+
+icicle_cpu: init
+	mkdir -p $(OUTDIR)/icicle-cpu; \
+	cd icicle; \
+		cargo criterion --message-format=json --bench bench_icicle_cpu 1> ../$(OUTDIR)/icicle-cpu/icicle.json
+
+icicle_cuda: init
+	mkdir -p $(OUTDIR)/icicle-cuda; \
+	cd icicle; \
+	if [ ! -d "icicle" ]; then ./install.sh; fi; \
+	ICICLE_BACKEND_INSTALL_DIR=icicle/lib/backend/ cargo criterion --bench bench_icicle_cuda --message-format=json 1> ../$(OUTDIR)/icicle-cuda/icicle.json
 
 arkworks_algebra:
 	git clone https://github.com/arkworks-rs/algebra.git || true
