@@ -1,13 +1,10 @@
-'use client'
+"use client";
 
 import React, { useEffect } from "react";
 
 import "katex/dist/katex.min.css";
 
-import {
-  PlusOutlined,
-  DownOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, DownOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
@@ -16,6 +13,7 @@ import {
   Row,
   Select,
   Space,
+  Switch,
   Tooltip,
   Typography,
   Dropdown,
@@ -25,7 +23,7 @@ import { parse, ResultSet } from "mathjs";
 
 import { Layout } from "../components/layout";
 import { Recipe } from "../components/recipe";
-import { estimator, estimates } from "../lib/estimates";
+import { estimator, estimates, getEstimates } from "../lib/estimates";
 import { humanTime, siTime } from "../lib/time";
 import {
   operations,
@@ -34,9 +32,7 @@ import {
   libraries_selection,
   curves_selection,
 } from "../lib/selections";
-import {
-  cookbook,
-} from "../lib/cookbook";
+import { cookbook } from "../lib/cookbook";
 // import renderMathInElement from "katex/contrib/auto-render";
 
 import curves from "../data/curves.json";
@@ -70,6 +66,7 @@ const HomePage = () => {
   const [cfg, setCfg] = React.useState(defaults);
 
   const [humanTimeFormat, setHumanTimeFormat] = React.useState(true);
+  const [compareMode, setCompareMode] = React.useState(false);
 
   const addIngredient = (ingredient) => {
     // by now we assume the formula can be parsed and has been already validated.
@@ -85,21 +82,47 @@ const HomePage = () => {
 
   const formatTime = (num) => (humanTimeFormat ? humanTime : siTime)(num);
 
-  const estimatedTime = (item) => {
-    return estimator(
-      cfg.curve,
-      cfg.lib,
-      cfg.machine,
-      item.op
-    )(item.quantity.evaluate());
+  const estimatedTime = (item, lib = cfg.lib) => {
+    try {
+      return estimator(
+        cfg.curve,
+        lib,
+        cfg.machine,
+        item.op,
+      )(item.quantity.evaluate());
+    } catch {
+      return null;
+    }
+  };
+
+  const totalTimeForRecipe = (recipe, lib = cfg.lib) => {
+    return recipe
+      .map((item) => estimatedTime(item, lib))
+      .filter((x) => x !== null)
+      .reduce((a, b) => a + b, 0);
   };
 
   const estimatedTimeForRecipe = (recipe) => {
-    const estimated_time = recipe
-      .map(estimatedTime)
-      .filter((x) => x !== null)
-      .reduce((a, b) => a + b, 0);
-    return formatTime(estimated_time);
+    return formatTime(totalTimeForRecipe(recipe));
+  };
+
+  const getAvailableLibraries = () => {
+    return Object.keys(libraries).filter((lib) => {
+      try {
+        getEstimates(cfg.curve, lib, cfg.machine);
+        return true;
+      } catch {
+        return false;
+      }
+    });
+  };
+
+  const estimatedTimeAllLibraries = (item) => {
+    const results = {};
+    getAvailableLibraries().forEach((lib) => {
+      results[lib] = estimatedTime(item, lib);
+    });
+    return results;
   };
 
   const resetRecipe = () => {
@@ -125,7 +148,7 @@ const HomePage = () => {
 
     if (!(new_machine in estimates[new_curve][new_lib])) {
       new_machine = machines_selection[new_curve][new_lib].filter(
-        (x) => !x.disabled
+        (x) => !x.disabled,
       )[0].key;
     }
 
@@ -143,7 +166,7 @@ const HomePage = () => {
 
     if (!(new_machine in estimates[new_curve][new_lib])) {
       new_machine = machines_selection[new_curve][new_lib].filter(
-        (x) => !x.disabled
+        (x) => !x.disabled,
       )[0].key;
     }
 
@@ -248,7 +271,16 @@ const HomePage = () => {
           <BackendSelection />
         </Text>
       </Row>
-      <br />
+      <Row align="center" style={{ marginTop: 12 }}>
+        <Space>
+          <Switch
+            checked={compareMode}
+            onChange={setCompareMode}
+            size="small"
+          />
+          <Text>Compare all implementations</Text>
+        </Space>
+      </Row>
       <br />
       <Form
         form={ingredientForm}
@@ -287,23 +319,32 @@ const HomePage = () => {
           </Form.Item>
         </Space>
       </Form>
-      <Row align="center" span={24}>
-        <Col span={8} offset={4}>
-          <Typography.Paragraph align="right">
-            <Text strong>Total time:&nbsp;&nbsp;</Text>
-            <Text italic onClick={() => setHumanTimeFormat(!humanTimeFormat)}>
-              {estimatedTimeForRecipe(recipe)}
-            </Text>
-          </Typography.Paragraph>
-        </Col>
-      </Row>
+      {!compareMode && (
+        <Row align="center" span={24}>
+          <Col span={8} offset={4}>
+            <Typography.Paragraph align="right">
+              <Text strong>Total time:&nbsp;&nbsp;</Text>
+              <Text italic onClick={() => setHumanTimeFormat(!humanTimeFormat)}>
+                {estimatedTimeForRecipe(recipe)}
+              </Text>
+            </Typography.Paragraph>
+          </Col>
+        </Row>
+      )}
       <Row justify="center" ref={ingredientsList}>
         <Recipe
           recipe={recipe}
           removeIngredient={removeIngredient}
           operations={operations}
           estimatedTime={estimatedTime}
+          estimatedTimeAllLibraries={estimatedTimeAllLibraries}
           formatTime={formatTime}
+          compareMode={compareMode}
+          availableLibraries={getAvailableLibraries().map((key) => ({
+            key,
+            label: libraries[key].label,
+          }))}
+          primaryLibrary={cfg.lib}
         />
       </Row>
     </Layout>
