@@ -1,6 +1,6 @@
 import React from "react";
 import { Typography } from "antd";
-import { authors } from "../../AUTHORS";
+import { authors } from "../lib/authors";
 
 const { Text } = Typography;
 
