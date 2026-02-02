@@ -80,6 +80,10 @@ const nOverLognEstimation = (samples) => {
 const nLognEstimation = (samples) => {
   return (n) => {
     let { range, results } = samples;
+    // Handle edge case: FFT of 1 element has constant complexity
+    if (n <= 1) {
+      return results[0] / range[0]; // Use linear estimate from first data point
+    }
     if (n > range[range.length - 1]) { // extrapolate to the right (do regression)
       const xs =
         n < range[0]
