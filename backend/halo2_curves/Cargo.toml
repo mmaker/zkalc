@@ -15,7 +15,7 @@ harness = false
 
 [dependencies]
 halo2curves = { git = 'https://github.com/privacy-scaling-explorations/halo2curves', branch = "msm" }
-rand = "0.8"
+rand = "0.9"
 rayon = "1.5"
 criterion = "0.3.5"
 group = "0.12.0"
