@@ -22,6 +22,6 @@ icicle-bn254 = { git = "https://github.com/ingonyama-zk/icicle", features = ["no
 icicle-bls12-377 = { git = "https://github.com/ingonyama-zk/icicle", features = ["no_ecntt"], rev = "69990e331b8b0b8af1ab18dad33c1ebc425df187" }
 icicle-bls12-381 = { git = "https://github.com/ingonyama-zk/icicle", features = ["no_ecntt"], rev = "69990e331b8b0b8af1ab18dad33c1ebc425df187" }
 
-rand = "0.8.5"
+rand = "0.8.6"
 rayon = "1.5"
 criterion = "0.5.1"
